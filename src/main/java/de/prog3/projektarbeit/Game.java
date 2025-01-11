@@ -6,6 +6,11 @@ public class Game {
 
     public Game(int gameDate, int gameResult) {}
 
+
+    public void setGameDate(int gameDate) {}
+
+    public void setGameResult(int gameResult) {}
+
     // public int getGameDate() {}
 
     //public int getGameResult() {}
