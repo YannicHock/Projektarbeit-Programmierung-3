@@ -1,4 +1,4 @@
-package de.prog3.projektarbeit.userinterface;
+package de.prog3.projektarbeit.ui;
 
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.gui2.*;
