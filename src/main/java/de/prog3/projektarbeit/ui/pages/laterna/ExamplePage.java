@@ -8,18 +8,23 @@ import de.prog3.projektarbeit.eventHandling.events.ui.OpenPageEvent;
 import de.prog3.projektarbeit.eventHandling.events.ui.RequestNewViewEvent;
 import de.prog3.projektarbeit.eventHandling.events.ui.WindowCloseEvent;
 import de.prog3.projektarbeit.ui.pages.PageType;
+import de.prog3.projektarbeit.ui.views.View;
 import de.prog3.projektarbeit.ui.views.ViewType;
 import de.prog3.projektarbeit.ui.views.laterna.LaternaView;
 
 import java.util.UUID;
 
-public class TitlePage implements LaternaPage {
+public class ExamplePage implements LaternaPage{
 
+    private String test;
+    private String name;
     private final Window window;
     private final LaternaView view;
 
-    public TitlePage(LaternaView view){
-        this.window = new BasicWindow("Hauptmenu");
+    public ExamplePage(LaternaView view, String test) {
+        this.name = "test  - " + test;
+        this.test = test;
+        this.window = new BasicWindow();
         this.view = view;
         open();
     }
@@ -35,9 +40,7 @@ public class TitlePage implements LaternaPage {
                 new EmptySpace()
                         .setLayoutData(
                                 GridLayout.createHorizontallyFilledLayoutData(2)));
-        contentPanel.addComponent(new Button("Testseite", () -> new OpenPageEvent(view, PageType.TEST, "Test")));
-        //contentPanel.addComponent(new Button("Zufallsspieler", () -> new OpenPageEvent(view, PageType.PLAYER, new PlayerFactory(UUID.randomUUID()).createPlayer()).call()));
-        contentPanel.addComponent(new Button("Zufallsteam", () -> new OpenPageEvent(view, PageType.TEAM, new TeamFactory(UUID.randomUUID()).createTeam()).call()));
+        contentPanel.addComponent(new Label(test));
         contentPanel.addComponent(
                 new Separator(Direction.HORIZONTAL)
                         .setLayoutData(
@@ -69,6 +72,6 @@ public class TitlePage implements LaternaPage {
 
     @Override
     public String getName() {
-        return "Hauptmenu";
+        return "";
     }
 }
