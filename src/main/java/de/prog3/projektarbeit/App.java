@@ -1,24 +1,25 @@
 package de.prog3.projektarbeit;
 
-import de.prog3.projektarbeit.userinterface.ExampleInterface;
+
+import de.prog3.projektarbeit.eventHandling.events.ui.RequestNewViewEvent;
+import de.prog3.projektarbeit.ui.UIHandler;
+import de.prog3.projektarbeit.ui.views.ViewType;
 
 public class App {
 
-    private ExampleInterface exampleInterface;
-
-    public App() {
-        this.exampleInterface = new ExampleInterface();
+    private void prepareListeners() {
+        UIHandler.getInstance().registerListeners();
     }
 
     public void start() {
-        this.exampleInterface.start();
+        prepareListeners();
+        new RequestNewViewEvent(ViewType.LATERNA).call();
     }
 
 
     public static void main(String[] args) {
         App app = new App();
         app.start();
-
     }
 
 
