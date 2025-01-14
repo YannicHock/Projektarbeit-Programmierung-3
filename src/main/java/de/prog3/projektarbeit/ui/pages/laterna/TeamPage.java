@@ -3,19 +3,29 @@ package de.prog3.projektarbeit.ui.pages.laterna;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.table.Table;
 import de.prog3.projektarbeit.Player;
+import de.prog3.projektarbeit.Team;
+import de.prog3.projektarbeit.eventHandling.events.ui.OpenPageEvent;
 import de.prog3.projektarbeit.eventHandling.events.ui.WindowCloseEvent;
+import de.prog3.projektarbeit.ui.pages.PageType;
 import de.prog3.projektarbeit.ui.views.laterna.LaternaView;
 
-public class PlayerPage implements LaternaPage{
+import java.util.HashMap;
+import java.util.List;
 
+public class TeamPage implements LaternaPage{
     private final Window window;
     private final LaternaView view;
-    private final Player player;
+    private final Team team;
     private final String name;
 
-    public PlayerPage(LaternaView view, Player player) {
-        this.name = "Spieler  - " + player.getName();
-        this.player = player;
+    private HashMap<String, Player> map = new HashMap<>();
+
+    public TeamPage(LaternaView view, Team team) {
+        this.name = "Team  - " + team.getName();
+        for(Player player : team.getPlayers()){
+            map.put(player.getName() + player.getAge(), player);
+        }
+        this.team = team;
         this.window = new BasicWindow();
         this.view = view;
         open();
@@ -34,7 +44,15 @@ public class PlayerPage implements LaternaPage{
                                 GridLayout.createHorizontallyFilledLayoutData(1)));
 
         Table<String> table = new Table<String>("Spielername", "Alter", "Position");
-        table.getTableModel().addRow(player.getName(), player.getAge() + "", player.getPosition());
+        for(Player player : team.getPlayers()){
+            table.getTableModel().addRow(player.getName(), player.getAge() + "", player.getPosition());
+        }
+
+        table.setSelectAction(() -> {
+            List<String> data = table.getTableModel().getRow(table.getSelectedRow());
+            String key = data.getFirst() + data.get(1);
+            new OpenPageEvent(view, PageType.PLAYER, map.get(key)).call();
+        });
 
         contentPanel.addComponent(table);
         contentPanel.addComponent(
@@ -50,10 +68,6 @@ public class PlayerPage implements LaternaPage{
     }
 
 
-    @Override
-    public Window getWindow() {
-        return null;
-    }
 
     public void open() {
         this.view.getTextGUI().addWindow(window);
@@ -61,14 +75,20 @@ public class PlayerPage implements LaternaPage{
         window.waitUntilClosed();
     }
 
+
+    @Override
+    public Window getWindow() {
+        return null;
+    }
+
     @Override
     public void close() {
         window.close();
-        new WindowCloseEvent(this.view).call();
+        new WindowCloseEvent(view).call();
     }
 
     @Override
     public String getName() {
-        return this.name;
+        return "";
     }
 }

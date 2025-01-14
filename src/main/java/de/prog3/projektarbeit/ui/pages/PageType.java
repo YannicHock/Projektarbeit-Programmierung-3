@@ -1,6 +1,7 @@
 package de.prog3.projektarbeit.ui.pages;
 
 import de.prog3.projektarbeit.ui.pages.laterna.PlayerPage;
+import de.prog3.projektarbeit.ui.pages.laterna.TeamPage;
 import de.prog3.projektarbeit.ui.pages.laterna.TitlePage;
 import de.prog3.projektarbeit.ui.views.View;
 import de.prog3.projektarbeit.ui.views.ViewType;
@@ -13,6 +14,9 @@ public enum PageType {
     }}),
     PLAYER(new HashMap<>() {{
         put(ViewType.LATERNA, PlayerPage.class);
+    }}),
+    TEAM(new HashMap<>() {{
+        put(ViewType.LATERNA, TeamPage.class);
     }});
 
     private final HashMap<ViewType, Class<? extends Page>> pageClasses;
