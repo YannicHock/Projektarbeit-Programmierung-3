@@ -14,6 +14,6 @@ public class PlayerGenerator {
         String name = NAMES[random.nextInt(NAMES.length)];
         int age = random.nextInt(23) + 18; // Age between 18 and 40
         String position = POSITIONS[random.nextInt(POSITIONS.length)];
-        return new Player(name, age, position);
+        return new Player(name, age, position, 12);
     }
 }
