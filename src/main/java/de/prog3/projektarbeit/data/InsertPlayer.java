@@ -13,15 +13,15 @@ public class InsertPlayer {
         DSLContext ctx = JooqContextProvider.getDSLContext();
 
         // Insert als "Query Builder"
-        ctx.insertInto(table("spieler"))
-                .columns(field("name"), field("team"), field("position"))
-                .values("Mathusan Saravanapavan", "Team A", "Stürmer")
+        ctx.insertInto(table("players"))
+                .columns(field("id"),field("name"), field("position"))
+                .values("001","Mathusan Saravanapavan",  "Stürmer")
                 .execute();
 
         System.out.println("Spieler hinzugefügt!");
 
         // Zur Kontrolle: alle Datensätze abfragen
-        Result<Record> result = ctx.select().from("spieler").fetch();
+        Result<Record> result = ctx.select().from("players").fetch();
         System.out.println("Anzahl Datensätze: " + result.size());
         for (Record r : result) {
             System.out.println("Datensatz: " + r);

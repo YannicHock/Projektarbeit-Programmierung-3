@@ -11,7 +11,7 @@ public class DataSourceProvider {
         if (dataSource == null) {
             HikariConfig config = new HikariConfig();
 
-            config.setJdbcUrl("jdbc:sqlite:sportliga.db");
+            config.setJdbcUrl("jdbc:sqlite:identifier.sqlite");
 
             config.setDriverClassName("org.sqlite.JDBC");
 
