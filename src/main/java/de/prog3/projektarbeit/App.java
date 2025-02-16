@@ -19,10 +19,10 @@ public class App {
 
 
     public static void main(String[] args) {
-        //Player player = new Player("A", 12, "pos", 12);
-        InsertPlayer.insertPlayer();
-        //App app = new App();
-        //app.start();
+        Player player = new Player("A", 12, "pos", 12);
+      InsertPlayer.insertPlayer();
+        App app = new App();
+        app.start();
     }
 
 

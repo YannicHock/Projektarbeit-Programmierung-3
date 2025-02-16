@@ -21,6 +21,7 @@ public class InsertPlayer {
                 .execute();
 
 
+
         System.out.println("Spieler hinzugefügt!");
 
         // Zur Kontrolle: alle Datensätze abfragen

@@ -18,7 +18,11 @@ public class Game {
         this.gameResult = gameResult;
     }
 
-    // public int getGameDate() {}
+     public int getGameDate() {
+        return gameDate;
+     }
 
-    //public int getGameResult() {}
+    public int getGameResult() {
+        return gameResult;
+    }
 }
