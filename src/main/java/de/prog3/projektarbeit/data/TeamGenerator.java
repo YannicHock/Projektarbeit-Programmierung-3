@@ -18,4 +18,15 @@ public class TeamGenerator {
         }
         return team;
     }
+
+    public static Team generateValidRandomTeam(int numberOfPlayers) {
+        Random random = new Random();
+        String teamName = TEAM_NAMES[random.nextInt(TEAM_NAMES.length)];
+        Team team = new Team(teamName);
+        for (int i = 0; i < numberOfPlayers-1; i++) {
+            team.addPlayer(PlayerGenerator.generateNonGoalkeeperPlayer());
+        }
+        team.addPlayer(PlayerGenerator.generateGoalkeeperPlayer());
+        return team;
+    }
 }

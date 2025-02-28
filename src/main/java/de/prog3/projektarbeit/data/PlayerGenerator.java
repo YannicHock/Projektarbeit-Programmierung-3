@@ -29,4 +29,18 @@ public class PlayerGenerator {
         String position = POSITIONS[random.nextInt(POSITIONS.length)];
         return new Player(name, age, position, 12);
     }
+
+    public static Player generateGoalkeeperPlayer() {
+        Random random = new Random();
+        String name = NAMES[random.nextInt(NAMES.length)];
+        int age = random.nextInt(23) + 18; // Age between 18 and 40
+        return new Player(name, age, "Goalkeeper", 12);
+    }
+
+    public static Player generateNonGoalkeeperPlayer() {
+        Random random = new Random();
+        String name = NAMES[random.nextInt(NAMES.length)];
+        int age = random.nextInt(23) + 18; // Age between 18 and 40
+        return new Player(name, age, POSITIONS[random.nextInt(POSITIONS.length-1)+1], 12);
+    }
 }
