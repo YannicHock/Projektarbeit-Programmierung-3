@@ -35,8 +35,7 @@ public class TitlePage implements LaternaPage {
                 new EmptySpace()
                         .setLayoutData(
                                 GridLayout.createHorizontallyFilledLayoutData(2)));
-        //contentPanel.addComponent(new Button("Zufallsspieler", () -> new OpenPageEvent(view, PageType.PLAYER, new PlayerFactory(UUID.randomUUID()).createPlayer()).call()));
-        contentPanel.addComponent(new Button("Zufallsteam", () -> new OpenPageEvent(view, PageType.TEAM, TeamGenerator.generateRandomTeam(5)).call()));
+        contentPanel.addComponent(new Button("Teams", () -> new OpenPageEvent(view, PageType.TEAMS).call()));
         contentPanel.addComponent(
                 new Separator(Direction.HORIZONTAL)
                         .setLayoutData(
