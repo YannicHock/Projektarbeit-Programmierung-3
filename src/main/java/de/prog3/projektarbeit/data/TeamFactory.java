@@ -1,6 +1,5 @@
 package de.prog3.projektarbeit.data;
 
-import de.prog3.projektarbeit.Team;
 
 import java.util.UUID;
 
@@ -12,8 +11,5 @@ public class TeamFactory {
         this.uuid = uuid;
     }
 
-    public Team createTeam(){
-        return Database.fetchTeam(uuid);
-    }
 }
 

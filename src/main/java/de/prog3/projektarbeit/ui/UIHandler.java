@@ -1,6 +1,5 @@
 package de.prog3.projektarbeit.ui;
 
-import de.prog3.projektarbeit.Player;
 import de.prog3.projektarbeit.eventHandling.events.ui.OpenPageEvent;
 import de.prog3.projektarbeit.eventHandling.events.ui.RequestNewViewEvent;
 import de.prog3.projektarbeit.eventHandling.listeners.RequestNewViewListener;
