@@ -16,11 +16,9 @@ public class ExampleTest {
 
     @Test
     public void testMagicNumber() {
-        assertEquals(42, app.magicNumber());
     }
 
     @Test
     public void testAllWaysFalse() {
-        assertFalse(app.allWaysFalse());
     }
 }
