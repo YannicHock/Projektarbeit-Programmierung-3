@@ -1,6 +1,5 @@
 package de.prog3.projektarbeit.data;
 
-import de.prog3.projektarbeit.Player;
 
 import java.util.UUID;
 
@@ -12,8 +11,5 @@ public class PlayerFactory {
         this.uuid = uuid;
     }
 
-    public Player createPlayer(){
-        return Database.fetchPlayer(uuid);
-    }
 
 }
