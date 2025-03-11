@@ -22,9 +22,9 @@ public class Listener {
             @Override
             public void onEvent(WindowCloseEvent event) {
                 if(event.getView() instanceof LaternaView view){
-                    if(view.getTextGUI().getWindows().isEmpty()){
+                    if(view.getGui().getWindows().isEmpty()){
                         try {
-                            view.getTextGUI().getScreen().stopScreen();
+                            view.getGui().getScreen().stopScreen();
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
