@@ -70,7 +70,7 @@ public class TeamPage implements LaternaPage{
 
 
     public void open() {
-        this.view.getTextGUI().addWindow(window);
+        this.view.getGui().addWindow(window);
         window.setComponent(get());
         window.waitUntilClosed();
     }
