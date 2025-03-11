@@ -133,14 +133,14 @@
                 <configuration>
                     <jdbc>
                         <driver>org.sqlite.JDBC</driver>
-                        <url>jdbc:sqlite:identifier.sqlite</url>
+                        <url>jdbc:sqlite:src/main/resources/database.sqlite</url>
                     </jdbc>
                     <generator>
                         <database>
                             <name>org.jooq.meta.sqlite.SQLiteDatabase</name>
                         </database>
                         <target>
-                            <packageName>de.prog3.projektarbeit.jooq</packageName>
+                            <packageName>de.prog3.projektarbeit.data.jooq</packageName>
                             <directory>src/main/java</directory>
                         </target>
                     </generator>
