@@ -3,6 +3,8 @@ package de.prog3.projektarbeit.data.objects;
 import de.prog3.projektarbeit.data.DataObject;
 import de.prog3.projektarbeit.data.Position;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
@@ -86,6 +88,17 @@ public class Player extends DataObject {
         } else {
             return 0;
         }
+    }
+
+    public static Date parseStringToDate(String date) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+        return format.parse(date);
+    }
+
+
+    public static String parseDateToString(Date date) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+        return format.format(date);
     }
 
     public void save() {

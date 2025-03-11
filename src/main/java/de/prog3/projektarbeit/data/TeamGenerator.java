@@ -3,6 +3,7 @@ package de.prog3.projektarbeit.data;
 
 import de.prog3.projektarbeit.data.objects.Team;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.UUID;
 
@@ -18,5 +19,13 @@ public class TeamGenerator {
             team.addPlayer(PlayerGenerator.generateRandomPlayer());
         }
         return team;
+    }
+
+    public static ArrayList<Team> generateRandomTeams(int numberOfTeams) {
+        ArrayList<Team> teams = new ArrayList<>();
+        for (int i = 0; i < numberOfTeams; i++) {
+            teams.add(generateRandomTeam(new Random().nextInt(10)));
+        }
+        return teams;
     }
 }
