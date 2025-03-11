@@ -41,3 +41,4 @@ build/
 
 /dependency-reduced-pom.xml
 /src/main/java/de/prog3/projektarbeit/data/jooq/
+/data/

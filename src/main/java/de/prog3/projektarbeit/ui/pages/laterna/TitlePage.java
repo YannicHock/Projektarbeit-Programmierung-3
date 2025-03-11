@@ -1,9 +1,9 @@
 package de.prog3.projektarbeit.ui.pages.laterna;
 
 import com.googlecode.lanterna.gui2.*;
-import de.prog3.projektarbeit.Player;
 import de.prog3.projektarbeit.data.PlayerFactory;
 import de.prog3.projektarbeit.data.TeamFactory;
+import de.prog3.projektarbeit.data.TeamGenerator;
 import de.prog3.projektarbeit.eventHandling.events.ui.OpenPageEvent;
 import de.prog3.projektarbeit.eventHandling.events.ui.RequestNewViewEvent;
 import de.prog3.projektarbeit.eventHandling.events.ui.WindowCloseEvent;
@@ -35,9 +35,8 @@ public class TitlePage implements LaternaPage {
                 new EmptySpace()
                         .setLayoutData(
                                 GridLayout.createHorizontallyFilledLayoutData(2)));
-        contentPanel.addComponent(new Button("Testseite", () -> new OpenPageEvent(view, PageType.TEST, "Test").call()));
         //contentPanel.addComponent(new Button("Zufallsspieler", () -> new OpenPageEvent(view, PageType.PLAYER, new PlayerFactory(UUID.randomUUID()).createPlayer()).call()));
-        contentPanel.addComponent(new Button("Zufallsteam", () -> new OpenPageEvent(view, PageType.TEAM, new TeamFactory(UUID.randomUUID()).createTeam()).call()));
+        contentPanel.addComponent(new Button("Zufallsteam", () -> new OpenPageEvent(view, PageType.TEAM, TeamGenerator.generateRandomTeam(5)).call()));
         contentPanel.addComponent(
                 new Separator(Direction.HORIZONTAL)
                         .setLayoutData(

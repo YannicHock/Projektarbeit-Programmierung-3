@@ -1,6 +1,7 @@
 package de.prog3.projektarbeit.data;
 
-import de.prog3.projektarbeit.Team;
+
+import de.prog3.projektarbeit.data.objects.Team;
 
 import java.util.Random;
 import java.util.UUID;

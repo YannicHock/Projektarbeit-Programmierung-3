@@ -2,8 +2,8 @@ package de.prog3.projektarbeit.ui.pages.laterna;
 
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.table.Table;
-import de.prog3.projektarbeit.Player;
-import de.prog3.projektarbeit.Team;
+import de.prog3.projektarbeit.data.objects.Player;
+import de.prog3.projektarbeit.data.objects.Team;
 import de.prog3.projektarbeit.eventHandling.events.ui.OpenPageEvent;
 import de.prog3.projektarbeit.eventHandling.events.ui.WindowCloseEvent;
 import de.prog3.projektarbeit.ui.pages.PageType;
@@ -22,8 +22,8 @@ public class TeamPage implements LaternaPage{
 
     public TeamPage(LaternaView view, Team team) {
         this.name = "Team  - " + team.getName();
-        for(Player player : team.getPlayers()){
-            map.put(player.getName() + player.getAge(), player);
+        for(Player player : team.getPlayers().values()){
+            map.put(player.getFirstName() + " " + player.getLastName() + player.getAge(), player);
         }
         this.team = team;
         this.window = new BasicWindow();
@@ -43,9 +43,9 @@ public class TeamPage implements LaternaPage{
                         .setLayoutData(
                                 GridLayout.createHorizontallyFilledLayoutData(1)));
 
-        Table<String> table = new Table<String>("Spielername", "Alter", "Position");
-        for(Player player : team.getPlayers()){
-            table.getTableModel().addRow(player.getName(), player.getAge() + "", player.getPosition());
+        Table<String> table = new Table<String>("Spielername", "Alter", "Rückennummer");
+        for(Player player : team.getPlayers().values()){
+            table.getTableModel().addRow(player.getFirstName() + " " + player.getLastName(), player.getAge() + "", player.getNumber() + "");
         }
 
         table.setSelectAction(() -> {

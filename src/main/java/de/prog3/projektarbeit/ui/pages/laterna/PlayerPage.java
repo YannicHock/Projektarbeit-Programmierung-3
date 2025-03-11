@@ -2,7 +2,7 @@ package de.prog3.projektarbeit.ui.pages.laterna;
 
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.table.Table;
-import de.prog3.projektarbeit.Player;
+import de.prog3.projektarbeit.data.objects.Player;
 import de.prog3.projektarbeit.eventHandling.events.ui.WindowCloseEvent;
 import de.prog3.projektarbeit.ui.views.laterna.LaternaView;
 
@@ -14,7 +14,7 @@ public class PlayerPage implements LaternaPage{
     private final String name;
 
     public PlayerPage(LaternaView view, Player player) {
-        this.name = "Spieler  - " + player.getName();
+        this.name = "Spieler  - " + player.getFirstName() + " " + player.getLastName();
         this.player = player;
         this.window = new BasicWindow();
         this.view = view;
@@ -34,7 +34,7 @@ public class PlayerPage implements LaternaPage{
                                 GridLayout.createHorizontallyFilledLayoutData(1)));
 
         Table<String> table = new Table<String>("Spielername", "Alter", "Position");
-        table.getTableModel().addRow(player.getName(), player.getAge() + "", player.getPosition());
+        table.getTableModel().addRow(player.getFirstName() + " " + player.getLastName(), player.getAge() + "", player.getPositionsAsString());
 
         contentPanel.addComponent(table);
         contentPanel.addComponent(
