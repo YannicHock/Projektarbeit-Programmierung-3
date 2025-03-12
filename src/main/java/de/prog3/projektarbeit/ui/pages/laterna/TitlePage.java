@@ -42,6 +42,8 @@ public class TitlePage extends LaternaPage {
                 new EmptySpace()
                         .setLayoutData(
                                 GridLayout.createHorizontallyFilledLayoutData(2)));
+        contentPanel.addComponent(new Button("Spieler erstellen", () -> new OpenPageEvent(view, PageType.CREATE_PLAYER).call()));
+        contentPanel.addComponent(new Button("Team erstellen", () -> new OpenPageEvent(view, PageType.CREATE_TEAM).call()));
         contentPanel.addComponent(new Button("Teams", () -> new OpenPageEvent(view, PageType.TEAMS).call()));
         contentPanel.addComponent(
                 new Separator(Direction.HORIZONTAL)
