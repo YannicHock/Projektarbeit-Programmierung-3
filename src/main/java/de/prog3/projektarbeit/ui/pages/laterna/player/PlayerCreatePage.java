@@ -4,14 +4,14 @@ import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialog;
 import de.prog3.projektarbeit.data.Position;
-import de.prog3.projektarbeit.data.factories.PlayerFactory;
-import de.prog3.projektarbeit.data.objects.Player;
 import de.prog3.projektarbeit.eventHandling.events.Event;
+import de.prog3.projektarbeit.eventHandling.events.data.player.AttemptPlayerCreationEvent;
+import de.prog3.projektarbeit.eventHandling.events.data.player.PlayerCreationFinishedEvent;
 import de.prog3.projektarbeit.eventHandling.listeners.EventListener;
+import de.prog3.projektarbeit.eventHandling.listeners.data.player.PlayerCreationFinishedListener;
 import de.prog3.projektarbeit.ui.pages.laterna.LaternaPage;
 import de.prog3.projektarbeit.ui.views.laterna.LaternaView;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -85,18 +85,24 @@ public class PlayerCreatePage extends LaternaPage {
                 }
             });
 
-            try {
-                Player player = new PlayerFactory()
-                        .setDateOfBirth(Player.parseStringToDate(birthDateString))
-                        .setFirstName(firstNameString)
-                        .setLastName(lastNameString)
-                        .setPositions(positionResult)
-                        .setNumber(Integer.parseInt(numberString))
-                        .build();
-                System.out.println("Spieler: " + player.getFirstName() + " " + player.getLastName() + " erfolgreich erstellt.");
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
-            }
+            EventListener<PlayerCreationFinishedEvent> creationFinishedEventEventListener = new PlayerCreationFinishedListener() {
+                @Override
+                public void onEvent(PlayerCreationFinishedEvent event) {
+                    event.getPlayer().ifPresent(player -> window.close());
+                    event.getExceptions().ifPresent(exceptions -> {
+                        StringBuilder builder = new StringBuilder();
+                        exceptions.forEach(exception -> {
+                            builder.append(exception.getMessage());
+                            builder.append("\n");
+                        });
+                        MessageDialog.showMessageDialog(window.getTextGUI(), "Fehler beim erstellen des Spielers", builder.toString());
+                    });
+                }
+            };
+
+            listeners.add(creationFinishedEventEventListener);
+
+            new AttemptPlayerCreationEvent(firstNameString, lastNameString, birthDateString, numberString, positionResult).call();
 
         }));
         contentPanel.addComponent(footer(false));
