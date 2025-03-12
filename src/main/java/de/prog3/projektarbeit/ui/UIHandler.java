@@ -2,7 +2,7 @@ package de.prog3.projektarbeit.ui;
 
 import de.prog3.projektarbeit.eventHandling.events.ui.OpenPageEvent;
 import de.prog3.projektarbeit.eventHandling.events.ui.RequestNewViewEvent;
-import de.prog3.projektarbeit.eventHandling.listeners.RequestNewViewListener;
+import de.prog3.projektarbeit.eventHandling.listeners.ui.RequestNewViewListener;
 import de.prog3.projektarbeit.ui.pages.PageType;
 import de.prog3.projektarbeit.ui.views.laterna.LaternaView;
 import de.prog3.projektarbeit.ui.views.View;

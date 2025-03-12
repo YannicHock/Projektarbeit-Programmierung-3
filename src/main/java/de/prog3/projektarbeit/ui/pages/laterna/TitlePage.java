@@ -1,30 +1,37 @@
 package de.prog3.projektarbeit.ui.pages.laterna;
 
 import com.googlecode.lanterna.gui2.*;
-import de.prog3.projektarbeit.data.PlayerFactory;
-import de.prog3.projektarbeit.data.TeamFactory;
-import de.prog3.projektarbeit.data.TeamGenerator;
+import de.prog3.projektarbeit.eventHandling.events.Event;
 import de.prog3.projektarbeit.eventHandling.events.ui.OpenPageEvent;
 import de.prog3.projektarbeit.eventHandling.events.ui.RequestNewViewEvent;
 import de.prog3.projektarbeit.eventHandling.events.ui.WindowCloseEvent;
+import de.prog3.projektarbeit.eventHandling.listeners.EventListener;
 import de.prog3.projektarbeit.ui.pages.PageType;
 import de.prog3.projektarbeit.ui.views.ViewType;
 import de.prog3.projektarbeit.ui.views.laterna.LaternaView;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
-public class TitlePage implements LaternaPage {
+public class TitlePage extends LaternaPage {
 
     private final Window window;
     private final LaternaView view;
+    private final ArrayList<EventListener<? extends Event>> listeners;
 
     public TitlePage(LaternaView view){
         this.window = new BasicWindow("Hauptmenu");
         this.view = view;
+        listeners = new ArrayList<>();
+        registerListener();
         open();
     }
 
-    private Component get(){
+    private void registerListener(){
+    }
+
+    @Override
+    protected Component get(){
         Panel contentPanel = new Panel(new GridLayout(2));
 
         GridLayout gridLayout = (GridLayout)contentPanel.getLayoutManager();
@@ -48,6 +55,11 @@ public class TitlePage implements LaternaPage {
         return contentPanel;
     }
 
+    @Override
+    protected ArrayList<EventListener<? extends Event>> getListeners() {
+        return listeners;
+    }
+
     public void open() {
         this.view.getGui().addWindow(window);
         window.setComponent(get());
@@ -57,6 +69,11 @@ public class TitlePage implements LaternaPage {
     @Override
     public Window getWindow() {
         return window;
+    }
+
+    @Override
+    protected LaternaView getLaternaView() {
+        return view;
     }
 
     @Override
