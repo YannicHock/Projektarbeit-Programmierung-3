@@ -1,4 +1,4 @@
-package de.prog3.projektarbeit.ui.pages.laterna;
+package de.prog3.projektarbeit.ui.pages.laterna.team;
 
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.gui2.*;
@@ -8,9 +8,9 @@ import de.prog3.projektarbeit.data.objects.Player;
 import de.prog3.projektarbeit.data.objects.Team;
 import de.prog3.projektarbeit.eventHandling.events.Event;
 import de.prog3.projektarbeit.eventHandling.events.ui.OpenPageEvent;
-import de.prog3.projektarbeit.eventHandling.events.ui.WindowCloseEvent;
 import de.prog3.projektarbeit.eventHandling.listeners.EventListener;
 import de.prog3.projektarbeit.ui.pages.PageType;
+import de.prog3.projektarbeit.ui.pages.laterna.LaternaPage;
 import de.prog3.projektarbeit.ui.views.laterna.LaternaView;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TeamPage implements LaternaPage {
+public class TeamPage extends LaternaPage {
     private final Window window;
     private final LaternaView view;
     private final Team team;
@@ -59,16 +59,6 @@ public class TeamPage implements LaternaPage {
     private void registerListener(){
     }
 
-
-
-    private void open() {
-        window.setHints(List.of(Window.Hint.CENTERED));
-        view.getGui().addWindow(window);
-        getWindow().setComponent(get());
-        getWindow().waitUntilClosed();
-    }
-
-
     private void groupPlayer(Player player) {
         PositionGrouping grouping = PositionGrouping.getGrouping(player);
         List<Player> list = new ArrayList<>();
@@ -78,7 +68,6 @@ public class TeamPage implements LaternaPage {
         list.add(player);
         playerGroupings.put(grouping, list);
     }
-
 
     private void drawTables(){
         playerGroupings.keySet().forEach(grouping -> {
@@ -121,16 +110,7 @@ public class TeamPage implements LaternaPage {
         ATK_table.setPreferredSize(new TerminalSize(width, calculateHeight(ATK_table)));
 
         contentPanel.addComponent(mainPanel);
-
-        Panel footerPanel = new Panel(new GridLayout(2)).setLayoutData(GridLayout.createHorizontallyFilledLayoutData(2));
-        footerPanel.addComponent(new EmptySpace().setLayoutData(GridLayout.createHorizontallyFilledLayoutData(2)));
-        footerPanel.addComponent(new Separator(Direction.HORIZONTAL).setLayoutData(GridLayout.createHorizontallyFilledLayoutData(2)));
-
-        Panel buttonPanel = new Panel(new LinearLayout(Direction.HORIZONTAL));
-        buttonPanel.addComponent(new Button("Schließen", this::close));
-        footerPanel.addComponent(buttonPanel.setLayoutData(GridLayout.createHorizontallyEndAlignedLayoutData(2)));
-
-        contentPanel.addComponent(footerPanel);
+        contentPanel.addComponent(footer(false));
 
         return contentPanel;
     }
@@ -160,6 +140,10 @@ public class TeamPage implements LaternaPage {
         return window;
     }
 
+    @Override
+    public LaternaView getLaternaView() {
+        return view;
+    }
 
     @Override
     public String getName() {
@@ -167,9 +151,7 @@ public class TeamPage implements LaternaPage {
     }
 
     @Override
-    public void close() {
-        getWindow().close();
-        new WindowCloseEvent(view).call();
+    public ArrayList<EventListener<? extends Event>> getListeners() {
+        return listeners;
     }
-
 }
