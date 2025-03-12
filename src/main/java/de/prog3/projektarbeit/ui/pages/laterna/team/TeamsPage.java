@@ -1,4 +1,4 @@
-package de.prog3.projektarbeit.ui.pages.laterna;
+package de.prog3.projektarbeit.ui.pages.laterna.team;
 
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.table.Table;
@@ -6,16 +6,15 @@ import de.prog3.projektarbeit.data.TeamGenerator;
 import de.prog3.projektarbeit.data.objects.Team;
 import de.prog3.projektarbeit.eventHandling.events.Event;
 import de.prog3.projektarbeit.eventHandling.events.ui.OpenPageEvent;
-import de.prog3.projektarbeit.eventHandling.events.ui.WindowCloseEvent;
 import de.prog3.projektarbeit.eventHandling.listeners.EventListener;
 import de.prog3.projektarbeit.ui.pages.PageType;
+import de.prog3.projektarbeit.ui.pages.laterna.LaternaPage;
 import de.prog3.projektarbeit.ui.views.laterna.LaternaView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-public class TeamsPage implements LaternaPage {
+public class TeamsPage extends LaternaPage {
 
     private final Window window;
     private final LaternaView view;
@@ -38,14 +37,9 @@ public class TeamsPage implements LaternaPage {
     private void registerListener(){
     }
 
-    private void open() {
-        window.setHints(List.of(Window.Hint.CENTERED));
-        view.getGui().addWindow(window);
-        getWindow().setComponent(get());
-        getWindow().waitUntilClosed();
-    }
 
-    private Component get() {
+    @Override
+    protected Component get() {
         Panel contentPanel = new Panel(new GridLayout(1));
 
         Panel mainpanel = new Panel(new GridLayout(2));
@@ -71,31 +65,28 @@ public class TeamsPage implements LaternaPage {
 
         contentPanel.addComponent(mainpanel);
 
-        Panel footerPanel = new Panel(new GridLayout(2)).setLayoutData(GridLayout.createHorizontallyFilledLayoutData(2));
-        footerPanel.addComponent(new EmptySpace().setLayoutData(GridLayout.createHorizontallyFilledLayoutData(2)));
-        footerPanel.addComponent(new Separator(Direction.HORIZONTAL).setLayoutData(GridLayout.createHorizontallyFilledLayoutData(2)));
 
-        Panel buttonPanel = new Panel(new LinearLayout(Direction.HORIZONTAL));
-        buttonPanel.addComponent(new Button("Schließen", this::close));
-        footerPanel.addComponent(buttonPanel.setLayoutData(GridLayout.createHorizontallyEndAlignedLayoutData(2)));
-
-        contentPanel.addComponent(footerPanel);
-
+        contentPanel.addComponent(footer(false));
         return contentPanel;
     }
 
     @Override
-    public void close() {
-        getWindow().close();
-        new WindowCloseEvent(view).call();
+    protected Window getWindow() {
+        return window;
     }
+
+    @Override
+    protected LaternaView getLaternaView() {
+        return view;
+    }
+
     @Override
     public String getName() {
         return name;
     }
 
     @Override
-    public Window getWindow() {
-        return window;
+    public ArrayList<EventListener<? extends Event>> getListeners() {
+        return listeners;
     }
 }

@@ -1,11 +1,14 @@
-package de.prog3.projektarbeit.eventHandling.listeners;
+package de.prog3.projektarbeit.eventHandling.listeners.ui;
 
 import de.prog3.projektarbeit.eventHandling.events.ui.WindowCloseEvent;
+import de.prog3.projektarbeit.eventHandling.listeners.EventListener;
+import de.prog3.projektarbeit.ui.views.View;
 
 public abstract class WindowCloseEventListener extends EventListener<WindowCloseEvent> {
-    protected WindowCloseEventListener() {
+    private View view;
+    protected WindowCloseEventListener(View view) {
         super(WindowCloseEvent.class);
-        System.out.println(this + " registered");
+        this.view = view;
     }
 
 
