@@ -1,7 +1,10 @@
 package de.prog3.projektarbeit.data.objects;
 
 import de.prog3.projektarbeit.data.DataObject;
+import de.prog3.projektarbeit.data.JooqContextProvider;
 import de.prog3.projektarbeit.data.Position;
+import de.prog3.projektarbeit.exceptions.UnableToSavePlayerExeption;
+import org.jooq.DSLContext;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,6 +14,9 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.stream.Collectors;
+
+import static de.prog3.projektarbeit.data.jooq.tables.Player.PLAYER;
+import static de.prog3.projektarbeit.data.jooq.tables.Positions.POSITIONS;
 
 public class Player extends DataObject {
 
@@ -33,6 +39,19 @@ public class Player extends DataObject {
         this.positions = positions;
         this.id = id;
     }
+
+    public Player(int id, String firstName, String lastName, Date dateOfBirth, int number, ArrayList<Position> positions, int teamId) {
+        super();
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
+        this.number = number;
+        this.teamId = 0;
+        this.positions = positions;
+        this.teamId = teamId;
+        this.id = id;
+    }
+
 
     public Player(String firstName, String lastName, Date dateOfBirth, int number, ArrayList<Position> positions) {
         super();
@@ -101,7 +120,53 @@ public class Player extends DataObject {
         return format.format(date);
     }
 
-    public void save() {
+    public void save() throws UnableToSavePlayerExeption {
+        try {
+            DSLContext ctx = JooqContextProvider.getDSLContext();
+            if(id == 0){
+                ctx.insertInto(PLAYER)
+                        .columns(PLAYER.FIRSTNAME, PLAYER.LASTNAME, PLAYER.DATEOFBIRTH, PLAYER.NUMBER)
+                        .values(this.firstName, this.lastName, parseDateToString(this.dateOfBirth), this.number)
+                        .onDuplicateKeyUpdate()
+                        .set(PLAYER.FIRSTNAME, this.firstName)
+                        .set(PLAYER.LASTNAME, this.lastName)
+                        .set(PLAYER.DATEOFBIRTH, parseDateToString(dateOfBirth))
+                        .set(PLAYER.NUMBER, this.number)
+                        .set(PLAYER.TEAM_ID, this.teamId)
+                        .execute();
+                ctx.select(PLAYER.ID).from(PLAYER).where(PLAYER.FIRSTNAME.eq(this.firstName)).and(PLAYER.LASTNAME.eq(this.lastName)).fetch().forEach(record -> this.id = record.get(PLAYER.ID));
+            } else {
+                ctx.update(PLAYER)
+                        .set(PLAYER.FIRSTNAME, this.firstName)
+                        .set(PLAYER.LASTNAME, this.lastName)
+                        .set(PLAYER.DATEOFBIRTH, parseDateToString(dateOfBirth))
+                        .set(PLAYER.NUMBER, this.number)
+                        .set(PLAYER.TEAM_ID, this.teamId)
+                        .where(PLAYER.ID.eq(this.id))
+                        .execute();
+            }
+            ArrayList<Position> oldPositions = new ArrayList<>();
+            ctx.select().from(POSITIONS).where(POSITIONS.PLAYERID.eq(this.id)).fetch().forEach(record -> oldPositions.add(Position.valueOf(record.get(POSITIONS.POSITION))));
+            ArrayList<Position> added = new ArrayList<>(positions);
+            ArrayList<Position> removed = new ArrayList<>(oldPositions);
+            added.removeAll(removed);
+            removed.removeAll(positions);
+
+            removed.forEach(position ->
+                    ctx.deleteFrom(POSITIONS)
+                            .where(POSITIONS.PLAYERID.eq(this.id)).and(POSITIONS.POSITION.eq(position.name()))
+                            .execute()
+            );
+
+            added.forEach(position ->
+                    ctx.insertInto(POSITIONS)
+                            .columns(POSITIONS.PLAYERID, POSITIONS.POSITION)
+                            .values(this.id, position.name())
+                            .execute()
+            );
+        } catch (ParseException e){
+            throw new UnableToSavePlayerExeption("Player {" +this.firstName + " " + this.lastName + "} could not be saved");
+        }
     }
 
     @Override

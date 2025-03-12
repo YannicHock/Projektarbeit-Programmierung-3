@@ -2,7 +2,7 @@ package de.prog3.projektarbeit.ui.pages.laterna.team;
 
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.table.Table;
-import de.prog3.projektarbeit.data.TeamGenerator;
+import de.prog3.projektarbeit.data.factories.TeamFactory;
 import de.prog3.projektarbeit.data.objects.Team;
 import de.prog3.projektarbeit.eventHandling.events.Event;
 import de.prog3.projektarbeit.eventHandling.events.ui.OpenPageEvent;
@@ -12,6 +12,7 @@ import de.prog3.projektarbeit.ui.pages.laterna.LaternaPage;
 import de.prog3.projektarbeit.ui.views.laterna.LaternaView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class TeamsPage extends LaternaPage {
@@ -19,13 +20,13 @@ public class TeamsPage extends LaternaPage {
     private final Window window;
     private final LaternaView view;
     private final String name;
-    private final ArrayList<Team> teams;
+    private final HashMap<Integer, Team> teams;
     private final Table<String> table;
     private final ArrayList<EventListener<? extends Event>> listeners;
 
     public TeamsPage(LaternaView view) {
         this.name = "Team übersicht";
-        this.teams = TeamGenerator.generateRandomTeams(5);
+        this.teams = TeamFactory.getAll();
         this.window = new BasicWindow(name);
         this.view = view;
         this.table = new Table<>("ID", "Teamname", "Spieleranzahl");
@@ -51,7 +52,7 @@ public class TeamsPage extends LaternaPage {
                         .setLayoutData(
                                 GridLayout.createHorizontallyFilledLayoutData(1)));
 
-        for (Team team : teams) {
+        for (Team team : teams.values()) {
             table.getTableModel().addRow(team.getId() + "", team.getName(), team.getPlayers().size() + "");
         }
 

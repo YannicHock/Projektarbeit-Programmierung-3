@@ -1,10 +1,20 @@
 package de.prog3.projektarbeit.data.factories;
 
+import de.prog3.projektarbeit.data.JooqContextProvider;
 import de.prog3.projektarbeit.data.Position;
 import de.prog3.projektarbeit.data.objects.Player;
 
+import org.jooq.DSLContext;
+import org.jooq.Record;
+import org.jooq.Result;
+
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Optional;
+
+import static de.prog3.projektarbeit.data.jooq.tables.Player.PLAYER;
+import static de.prog3.projektarbeit.data.jooq.tables.Positions.POSITIONS;
 
 public class PlayerFactory {
 
@@ -63,5 +73,29 @@ public class PlayerFactory {
         return new Player(firstName, lastName, dateOfBirth, number, positions);
     }
 
+    private static ArrayList<Position> getPlayerPositions(int playerId) {
+        DSLContext ctx = JooqContextProvider.getDSLContext();
+        Result<Record> positions = ctx.select().from(POSITIONS).where(POSITIONS.PLAYERID.eq(playerId)).fetch();
+        ArrayList<Position> playerPositions = new ArrayList<>();
+        if(positions.isEmpty()){
+            return playerPositions;
+        }
+        for(Record r : positions){
+            playerPositions.add(Position.valueOf(r.get(POSITIONS.POSITION)));
+        }
+        return playerPositions;
+    }
+
+    public static Optional<Player> extractPlayerFromRecord(Record record) {
+        Player player = null;
+        if (record.get(PLAYER.ID) != null) {
+            try {
+                player = new Player(record.get(PLAYER.ID), record.get(PLAYER.FIRSTNAME), record.get(PLAYER.LASTNAME), Player.parseStringToDate(record.get(PLAYER.DATEOFBIRTH)), record.get(PLAYER.NUMBER), getPlayerPositions(record.get(PLAYER.ID)), record.get(PLAYER.TEAM_ID));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return Optional.ofNullable(player);
+    }
 
 }
