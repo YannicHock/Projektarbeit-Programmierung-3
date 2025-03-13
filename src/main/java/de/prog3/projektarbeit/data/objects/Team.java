@@ -1,6 +1,5 @@
 package de.prog3.projektarbeit.data.objects;
 
-import de.prog3.projektarbeit.data.DataObject;
 import de.prog3.projektarbeit.data.JooqContextProvider;
 import de.prog3.projektarbeit.exceptions.UnableToSaveTeamExeption;
 import org.jooq.DSLContext;
@@ -13,21 +12,17 @@ import static de.prog3.projektarbeit.data.jooq.tables.Team.TEAM;
 public class Team extends DataObject {
     private final String name;
     private HashMap<Integer, Player> players;
-    private int id;
 
     public Team(String name) {
-        super();
+        super(0);
         this.name = name;
         players = new HashMap<>();
     }
 
     public Team(int id, String name) {
-        this(name);
-        this.id = id;
-    }
-
-    public int getId() {
-        return id;
+        super(id);
+        this.name = name;
+        players = new HashMap<>();
     }
 
     public void addPlayer(Player player) {
@@ -52,13 +47,11 @@ public class Team extends DataObject {
                 .onDuplicateKeyUpdate()
                 .set(TEAM.NAME, this.name)
                 .execute();
-        ctx.select(TEAM.ID).from(TEAM).where(TEAM.NAME.eq(this.name)).fetch().forEach(record -> this.id = record.get(TEAM.ID));
+        ctx.select(TEAM.ID).from(TEAM).where(TEAM.NAME.eq(this.name)).fetch().forEach(record -> super.setId(record.get(TEAM.ID)));
     }
 
     public void setPlayers(HashMap<Integer, Player> players) {
         this.players = players;
     }
 
-    @Override
-    public void registerListener() {}
 }
