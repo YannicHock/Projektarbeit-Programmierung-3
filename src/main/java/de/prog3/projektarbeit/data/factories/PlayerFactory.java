@@ -2,6 +2,7 @@ package de.prog3.projektarbeit.data.factories;
 
 import de.prog3.projektarbeit.data.JooqContextProvider;
 import de.prog3.projektarbeit.data.Position;
+import de.prog3.projektarbeit.data.jooq.tables.records.PlayerRecord;
 import de.prog3.projektarbeit.data.objects.Player;
 
 import org.jooq.DSLContext;
@@ -11,6 +12,7 @@ import org.jooq.Result;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Optional;
 
 import static de.prog3.projektarbeit.data.jooq.tables.Player.PLAYER;
@@ -108,6 +110,23 @@ public class PlayerFactory {
             }
         }
         return Optional.ofNullable(player);
+    }
+
+    public static HashMap<Integer, Player> getFreeAgents(){
+        DSLContext ctx = JooqContextProvider.getDSLContext();
+        Result<Record> result = ctx.select().from(PLAYER).where(PLAYER.TEAM_ID.eq(0).or(PLAYER.TEAM_ID.isNull())).fetch();
+        HashMap<Integer, Player> players = new HashMap<>();
+        for(Record r : result){
+            PlayerRecord record = (PlayerRecord) r;
+            try {
+                Optional<Integer> teamId = Optional.ofNullable(record.getTeamId());
+                Player player = new Player(record.getId(), record.getFirstname(), record.getLastname(), Player.parseStringToDate(record.getDateofbirth()), record.getNumber(), getPlayerPositions(((PlayerRecord) r).getId()), teamId.orElse(0));
+                players.put(player.getId(), player);
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return players;
     }
 
 }
