@@ -3,8 +3,6 @@ package de.prog3.projektarbeit.ui.pages.laterna.team;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialog;
-import de.prog3.projektarbeit.data.factories.TeamFactory;
-import de.prog3.projektarbeit.data.objects.Team;
 import de.prog3.projektarbeit.eventHandling.events.Event;
 import de.prog3.projektarbeit.eventHandling.events.data.team.AttemptTeamCreationEvent;
 import de.prog3.projektarbeit.eventHandling.events.data.team.TeamCreationFinishedEvent;
@@ -15,13 +13,13 @@ import de.prog3.projektarbeit.ui.views.laterna.LaternaView;
 
 import java.util.ArrayList;
 
-public class TeamCreatePage extends LaternaPage {
+public class CreateTeamPage extends LaternaPage {
     private final Window window;
     private final LaternaView view;
     private final ArrayList<EventListener<? extends Event>> listeners;
     private final String name;
 
-    public TeamCreatePage(LaternaView view) {
+    public CreateTeamPage(LaternaView view) {
         this.name = "Team erstellen";
         this.window = new BasicWindow(name);
         this.view = view;

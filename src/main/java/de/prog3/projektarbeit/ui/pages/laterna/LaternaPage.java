@@ -23,9 +23,16 @@ public abstract class LaternaPage implements Page {
         getWindow().waitUntilClosed();
     }
 
+
     public Component footer(boolean newPage){
+        return footer(newPage, true);
+    }
+
+    public Component footer(boolean newPage, boolean topPadding){
         Panel footerPanel = new Panel(new GridLayout(2)).setLayoutData(GridLayout.createHorizontallyFilledLayoutData(2));
-        footerPanel.addComponent(new EmptySpace().setLayoutData(GridLayout.createHorizontallyFilledLayoutData(2)));
+        if(topPadding){
+            footerPanel.addComponent(new EmptySpace().setLayoutData(GridLayout.createHorizontallyFilledLayoutData(2)));
+        }
         footerPanel.addComponent(new Separator(Direction.HORIZONTAL).setLayoutData(GridLayout.createHorizontallyFilledLayoutData(2)));
 
         Panel buttonPanel = new Panel(new LinearLayout(Direction.HORIZONTAL));

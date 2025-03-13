@@ -52,9 +52,6 @@ public class TeamFactory {
     public static Team getTeamById(int id) throws TeamNotFoundExeption {
         DSLContext ctx = JooqContextProvider.getDSLContext();
         Result<Record> result = ctx.select().from(TEAM).leftJoin(PLAYER).on(PLAYER.TEAM_ID.eq(TEAM.ID)).where(TEAM.ID.eq(id)).fetch();
-        if(result == null) {
-            throw new TeamNotFoundExeption("Team mit der ID " + id + " nicht gefunden");
-        }
         Team team = null;
         for(Record r : result){
             if(team == null) {
