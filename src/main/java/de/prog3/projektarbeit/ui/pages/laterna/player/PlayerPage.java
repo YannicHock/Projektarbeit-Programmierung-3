@@ -133,10 +133,16 @@ public class PlayerPage extends LaternaPage {
         positionPanel.addComponent(positionContent);
         contentPanel.addComponent(positionPanel);
 
+        contentPanel.addComponent(new EmptySpace().setLayoutData(GridLayout.createHorizontallyFilledLayoutData(2)));
+        Panel buttonPanel = new Panel(new GridLayout(3));
 
-        contentPanel.addComponent(new Button("Bearbeiten", () -> new OpenPageEvent(view, PageType.EDIT_PLAYER, player).call()));
 
-        contentPanel.addComponent(footer(false));
+        buttonPanel.addComponent(new Button("Bearbeiten", () -> new OpenPageEvent(view, PageType.EDIT_PLAYER, player).call()));
+        buttonPanel.addComponent(new Button("Transfer", () -> new OpenPageEvent(view, PageType.TRANSFER_PLAYER, player).call()));
+        buttonPanel.addComponent(new Button("Löschen", () -> {}));
+
+        contentPanel.addComponent(buttonPanel);
+        contentPanel.addComponent(footer(false, false));
         return contentPanel;
     }
 

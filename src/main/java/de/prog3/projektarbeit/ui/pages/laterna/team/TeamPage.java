@@ -133,7 +133,10 @@ public class TeamPage extends LaternaPage {
     public Component get() {
         Panel contentPanel = new Panel(new GridLayout(1));
 
+        Panel splitPanel = new Panel(new GridLayout(2));
+
         Panel mainPanel = new Panel(new GridLayout(1));
+        splitPanel.addComponent(mainPanel);
 
         mainPanel.addComponent(
                 new EmptySpace()
@@ -150,8 +153,16 @@ public class TeamPage extends LaternaPage {
         MID_table.setPreferredSize(new TerminalSize(width, calculateHeight(MID_table)));
         ATK_table.setPreferredSize(new TerminalSize(width, calculateHeight(ATK_table)));
 
-        contentPanel.addComponent(mainPanel);
-        contentPanel.addComponent(footer(false));
+        contentPanel.addComponent(splitPanel);
+
+
+        Panel buttonPanel = new Panel(new GridLayout(1));
+        splitPanel.addComponent(buttonPanel);
+        buttonPanel.addComponent(new Button("Termine", () ->{
+
+        }));
+        buttonPanel.addComponent(new EmptySpace());
+        buttonPanel.addComponent(new Button("Schließen", super::close));
 
         return contentPanel;
     }
