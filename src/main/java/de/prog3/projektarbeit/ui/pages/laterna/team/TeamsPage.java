@@ -1,7 +1,9 @@
 package de.prog3.projektarbeit.ui.pages.laterna.team;
 
 import com.googlecode.lanterna.gui2.*;
+import com.googlecode.lanterna.gui2.dialogs.MessageDialog;
 import com.googlecode.lanterna.gui2.table.Table;
+import de.prog3.projektarbeit.data.factories.PlayerFactory;
 import de.prog3.projektarbeit.data.factories.TeamFactory;
 import de.prog3.projektarbeit.data.objects.Team;
 import de.prog3.projektarbeit.eventHandling.events.Event;
@@ -9,6 +11,7 @@ import de.prog3.projektarbeit.eventHandling.events.data.team.TeamCreationFinishe
 import de.prog3.projektarbeit.eventHandling.events.ui.OpenPageEvent;
 import de.prog3.projektarbeit.eventHandling.listeners.EventListener;
 import de.prog3.projektarbeit.eventHandling.listeners.data.team.TeamCreationFinishedListener;
+import de.prog3.projektarbeit.exceptions.TeamNotFoundExeption;
 import de.prog3.projektarbeit.ui.pages.PageType;
 import de.prog3.projektarbeit.ui.pages.laterna.LaternaPage;
 import de.prog3.projektarbeit.ui.views.laterna.LaternaView;
@@ -28,7 +31,7 @@ public class TeamsPage extends LaternaPage {
 
     public TeamsPage(LaternaView view) {
         this.name = "Team übersicht";
-        this.teams = TeamFactory.getAll();
+        this.teams = TeamFactory.getAllWithoutPlayers();
         this.window = new BasicWindow(name);
         this.view = view;
         this.table = new Table<>("ID", "Teamname", "Spieleranzahl");
@@ -65,13 +68,17 @@ public class TeamsPage extends LaternaPage {
                                 GridLayout.createHorizontallyFilledLayoutData(1)));
 
         for (Team team : teams.values()) {
-            table.getTableModel().addRow(team.getId() + "", team.getName(), team.getPlayers().size() + "");
+            table.getTableModel().addRow(team.getId() + "", team.getName(), team.getPlayerCount() + "");
         }
 
         table.setSelectAction(() -> {
             List<String> data = table.getTableModel().getRow(table.getSelectedRow());
-            Integer key = Integer.parseInt(data.getFirst());
-            new OpenPageEvent(view, PageType.TEAM, teams.get(key)).call();
+            int id = Integer.parseInt(data.getFirst());
+            try {
+                new OpenPageEvent(view, PageType.TEAM, TeamFactory.getTeamById(id)).call();
+            } catch (TeamNotFoundExeption e) {
+                MessageDialog.showMessageDialog(window.getTextGUI(), "Fehler beim aktualisieren des Spielers", "");
+            }
         });
 
         mainpanel.addComponent(table);

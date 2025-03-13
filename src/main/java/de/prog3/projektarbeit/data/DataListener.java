@@ -15,6 +15,7 @@ import de.prog3.projektarbeit.eventHandling.listeners.data.player.AttemptPlayerU
 import de.prog3.projektarbeit.eventHandling.listeners.data.team.AttemptTeamCreationListener;
 import de.prog3.projektarbeit.exceptions.UnableToSavePlayerExeption;
 import de.prog3.projektarbeit.exceptions.UnableToSaveTeamExeption;
+import de.prog3.projektarbeit.exceptions.ValidationException;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -26,18 +27,25 @@ public class DataListener {
             public void onEvent(AttemptPlayerCreationEvent event) {
                 Player player = null;
                 ArrayList<Exception> exceptions = new ArrayList<>();
+                PlayerFactory factory = new PlayerFactory();
                 try {
-                    PlayerFactory playerFactory = new PlayerFactory();
-                    player = playerFactory.setFirstName(event.getFirstName())
+                    factory = factory.setDateOfBirth(Player.parseStringToDate(event.getDateOfBirth()));
+                } catch (ParseException e){
+                    exceptions.add(new ParseException("Das Geburtsdatum muss das Format dd-mm-yyyy oder dd.mm.yyyy haben aber sah so aus: " + event.getDateOfBirth(), e.getErrorOffset()));
+                }
+                try {
+                    factory = factory.setNumber(Integer.parseInt(event.getNumber()));
+                } catch (NumberFormatException e){
+                    exceptions.add(new NumberFormatException("Die Rückennummer muss eine ganze Zahl > 0 und < 100 sein aber war: " + event.getNumber()));
+                }
+
+                try {
+                    player = factory.setFirstName(event.getFirstName())
                             .setLastName(event.getLastName())
-                            .setDateOfBirth(Player.parseStringToDate(event.getDateOfBirth()))
-                            .setNumber(Integer.parseInt(event.getNumber()))
                             .setPositions(event.getPositions())
                             .build();
-                } catch (IllegalArgumentException e) {
-                    exceptions.add(e);
-                } catch (ParseException e) {
-                    exceptions.add(new ParseException("Fehler beim Parsen des Geburtsdatums", e.getErrorOffset()));
+                } catch (ValidationException e) {
+                    exceptions.addAll(e.getExceptions());
                 }
 
                 if(player!=null){
@@ -85,20 +93,29 @@ public class DataListener {
             public void onEvent(AttemptPlayerUpdateEvent event) {
                 Player player = null;
                 ArrayList<Exception> exceptions = new ArrayList<>();
+                PlayerFactory factory = new PlayerFactory();
                 try {
-                    player = new PlayerFactory()
-                            .setFirstName(event.getFirstName())
-                            .setLastName(event.getLastName())
-                            .setPositions(event.getPositions())
-                            .setDateOfBirth(Player.parseStringToDate(event.getDateOfBirth()))
-                            .setNumber(Integer.parseInt(event.getNumber()))
-                            .setId(event.getPlayer().getId())
-                            .setTeamId(event.getPlayer().getTeamId())
-                            .build();
-                } catch (ParseException e) {
-                    exceptions.add(new ParseException("Fehler beim Parsen des Geburtsdatums", e.getErrorOffset()));
+                    factory = factory.setDateOfBirth(Player.parseStringToDate(event.getDateOfBirth()));
+                } catch (ParseException e){
+                    exceptions.add(new ParseException("Das Geburtsdatum muss das Format dd-mm-yyyy oder dd.mm.yyyy haben aber sah so aus: " + event.getDateOfBirth(), e.getErrorOffset()));
+                }
+                try {
+                    factory = factory.setNumber(Integer.parseInt(event.getNumber()));
+                } catch (NumberFormatException e){
+                    exceptions.add(new NumberFormatException("Die Rückennummer muss eine ganze Zahl > 0 und < 100 sein aber war: " + event.getNumber()));
                 }
 
+                try {
+                    player = factory.setFirstName(event.getFirstName())
+                            .setLastName(event.getLastName())
+                            .setPositions(event.getPositions())
+                            .setTeamId(event.getPlayer().getTeamId())
+                            .setId(event.getPlayer().getId())
+                            .build();
+                } catch (ValidationException e) {
+                    exceptions.addAll(e.getExceptions());
+                }
+                System.out.println(exceptions.size());
                 if(player!=null){
                     try {
                         player.save();

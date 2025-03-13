@@ -10,6 +10,13 @@ public class JooqContextProvider {
 
     private static DSLContext dslContext;
 
+    public static void init(){
+        DataSourceProvider.init();
+        DataSource ds = DataSourceProvider.getDataSource();
+
+        dslContext = DSL.using(ds, SQLDialect.SQLITE);
+    }
+
     public static DSLContext getDSLContext() {
         if (dslContext == null) {
             DataSource ds = DataSourceProvider.getDataSource();

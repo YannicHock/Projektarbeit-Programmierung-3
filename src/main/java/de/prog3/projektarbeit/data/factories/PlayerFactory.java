@@ -5,6 +5,8 @@ import de.prog3.projektarbeit.data.Position;
 import de.prog3.projektarbeit.data.jooq.tables.records.PlayerRecord;
 import de.prog3.projektarbeit.data.objects.Player;
 
+import de.prog3.projektarbeit.exceptions.PlayerNotFoundExeption;
+import de.prog3.projektarbeit.exceptions.ValidationException;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
@@ -64,25 +66,29 @@ public class PlayerFactory {
         return this;
     }
 
-    public static void validDateData(String firstName, String lastName, Date dateOfBirth, int number, ArrayList<Position> positions) throws IllegalArgumentException{
+    public static void validDateData(String firstName, String lastName, Date dateOfBirth, int number, ArrayList<Position> positions) throws ValidationException{
+        ArrayList<Exception> exceptions = new ArrayList<>();
         if(firstName == null || firstName.isBlank()){
-            throw new IllegalArgumentException("Fehlender Vorname");
+             exceptions.add(new IllegalArgumentException("Fehlender Vorname"));
         }
         if(lastName == null || lastName.isBlank()){
-            throw new IllegalArgumentException("Fehlender Nachname");
+            exceptions.add(new IllegalArgumentException("Fehlender Nachname"));
         }
         if(dateOfBirth == null){
-            throw new IllegalArgumentException("Fehlender Geburtstag");
+            exceptions.add(new IllegalArgumentException("Fehlender Geburtstag"));
         }
-        if(number <= 0){
-            throw new IllegalArgumentException("Spielernummer muss größer als 0 sein");
+        if(number <= 0 || number > 99){
+            exceptions.add(new IllegalArgumentException("Spielernummer muss größer als 0 und kleiner als 100 sein"));
         }
         if(positions == null || positions.isEmpty()){
-            throw new IllegalArgumentException("Spieler muss mindestens eine Position haben");
+            exceptions.add(new IllegalArgumentException("Spieler muss mindestens eine Position haben"));
+        }
+        if(!exceptions.isEmpty()){
+            throw new ValidationException(exceptions);
         }
     }
 
-    public Player build() throws IllegalArgumentException {
+    public Player build() throws ValidationException {
         validDateData(firstName, lastName, dateOfBirth, number, positions);
         return new Player(id, firstName, lastName, dateOfBirth, number, positions, teamId);
     }
@@ -110,6 +116,23 @@ public class PlayerFactory {
             }
         }
         return Optional.ofNullable(player);
+    }
+
+
+    public static Player getPlayerById(int id) throws PlayerNotFoundExeption {
+        DSLContext ctx = JooqContextProvider.getDSLContext();
+        PlayerRecord record = (PlayerRecord) ctx.select().from(PLAYER).where(PLAYER.ID.eq(id)).fetchOne();
+        Player player = null;
+        try {
+            if(record == null){
+                throw new PlayerNotFoundExeption("Spieler mit der ID " + id + " nicht gefunden");
+            }
+            Optional<Integer> teamId = Optional.ofNullable(record.getTeamId());
+            player = new Player(record.getId(), record.getFirstname(), record.getLastname(), Player.parseStringToDate(record.getDateofbirth()), record.getNumber(), getPlayerPositions(record.getId()), teamId.orElse(0));
+        } catch (ParseException e) {
+            throw new PlayerNotFoundExeption("Spieler mit der ID " + id + " nicht gefunden");
+        }
+        return player;
     }
 
     public static HashMap<Integer, Player> getFreeAgents(){

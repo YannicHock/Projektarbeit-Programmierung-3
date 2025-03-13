@@ -12,6 +12,7 @@ import static de.prog3.projektarbeit.data.jooq.tables.Team.TEAM;
 public class Team extends DataObject {
     private final String name;
     private HashMap<Integer, Player> players;
+    private int playerCount;
 
     public Team(String name) {
         super(0);
@@ -23,6 +24,19 @@ public class Team extends DataObject {
         super(id);
         this.name = name;
         players = new HashMap<>();
+    }
+
+    public Team(int id, String name, int playerCount) {
+        this(id, name);
+        this.playerCount = playerCount;
+    }
+
+    public int getPlayerCount() {
+        if(playerCount != -1){
+            return playerCount;
+        } else {
+            return players.size();
+        }
     }
 
     public void addPlayer(Player player) {
