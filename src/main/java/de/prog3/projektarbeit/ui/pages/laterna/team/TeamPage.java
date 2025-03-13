@@ -7,8 +7,12 @@ import de.prog3.projektarbeit.data.PositionGrouping;
 import de.prog3.projektarbeit.data.objects.Player;
 import de.prog3.projektarbeit.data.objects.Team;
 import de.prog3.projektarbeit.eventHandling.events.Event;
+import de.prog3.projektarbeit.eventHandling.events.data.player.PlayerCreationFinishedEvent;
+import de.prog3.projektarbeit.eventHandling.events.data.player.PlayerUpdateFinishedEvent;
 import de.prog3.projektarbeit.eventHandling.events.ui.OpenPageEvent;
 import de.prog3.projektarbeit.eventHandling.listeners.EventListener;
+import de.prog3.projektarbeit.eventHandling.listeners.data.player.PlayerCreationFinishedListener;
+import de.prog3.projektarbeit.eventHandling.listeners.data.player.PlayerUpdateFinishedListener;
 import de.prog3.projektarbeit.ui.pages.PageType;
 import de.prog3.projektarbeit.ui.pages.laterna.LaternaPage;
 import de.prog3.projektarbeit.ui.views.laterna.LaternaView;
@@ -57,6 +61,34 @@ public class TeamPage extends LaternaPage {
     }
 
     private void registerListener(){
+        EventListener<PlayerUpdateFinishedEvent> playerUpdateFinishedEventListener = new PlayerUpdateFinishedListener(){
+            @Override
+            public void onEvent(PlayerUpdateFinishedEvent event) {
+                event.getPlayer().ifPresent(player -> {
+                    if(player.getTeamId() == team.getId()){
+                        Player oldPlayer = event.getOldPlayer().orElse(player);
+                        PositionGrouping oldGrouping = PositionGrouping.getGrouping(oldPlayer);
+                        PositionGrouping grouping = PositionGrouping.getGrouping(player);
+                        if(grouping != oldGrouping){
+                            clearOldPlayer(oldPlayer, oldGrouping);
+                        } else {
+                            clearOldPlayer(oldPlayer, grouping);
+                        }
+                        groupPlayer(player);
+                        redrawTables();
+                    }
+                });
+            }
+        };
+        listeners.add(playerUpdateFinishedEventListener);
+    }
+
+    private void clearOldPlayer(Player player, PositionGrouping grouping) {
+        List<Player> list = new ArrayList<>(playerGroupings.get(grouping));
+        List<Player> remove = new ArrayList<>();
+        list.stream().filter(player1 -> player1.getId() == player.getId()).forEach(remove::add);
+        list.removeAll(remove);
+        playerGroupings.put(grouping, list);
     }
 
     private void groupPlayer(Player player) {
@@ -67,6 +99,14 @@ public class TeamPage extends LaternaPage {
         }
         list.add(player);
         playerGroupings.put(grouping, list);
+    }
+
+    private void redrawTables(){
+        ATK_table.getTableModel().clear();
+        DEF_table.getTableModel().clear();
+        MID_table.getTableModel().clear();
+        GK_table.getTableModel().clear();
+        drawTables();
     }
 
     private void drawTables(){

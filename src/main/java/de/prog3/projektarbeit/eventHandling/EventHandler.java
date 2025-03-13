@@ -4,6 +4,7 @@ import de.prog3.projektarbeit.eventHandling.events.Event;
 import de.prog3.projektarbeit.eventHandling.listeners.EventListener;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,11 +26,10 @@ public class EventHandler {
     }
 
     public void unregisterListener(Class<? extends Event> event, EventListener<? extends Event> listener) {
-        ArrayList<EventListener<? extends Event>> list = listeners.get(event);
-        if(list != null) {
-            list.remove(listener);
-            System.out.println("Unregistering listener for " + event.getSimpleName() + " (" + list.size() + ")");
-        }
+        ArrayList<EventListener<? extends Event>> list = new ArrayList<>(listeners.get(event));
+        list.remove(listener);
+        listeners.put(event, list);
+        System.out.println("Unregistering listener for " + event.getSimpleName() + " (" + list.size() + ")");
     }
 
     public void registerListener(Class<? extends Event> event, EventListener<? extends Event> listener) {
@@ -48,7 +48,9 @@ public class EventHandler {
         ArrayList<EventListener<? extends Event>> listenerList = listeners.get(event.getClass());
         if(listenerList != null && !listenerList.isEmpty()) {
             System.out.println("Calling event " + event.getClass().getSimpleName() + " to " + listenerList.size() + " listeners");
-            listenerList.forEach(listener -> ((EventListener<Event>) listener).onEvent(event));
+            try {
+                listenerList.forEach(listener -> ((EventListener<Event>) listener).onEvent(event));
+            } catch (ConcurrentModificationException ignore) {}
         }
     }
 
