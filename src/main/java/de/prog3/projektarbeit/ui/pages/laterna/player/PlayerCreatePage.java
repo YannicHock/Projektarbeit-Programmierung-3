@@ -24,7 +24,26 @@ public class PlayerCreatePage extends LaternaPage {
         this.window = new BasicWindow("Spieler erstellen");
         this.view = view;
         listeners = new ArrayList<>();
+        registerListener();
         open();
+    }
+
+    private void registerListener(){
+        EventListener<PlayerCreationFinishedEvent> creationFinishedEventEventListener = new PlayerCreationFinishedListener() {
+            @Override
+            public void onEvent(PlayerCreationFinishedEvent event) {
+                event.getPlayer().ifPresent(player -> window.close());
+                event.getExceptions().ifPresent(exceptions -> {
+                    StringBuilder builder = new StringBuilder();
+                    exceptions.forEach(exception -> {
+                        builder.append(exception.getMessage());
+                        builder.append("\n");
+                    });
+                    MessageDialog.showMessageDialog(window.getTextGUI(), "Fehler beim erstellen des Spielers", builder.toString());
+                });
+            }
+        };
+        listeners.add(creationFinishedEventEventListener);
     }
 
 
@@ -84,23 +103,6 @@ public class PlayerCreatePage extends LaternaPage {
                     positionResult.add(checkedPosition);
                 }
             });
-
-            EventListener<PlayerCreationFinishedEvent> creationFinishedEventEventListener = new PlayerCreationFinishedListener() {
-                @Override
-                public void onEvent(PlayerCreationFinishedEvent event) {
-                    event.getPlayer().ifPresent(player -> window.close());
-                    event.getExceptions().ifPresent(exceptions -> {
-                        StringBuilder builder = new StringBuilder();
-                        exceptions.forEach(exception -> {
-                            builder.append(exception.getMessage());
-                            builder.append("\n");
-                        });
-                        MessageDialog.showMessageDialog(window.getTextGUI(), "Fehler beim erstellen des Spielers", builder.toString());
-                    });
-                }
-            };
-
-            listeners.add(creationFinishedEventEventListener);
 
             new AttemptPlayerCreationEvent(firstNameString, lastNameString, birthDateString, numberString, positionResult).call();
 

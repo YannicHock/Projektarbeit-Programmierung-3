@@ -1,9 +1,11 @@
 package de.prog3.projektarbeit.ui.pages.laterna.player;
 
 import com.googlecode.lanterna.gui2.*;
+import de.prog3.projektarbeit.data.factories.TeamFactory;
 import de.prog3.projektarbeit.data.objects.Player;
 import de.prog3.projektarbeit.eventHandling.events.Event;
 import de.prog3.projektarbeit.eventHandling.listeners.EventListener;
+import de.prog3.projektarbeit.exceptions.TeamNotFoundExeption;
 import de.prog3.projektarbeit.ui.pages.laterna.LaternaPage;
 import de.prog3.projektarbeit.ui.views.laterna.LaternaView;
 
@@ -76,6 +78,16 @@ public class PlayerPage extends LaternaPage {
         mainpanel.addComponent(numberLabel);
         numberContent.setText(player.getNumber() + "");
         mainpanel.addComponent(numberContent);
+
+        Label currentTeamLabel = new Label("Aktuelles Team: ");
+        mainpanel.addComponent(currentTeamLabel);
+        try {
+            currentTeamContent.setText(TeamFactory.getNameById(player.getTeamId()));
+        } catch (TeamNotFoundExeption e){
+            currentTeamContent.setText("Fehler beim Laden des Teams");
+        }
+        mainpanel.addComponent(currentTeamContent);
+
 
 
         Label positionLabel = new Label("Position(en): ");
