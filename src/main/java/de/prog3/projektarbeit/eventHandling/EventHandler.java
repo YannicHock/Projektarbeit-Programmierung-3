@@ -47,10 +47,8 @@ public class EventHandler {
     public void callEvent(Event event) {
         ArrayList<EventListener<? extends Event>> listenerList = listeners.get(event.getClass());
         if(listenerList != null && !listenerList.isEmpty()) {
-            listenerList.forEach(listener -> {
-                System.out.println("Calling event " + event.getClass().getSimpleName());
-                ((EventListener<Event>) listener).onEvent(event);
-            });
+            System.out.println("Calling event " + event.getClass().getSimpleName() + " to " + listenerList.size() + " listeners");
+            listenerList.forEach(listener -> ((EventListener<Event>) listener).onEvent(event));
         }
     }
 
