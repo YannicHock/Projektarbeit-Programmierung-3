@@ -31,6 +31,7 @@ public class TitlePage extends LaternaPage {
         //Player Management
         Panel playerManagement = new Panel();
         playerManagement.addComponent(new Button("Spieler erstellen", () -> new OpenPageEvent(view, PageType.CREATE_PLAYER).call()));
+        playerManagement.addComponent(new Button("Vereinslose Spieler anzeigen", () -> new OpenPageEvent(view, PageType.FREE_AGENTS).call()));
         mainPanel.addComponent(playerManagement.withBorder(Borders.singleLine("Spielerverwaltung")));
 
 

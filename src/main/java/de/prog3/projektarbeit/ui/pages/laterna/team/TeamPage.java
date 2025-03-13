@@ -125,6 +125,9 @@ public class TeamPage extends LaternaPage {
                 table.getTableModel().addRow(player.getId() + "", player.getFirstName() + " " + player.getLastName(), player.getAge() + "", player.getNumber() + "");
             });
         });
+
+        ArrayList<Table<String>> list = new ArrayList<>(List.of(GK_table, DEF_table, MID_table, ATK_table));
+        addClickAction(list);
     }
 
     public Component get() {
@@ -137,13 +140,11 @@ public class TeamPage extends LaternaPage {
                         .setLayoutData(
                                 GridLayout.createHorizontallyFilledLayoutData(1)));
 
-        ArrayList<Table<String>> list = new ArrayList<>(List.of(GK_table, DEF_table, MID_table, ATK_table));
-        addClickAction(list);
         mainPanel.addComponent(GK_table.withBorder(Borders.singleLine(PositionGrouping.GOALKEEPER.getFriendlyName())));
         mainPanel.addComponent(DEF_table.withBorder(Borders.singleLine(PositionGrouping.DEFENDER.getFriendlyName())));
         mainPanel.addComponent(MID_table.withBorder(Borders.singleLine(PositionGrouping.MIDFIELDER.getFriendlyName())));
         mainPanel.addComponent(ATK_table.withBorder(Borders.singleLine(PositionGrouping.STRIKER.getFriendlyName())));
-        int width = calculateWidth(list);
+        int width = calculateWidth();
         GK_table.setPreferredSize(new TerminalSize(width, calculateHeight(GK_table)));
         DEF_table.setPreferredSize(new TerminalSize(width, calculateHeight(DEF_table)));
         MID_table.setPreferredSize(new TerminalSize(width, calculateHeight(MID_table)));
@@ -167,7 +168,8 @@ public class TeamPage extends LaternaPage {
         return Math.min(5, table.getPreferredSize().getRows());
     }
 
-    private int calculateWidth(ArrayList<Table<String>> list){
+    private int calculateWidth(){
+        ArrayList<Table<String>> list = new ArrayList<>(List.of(GK_table, DEF_table, MID_table, ATK_table));
         int width = 0;
         for (Table<String> table : list) {
             width = Math.max(width, table.getPreferredSize().getColumns());

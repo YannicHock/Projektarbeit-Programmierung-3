@@ -1,6 +1,7 @@
 package de.prog3.projektarbeit.ui.pages;
 
 import de.prog3.projektarbeit.ui.pages.laterna.player.EditPlayerPage;
+import de.prog3.projektarbeit.ui.pages.laterna.player.FreeAgentsPage;
 import de.prog3.projektarbeit.ui.pages.laterna.player.PlayerCreatePage;
 import de.prog3.projektarbeit.ui.pages.laterna.player.PlayerPage;
 import de.prog3.projektarbeit.ui.pages.laterna.team.TeamCreatePage;
@@ -18,6 +19,9 @@ public enum PageType {
     }}),
     PLAYER(new HashMap<>() {{
         put(ViewType.LATERNA, PlayerPage.class);
+    }}),
+    FREE_AGENTS(new HashMap<>() {{
+        put(ViewType.LATERNA, FreeAgentsPage.class);
     }}),
     CREATE_PLAYER(new HashMap<>() {{
         put(ViewType.LATERNA, PlayerCreatePage.class);
