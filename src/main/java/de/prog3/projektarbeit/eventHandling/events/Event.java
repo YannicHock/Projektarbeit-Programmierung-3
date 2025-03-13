@@ -15,7 +15,6 @@ public abstract class Event {
     }
 
     public void call() {
-        System.out.println(this + " called");
         EventHandler.getInstance().callEvent(this);
     }
 
