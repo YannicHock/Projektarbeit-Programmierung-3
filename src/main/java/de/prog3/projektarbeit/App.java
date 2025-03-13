@@ -2,7 +2,7 @@ package de.prog3.projektarbeit;
 
 
 import de.prog3.projektarbeit.data.DataListener;
-import de.prog3.projektarbeit.data.DataSourceProvider;
+import de.prog3.projektarbeit.data.JooqContextProvider;
 import de.prog3.projektarbeit.eventHandling.events.ui.RequestNewViewEvent;
 import de.prog3.projektarbeit.ui.UIHandler;
 import de.prog3.projektarbeit.ui.views.ViewType;
@@ -15,7 +15,7 @@ public class App {
     }
 
     public void start() {
-        DataSourceProvider.init();
+        JooqContextProvider.init();
         prepareListeners();
         new RequestNewViewEvent(ViewType.LATERNA).call();
     }
