@@ -23,10 +23,22 @@ public class PlayerFactory {
     private Date dateOfBirth;
     private int number;
     private ArrayList<Position> positions;
+    private int id = 0;
+    private int teamId = 0;
 
 
     public PlayerFactory setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+        return this;
+    }
+
+    public PlayerFactory setId(int id) {
+        this.id = id;
+        return this;
+    }
+
+    public PlayerFactory setTeamId(int teamId) {
+        this.teamId = teamId;
         return this;
     }
 
@@ -70,7 +82,7 @@ public class PlayerFactory {
 
     public Player build() throws IllegalArgumentException {
         validDateData(firstName, lastName, dateOfBirth, number, positions);
-        return new Player(firstName, lastName, dateOfBirth, number, positions);
+        return new Player(id, firstName, lastName, dateOfBirth, number, positions, teamId);
     }
 
     private static ArrayList<Position> getPlayerPositions(int playerId) {

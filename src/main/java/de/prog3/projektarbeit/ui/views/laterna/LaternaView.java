@@ -45,6 +45,7 @@ public class LaternaView implements View {
                     if(event.getView() instanceof LaternaView view){
                         if(view.getGui().getWindows().isEmpty()){
                             try {
+                                this.unregister();
                                 view.getGui().getScreen().stopScreen();
                             } catch (IOException e) {
                                 throw new RuntimeException(e);

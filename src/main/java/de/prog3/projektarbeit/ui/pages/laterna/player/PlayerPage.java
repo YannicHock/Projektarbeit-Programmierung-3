@@ -4,8 +4,12 @@ import com.googlecode.lanterna.gui2.*;
 import de.prog3.projektarbeit.data.factories.TeamFactory;
 import de.prog3.projektarbeit.data.objects.Player;
 import de.prog3.projektarbeit.eventHandling.events.Event;
+import de.prog3.projektarbeit.eventHandling.events.data.player.PlayerUpdateFinishedEvent;
+import de.prog3.projektarbeit.eventHandling.events.ui.OpenPageEvent;
 import de.prog3.projektarbeit.eventHandling.listeners.EventListener;
+import de.prog3.projektarbeit.eventHandling.listeners.data.player.PlayerUpdateFinishedListener;
 import de.prog3.projektarbeit.exceptions.TeamNotFoundExeption;
+import de.prog3.projektarbeit.ui.pages.PageType;
 import de.prog3.projektarbeit.ui.pages.laterna.LaternaPage;
 import de.prog3.projektarbeit.ui.views.laterna.LaternaView;
 
@@ -43,7 +47,36 @@ public class PlayerPage extends LaternaPage {
         open();
     }
 
+    private void updatePlayer(Player player){
+        this.player = player;
+        nameContent.setText(player.getFirstName() + " " + player.getLastName());
+        ageContent.setText(player.getAge() + "");
+        try {
+            birthDateContent.setText(Player.parseDateToString(player.getDateOfBirth()));
+        } catch (ParseException e){
+            birthDateContent.setText("Fehler beim Konvertieren des Geburtsdatums");
+        }
+        numberContent.setText(player.getNumber() + "");
+        try {
+            currentTeamContent.setText(TeamFactory.getNameById(player.getTeamId()));
+        } catch (TeamNotFoundExeption e){
+            currentTeamContent.setText("Fehler beim Laden des Teams");
+        }
+        positionContent.setText(player.getPositionsAsString());
+    }
+
     private void registerListener(){
+        EventListener<PlayerUpdateFinishedEvent> playerUpdateFinishedEventListener = new PlayerUpdateFinishedListener(this.player) {
+            @Override
+            public void onEvent(PlayerUpdateFinishedEvent event) {
+                event.getPlayer().ifPresent(player -> {
+                    if(player.getId() == super.getPlayer().getId()){
+                        updatePlayer(player);
+                    }
+                });
+            }
+        };
+        listeners.add(playerUpdateFinishedEventListener);
     }
 
 
@@ -101,6 +134,7 @@ public class PlayerPage extends LaternaPage {
         contentPanel.addComponent(positionPanel);
 
 
+        contentPanel.addComponent(new Button("Bearbeiten", () -> new OpenPageEvent(view, PageType.EDIT_PLAYER, player).call()));
 
         contentPanel.addComponent(footer(false));
         return contentPanel;

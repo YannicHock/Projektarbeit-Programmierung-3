@@ -28,39 +28,15 @@ public class Player extends DataObject {
     private int teamId;
     private int id;
 
-
-    public Player(int id, String firstName, String lastName, Date dateOfBirth, int number, ArrayList<Position> positions) {
-        super();
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.dateOfBirth = dateOfBirth;
-        this.number = number;
-        this.teamId = 0;
-        this.positions = positions;
-        this.id = id;
-    }
-
     public Player(int id, String firstName, String lastName, Date dateOfBirth, int number, ArrayList<Position> positions, int teamId) {
         super();
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.number = number;
-        this.teamId = 0;
         this.positions = positions;
         this.teamId = teamId;
         this.id = id;
-    }
-
-
-    public Player(String firstName, String lastName, Date dateOfBirth, int number, ArrayList<Position> positions) {
-        super();
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.dateOfBirth = dateOfBirth;
-        this.number = number;
-        this.teamId = 0;
-        this.positions = positions;
     }
 
     public Date getDateOfBirth() {

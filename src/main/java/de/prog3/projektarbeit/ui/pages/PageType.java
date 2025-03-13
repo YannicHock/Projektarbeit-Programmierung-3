@@ -1,5 +1,6 @@
 package de.prog3.projektarbeit.ui.pages;
 
+import de.prog3.projektarbeit.ui.pages.laterna.player.EditPlayerPage;
 import de.prog3.projektarbeit.ui.pages.laterna.player.PlayerCreatePage;
 import de.prog3.projektarbeit.ui.pages.laterna.player.PlayerPage;
 import de.prog3.projektarbeit.ui.pages.laterna.team.TeamCreatePage;
@@ -20,6 +21,9 @@ public enum PageType {
     }}),
     CREATE_PLAYER(new HashMap<>() {{
         put(ViewType.LATERNA, PlayerCreatePage.class);
+    }}),
+    EDIT_PLAYER(new HashMap<>() {{
+        put(ViewType.LATERNA, EditPlayerPage.class);
     }}),
     TEAM(new HashMap<>() {{
         put(ViewType.LATERNA, TeamPage.class);
