@@ -11,11 +11,12 @@ public abstract class EventListener<T extends Event> {
         register();
     }
 
-    public abstract void onEvent(T event);
-
     private void register() {
-        System.out.println("Registering listener for " + eventType.getSimpleName());
-        EventHandler.getInstance().registerListener(eventType, this);
+        EventHandler.getInstance().registerListener(eventType,  this);
+    }
+
+    public void unregister() {
+        EventHandler.getInstance().unregisterListener(eventType, this);
     }
 
     @Override
@@ -24,4 +25,6 @@ public abstract class EventListener<T extends Event> {
                 "eventType=" + eventType +
                 '}';
     }
+
+    public abstract void onEvent(T event);
 }

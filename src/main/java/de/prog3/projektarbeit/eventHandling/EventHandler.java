@@ -24,6 +24,13 @@ public class EventHandler {
         return instance;
     }
 
+    public void unregisterListener(Class<? extends Event> event, EventListener<? extends Event> listener) {
+        ArrayList<EventListener<? extends Event>> list = listeners.get(event);
+        if(list != null) {
+            list.remove(listener);
+            System.out.println("Unregistering listener for " + event.getSimpleName() + " (" + list.size() + ")");
+        }
+    }
 
     public void registerListener(Class<? extends Event> event, EventListener<? extends Event> listener) {
         ArrayList<EventListener<? extends Event>> list;
