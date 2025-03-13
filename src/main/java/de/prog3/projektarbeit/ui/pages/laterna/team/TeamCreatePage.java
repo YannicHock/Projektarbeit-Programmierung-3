@@ -26,7 +26,26 @@ public class TeamCreatePage extends LaternaPage {
         this.window = new BasicWindow(name);
         this.view = view;
         listeners = new ArrayList<>();
+        registerListener();
         open();
+    }
+
+    private void registerListener(){
+        EventListener<TeamCreationFinishedEvent> creationFinishedListener = new TeamCreationFinishedListener(){
+            @Override
+            public void onEvent(TeamCreationFinishedEvent event) {
+                event.getTeam().ifPresent(team -> window.close());
+                event.getExceptions().ifPresent(exceptions -> {
+                    StringBuilder builder = new StringBuilder();
+                    exceptions.forEach(exception -> {
+                        builder.append(exception.getMessage());
+                        builder.append("\n");
+                    });
+                    MessageDialog.showMessageDialog(window.getTextGUI(), "Fehler beim erstellen des Teams", builder.toString());
+                });
+            }
+        };
+        listeners.add(creationFinishedListener);
     }
 
 
@@ -47,21 +66,6 @@ public class TeamCreatePage extends LaternaPage {
 
         contentPanel.addComponent(new Button("Fertig", () ->{
             String teamNameString = teamNameTextBox.getText();
-            EventListener<TeamCreationFinishedEvent> creationFinishedListener = new TeamCreationFinishedListener(){
-                @Override
-                public void onEvent(TeamCreationFinishedEvent event) {
-                    event.getTeam().ifPresent(team -> window.close());
-                    event.getExceptions().ifPresent(exceptions -> {
-                        StringBuilder builder = new StringBuilder();
-                        exceptions.forEach(exception -> {
-                            builder.append(exception.getMessage());
-                            builder.append("\n");
-                        });
-                        MessageDialog.showMessageDialog(window.getTextGUI(), "Fehler beim erstellen des Spielers", builder.toString());
-                    });
-                }
-            };
-            listeners.add(creationFinishedListener);
 
             new AttemptTeamCreationEvent(teamNameString).call();
 
