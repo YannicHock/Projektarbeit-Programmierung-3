@@ -15,12 +15,12 @@ import de.prog3.projektarbeit.ui.views.laterna.LaternaView;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class PlayerCreatePage extends LaternaPage {
+public class CreatePlayerPage extends LaternaPage {
     private final Window window;
     private final LaternaView view;
     private final ArrayList<EventListener<? extends Event>> listeners;
 
-    public PlayerCreatePage(LaternaView view) {
+    public CreatePlayerPage(LaternaView view) {
         this.window = new BasicWindow("Spieler erstellen");
         this.view = view;
         listeners = new ArrayList<>();
