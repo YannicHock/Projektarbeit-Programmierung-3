@@ -5,8 +5,10 @@ import com.googlecode.lanterna.gui2.table.Table;
 import de.prog3.projektarbeit.data.factories.TeamFactory;
 import de.prog3.projektarbeit.data.objects.Team;
 import de.prog3.projektarbeit.eventHandling.events.Event;
+import de.prog3.projektarbeit.eventHandling.events.data.team.TeamCreationFinishedEvent;
 import de.prog3.projektarbeit.eventHandling.events.ui.OpenPageEvent;
 import de.prog3.projektarbeit.eventHandling.listeners.EventListener;
+import de.prog3.projektarbeit.eventHandling.listeners.data.team.TeamCreationFinishedListener;
 import de.prog3.projektarbeit.ui.pages.PageType;
 import de.prog3.projektarbeit.ui.pages.laterna.LaternaPage;
 import de.prog3.projektarbeit.ui.views.laterna.LaternaView;
@@ -36,8 +38,18 @@ public class TeamsPage extends LaternaPage {
     }
 
     private void registerListener(){
-    }
+        EventListener<TeamCreationFinishedEvent> teamCreationFinishedEventEventListener = new TeamCreationFinishedListener() {
+            @Override
+            public void onEvent(TeamCreationFinishedEvent event) {
+                event.getTeam().ifPresent(team -> {
+                    table.getTableModel().addRow(team.getId() + "", team.getName(), team.getPlayers().size() + "");
+                    teams.put(team.getId(), team);
+                });
+            }
+        };
 
+        listeners.add(teamCreationFinishedEventEventListener);
+    }
 
     @Override
     protected Component get() {

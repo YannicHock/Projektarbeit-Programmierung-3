@@ -40,6 +40,7 @@ public abstract class LaternaPage implements Page {
     @Override
     public void close() {
         getWindow().close();
+        getListeners().forEach(EventListener::unregister);
         new WindowCloseEvent(getLaternaView()).call();
     }
 }
