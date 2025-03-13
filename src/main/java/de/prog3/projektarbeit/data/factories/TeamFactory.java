@@ -2,6 +2,7 @@ package de.prog3.projektarbeit.data.factories;
 
 import de.prog3.projektarbeit.data.JooqContextProvider;
 import de.prog3.projektarbeit.data.objects.Team;
+import de.prog3.projektarbeit.exceptions.TeamNotFoundExeption;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
@@ -45,6 +46,19 @@ public class TeamFactory {
             PlayerFactory.extractPlayerFromRecord(record).ifPresent(team::addPlayer);
         }
         return teams;
+    }
+
+    public static String getNameById(int id) throws TeamNotFoundExeption {
+        if(id == 0){
+            return "Vereinslos";
+        } else {
+            DSLContext ctx = JooqContextProvider.getDSLContext();
+            Record result = ctx.select().from(TEAM).where(TEAM.ID.eq(id)).fetchOne();
+            if(result == null) {
+                throw new TeamNotFoundExeption("Team mit der ID " + id + " nicht gefunden");
+            }
+            return result.get(TEAM.NAME);
+        }
     }
 
 }
