@@ -20,8 +20,7 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
           cache: 'maven'
-          maven-version: 'latest'
       - name: Build with Maven
         run: mvn clean install
       - name: Run Tests
-        run: mvn test
+        run: mvn test -D java.awt.headless=true
