@@ -7,8 +7,10 @@ import de.prog3.projektarbeit.data.Position;
 import de.prog3.projektarbeit.data.objects.Player;
 import de.prog3.projektarbeit.eventHandling.events.Event;
 import de.prog3.projektarbeit.eventHandling.events.data.player.AttemptPlayerUpdateEvent;
+import de.prog3.projektarbeit.eventHandling.events.data.player.BlockPlayerEvent;
 import de.prog3.projektarbeit.eventHandling.events.data.player.PlayerUpdateFinishedEvent;
 import de.prog3.projektarbeit.eventHandling.listeners.EventListener;
+import de.prog3.projektarbeit.eventHandling.listeners.Priority;
 import de.prog3.projektarbeit.eventHandling.listeners.data.player.PlayerUpdateFinishedListener;
 import de.prog3.projektarbeit.ui.pages.laterna.LaternaPage;
 import de.prog3.projektarbeit.ui.views.laterna.LaternaView;
@@ -21,24 +23,28 @@ public class EditPlayerPage extends LaternaPage {
     private final Window window;
     private final LaternaView view;
     private final ArrayList<EventListener<? extends Event>> listeners;
-    private final String name;
     private final Player player;
 
     public EditPlayerPage(LaternaView view, Player player) {
-        this.name = player.getFirstName() + " " + player.getLastName() + " - Bearbeiten";
+        String name = player.getFirstName() + " " + player.getLastName() + " - Bearbeiten";
         this.player = player;
-        this.window = new BasicWindow( name);
+        this.window = new BasicWindow(name);
         this.view = view;
         listeners = new ArrayList<>();
+        new BlockPlayerEvent(player, true).call();
         registerListener();
         open();
     }
 
     private void registerListener(){
-        EventListener<PlayerUpdateFinishedEvent> creationFinishedEventEventListener = new PlayerUpdateFinishedListener() {
+        EventListener<PlayerUpdateFinishedEvent> creationFinishedEventEventListener = new PlayerUpdateFinishedListener(Priority.HIGHEST) {
             @Override
             public void onEvent(PlayerUpdateFinishedEvent event) {
-                event.getPlayer().ifPresent(player -> window.close());
+                event.getPlayer().ifPresent(player -> {
+                    if(player.getId() == EditPlayerPage.this.player.getId()){
+                        close();
+                    }
+                });
                 event.getExceptions().ifPresent(exceptions -> {
                     StringBuilder builder = new StringBuilder();
                     exceptions.forEach(exception -> {
@@ -119,7 +125,7 @@ public class EditPlayerPage extends LaternaPage {
             });
 
             new AttemptPlayerUpdateEvent(player, firstNameString, lastNameString, birthDateString, numberString, positionResult).call();
-
+            System.out.println("End");
         }));
         contentPanel.addComponent(footer(false));
 
@@ -139,6 +145,12 @@ public class EditPlayerPage extends LaternaPage {
     @Override
     public String getName() {
         return "Spieler erstellen";
+    }
+
+    @Override
+    public void close() {
+        new BlockPlayerEvent(player, false).call();
+        super.close();
     }
 
     @Override

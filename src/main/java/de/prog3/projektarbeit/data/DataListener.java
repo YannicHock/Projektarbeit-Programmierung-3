@@ -115,7 +115,7 @@ public class DataListener {
                 } catch (ValidationException e) {
                     exceptions.addAll(e.getExceptions());
                 }
-                System.out.println(exceptions.size());
+
                 if(player!=null){
                     try {
                         player.save();
