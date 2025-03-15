@@ -49,6 +49,7 @@ public class TeamPage extends LaternaPage {
         listeners = new ArrayList<>();
         loadPlayerGroupings();
         drawTables();
+        addClickAction();
         registerListener();
         open();
     }
@@ -125,9 +126,6 @@ public class TeamPage extends LaternaPage {
                 table.getTableModel().addRow(player.getId() + "", player.getFirstName() + " " + player.getLastName(), player.getAge() + "", player.getNumber() + "");
             });
         });
-
-        ArrayList<Table<String>> list = new ArrayList<>(List.of(GK_table, DEF_table, MID_table, ATK_table));
-        addClickAction(list);
     }
 
     public Component get() {
@@ -167,10 +165,11 @@ public class TeamPage extends LaternaPage {
         return contentPanel;
     }
 
-    private void addClickAction(ArrayList<Table<String>> list){
+    private void addClickAction(){
+        ArrayList<Table<String>> list = new ArrayList<>(List.of(GK_table, DEF_table, MID_table, ATK_table));
         list.forEach(stringTable -> stringTable.setSelectAction(() -> {
             List<String> data = stringTable.getTableModel().getRow(stringTable.getSelectedRow());
-            Integer key = Integer.parseInt(data.getFirst());
+            int key = Integer.parseInt(data.getFirst());
             new OpenPageEvent(view, PageType.PLAYER, team.getPlayers().get(key)).call();
         }));
     }

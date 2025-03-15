@@ -38,6 +38,7 @@ public class FreeAgentsPage extends LaternaPage {
         listeners = new ArrayList<>();
         registerListener();
         drawTable();
+        addClickAction();
         open();
     }
 
@@ -81,11 +82,13 @@ public class FreeAgentsPage extends LaternaPage {
         for (Player player : playerList) {
             table.getTableModel().addRow(player.getId() + "", player.getFirstName() + " " + player.getLastName(), player.getAge() + "", player.getNumber() + "");
         }
+    }
 
+    private void addClickAction(){
         table.setSelectAction(() -> {
             List<String> data = table.getTableModel().getRow(table.getSelectedRow());
-            Integer key = Integer.parseInt(data.getFirst());
-            new OpenPageEvent(view, PageType.PLAYER, players.get(key)).call();
+            int id = Integer.parseInt(data.getFirst());
+            new OpenPageEvent(view, PageType.PLAYER, players.get(id)).call();
         });
     }
 
