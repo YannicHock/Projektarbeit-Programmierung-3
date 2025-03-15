@@ -21,6 +21,4 @@ jobs:
           java-version: '21'
           cache: 'maven'
       - name: Build with Maven
-        run: mvn clean install
-      - name: Run Tests
-        run: mvn test -Djava.awt.headless=true
+        run: mvn clean install -D java.awt.headless=true
