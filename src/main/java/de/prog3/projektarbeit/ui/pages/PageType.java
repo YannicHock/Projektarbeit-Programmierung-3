@@ -7,6 +7,8 @@ import de.prog3.projektarbeit.ui.pages.laterna.team.TeamsPage;
 import de.prog3.projektarbeit.ui.pages.laterna.TitlePage;
 import de.prog3.projektarbeit.ui.views.View;
 import de.prog3.projektarbeit.ui.views.ViewType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 
@@ -40,18 +42,17 @@ public enum PageType {
     }})
     ;
 
+    private static final Logger logger = LoggerFactory.getLogger(PageType.class);
     private final HashMap<ViewType, Class<? extends Page>> pageClasses;
 
     PageType(HashMap<ViewType, Class<? extends Page>> titlePageClasses) {
         this.pageClasses = titlePageClasses;
     }
 
-
     public void openPage(View view, Object... additionalParams) {
         try {
             Class<? extends Page> pageClass = pageClasses.get(view.getType());
             if (pageClass != null) {
-
                 Class<?>[] paramTypes = new Class<?>[additionalParams.length + 1];
                 paramTypes[0] = view.getClass();
                 for (int i = 0; i < additionalParams.length; i++) {
@@ -64,10 +65,10 @@ public enum PageType {
 
                 pageClass.getDeclaredConstructor(paramTypes).newInstance(params);
             } else {
-                System.out.println("No page class found for view type: " + view.getType());
+                logger.warn("Keine Seitenklasse für den Ansichtstyp gefunden: {}", view.getType());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Fehler beim Öffnen der Seite", e);
         }
     }
 }

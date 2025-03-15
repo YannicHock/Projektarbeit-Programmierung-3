@@ -137,6 +137,10 @@ public class Player extends DataObject {
         }
     }
 
+    public String getFullName(){
+        return this.firstName + " " + this.lastName;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if(obj instanceof Player player){
