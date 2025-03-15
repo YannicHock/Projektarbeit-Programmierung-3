@@ -137,4 +137,11 @@ public class Player extends DataObject {
         }
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Player player){
+            return player.getId() == this.getId();
+        }
+        return false;
+    }
 }

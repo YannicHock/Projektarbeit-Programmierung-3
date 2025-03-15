@@ -1,6 +1,7 @@
 package de.prog3.projektarbeit.ui.views.laterna;
 
 import com.googlecode.lanterna.gui2.*;
+import com.googlecode.lanterna.gui2.dialogs.MessageDialog;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
@@ -29,11 +30,15 @@ public class LaternaView implements View {
     }
 
     private void registerListeners(View view){
-        this.openPageEventListener = new OpenPageEventListener(view){
+        this.openPageEventListener = new OpenPageEventListener(){
             @Override
             public void onEvent(OpenPageEvent event) {
                 if(event.getView().equals(view)) {
-                    event.getPageType().openPage(event.getView(), event.getArgs());
+                    if(!event.isCancelled()){
+                        event.getPageType().openPage(event.getView(), event.getArgs());
+                    } else {
+                        MessageDialog.showMessageDialog(gui, "Warnung", "Der Zugriff auf die Seite wurde verweigert, weil diese Seite derzeit in einem anderen Fenstern verwendet wird.");
+                    }
                 }
             }
         };
