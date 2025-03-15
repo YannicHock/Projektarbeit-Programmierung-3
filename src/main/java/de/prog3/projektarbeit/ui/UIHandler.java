@@ -37,6 +37,10 @@ public class UIHandler {
         };
     }
 
+    public ArrayList<View> getViews() {
+        return views;
+    }
+
     public static UIHandler getInstance() {
         if(instance == null) {
             instance = new UIHandler();
