@@ -14,7 +14,6 @@ public abstract class EventListener<T extends Event> {
     }
 
     protected EventListener(Class<T> eventType, Priority priority) {
-        System.out.println("EventListener: " + eventType);
         this.eventType = eventType;
         this.priority = priority;
         register();

@@ -125,7 +125,6 @@ public class EditPlayerPage extends LaternaPage {
             });
 
             new AttemptPlayerUpdateEvent(player, firstNameString, lastNameString, birthDateString, numberString, positionResult).call();
-            System.out.println("End");
         }));
         contentPanel.addComponent(footer(false));
 
