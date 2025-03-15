@@ -52,6 +52,10 @@ public class EventHandler {
         logger.info("Listener für {} registriert ({} insgesamt)", event.getSimpleName(), list.size());
     }
 
+    public Map<Class<? extends Event>, ArrayList<EventListener<? extends Event>>> getListeners() {
+        return listeners;
+    }
+
     public void callEvent(Event event) {
         ArrayList<EventListener<? extends Event>> listenerList = listeners.get(event.getClass());
         if(listenerList != null && !listenerList.isEmpty()) {
