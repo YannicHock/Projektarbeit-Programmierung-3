@@ -37,6 +37,7 @@ public class TeamsPage extends LaternaPage {
         this.table = new Table<>("ID", "Teamname", "Spieleranzahl");
         listeners = new ArrayList<>();
         registerListener();
+        addClickAction();
         open();
     }
 
@@ -52,6 +53,18 @@ public class TeamsPage extends LaternaPage {
         };
 
         listeners.add(teamCreationFinishedEventEventListener);
+    }
+
+    private void addClickAction(){
+        table.setSelectAction(() -> {
+            List<String> data = table.getTableModel().getRow(table.getSelectedRow());
+            int id = Integer.parseInt(data.getFirst());
+            try {
+                new OpenPageEvent(view, PageType.TEAM, TeamFactory.getTeamById(id)).call();
+            } catch (TeamNotFoundExeption e) {
+                MessageDialog.showMessageDialog(window.getTextGUI(), "Fehler beim aktualisieren des Spielers", "");
+            }
+        });
     }
 
     @Override
@@ -70,16 +83,6 @@ public class TeamsPage extends LaternaPage {
         for (Team team : teams.values()) {
             table.getTableModel().addRow(team.getId() + "", team.getName(), team.getPlayerCount() + "");
         }
-
-        table.setSelectAction(() -> {
-            List<String> data = table.getTableModel().getRow(table.getSelectedRow());
-            int id = Integer.parseInt(data.getFirst());
-            try {
-                new OpenPageEvent(view, PageType.TEAM, TeamFactory.getTeamById(id)).call();
-            } catch (TeamNotFoundExeption e) {
-                MessageDialog.showMessageDialog(window.getTextGUI(), "Fehler beim aktualisieren des Spielers", "");
-            }
-        });
 
         mainpanel.addComponent(table);
 
