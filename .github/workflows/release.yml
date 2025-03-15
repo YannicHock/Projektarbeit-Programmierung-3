@@ -20,11 +20,8 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
           cache: 'maven'
-          maven-version: 'latest'
       - name: Build with Maven
-        run: mvn clean install
-      - name: Run Tests
-        run: mvn test
+        run: mvn clean install -D java.awt.headless=true
 
   create_tag:
     name: Create Tag
@@ -62,7 +59,7 @@ jobs:
           cache: 'maven'
           maven-version: 'latest'
       - name: Build with Maven
-        run: mvn clean install
+        run: mvn clean install -D java.awt.headless=true
       - name: Get Maven Project Version
         id: get_version
         run: echo "::set-output name=VERSION::$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
