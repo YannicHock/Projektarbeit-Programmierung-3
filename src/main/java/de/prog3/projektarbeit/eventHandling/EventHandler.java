@@ -1,12 +1,14 @@
 package de.prog3.projektarbeit.eventHandling;
 
 import de.prog3.projektarbeit.eventHandling.events.Event;
+import de.prog3.projektarbeit.eventHandling.events.data.player.PlayerUpdateFinishedEvent;
 import de.prog3.projektarbeit.eventHandling.listeners.EventListener;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Comparator;
 
 public class EventHandler {
 
@@ -40,6 +42,7 @@ public class EventHandler {
             list = new ArrayList<>();
         }
         list.add(listener);
+        list.sort(Comparator.comparingInt(EventListener::getPriority));
         listeners.put(event, list);
         System.out.println("Registering listener for " + event.getSimpleName() + " (" + list.size() + ")");
     }
@@ -49,7 +52,10 @@ public class EventHandler {
         if(listenerList != null && !listenerList.isEmpty()) {
             System.out.println("Calling event " + event.getClass().getSimpleName() + " to " + listenerList.size() + " listeners");
             try {
-                listenerList.forEach(listener -> ((EventListener<Event>) listener).onEvent(event));
+                listenerList.forEach(listener -> {
+                    System.out.println(listener.getClass().getName());
+                    ((EventListener<Event>) listener).onEvent(event);
+                });
             } catch (ConcurrentModificationException ignore) {}
         }
     }

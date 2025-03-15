@@ -1,6 +1,7 @@
 package de.prog3.projektarbeit;
 
 
+import de.prog3.projektarbeit.data.BlockHandler;
 import de.prog3.projektarbeit.data.DataListener;
 import de.prog3.projektarbeit.data.JooqContextProvider;
 import de.prog3.projektarbeit.eventHandling.events.ui.RequestNewViewEvent;
@@ -12,6 +13,7 @@ public class App {
     private void prepareListeners() {
         DataListener.register();
         UIHandler.getInstance().registerListeners();
+        BlockHandler.getInstance();
     }
 
     public void start() {

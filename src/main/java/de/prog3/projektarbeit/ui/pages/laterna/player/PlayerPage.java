@@ -66,11 +66,11 @@ public class PlayerPage extends LaternaPage {
     }
 
     private void registerListener(){
-        EventListener<PlayerUpdateFinishedEvent> playerUpdateFinishedEventListener = new PlayerUpdateFinishedListener(this.player) {
+       EventListener<PlayerUpdateFinishedEvent> playerUpdateFinishedEventListener = new PlayerUpdateFinishedListener() {
             @Override
             public void onEvent(PlayerUpdateFinishedEvent event) {
                 event.getPlayer().ifPresent(player -> {
-                    if(player.getId() == super.getPlayer().getId()){
+                    if(player.getId() == PlayerPage.this.player.getId()){
                         updatePlayer(player);
                     }
                 });
