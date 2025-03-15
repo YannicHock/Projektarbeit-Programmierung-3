@@ -13,11 +13,14 @@ import de.prog3.projektarbeit.eventHandling.listeners.ui.OpenPageEventListener;
 import de.prog3.projektarbeit.eventHandling.listeners.ui.WindowCloseEventListener;
 import de.prog3.projektarbeit.ui.views.View;
 import de.prog3.projektarbeit.ui.views.ViewType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
 
 public class LaternaView implements View {
+    private static final Logger logger = LoggerFactory.getLogger(LaternaView.class);
     private WindowBasedTextGUI gui;
     private String name;
     EventListener<OpenPageEvent> openPageEventListener;
@@ -53,7 +56,7 @@ public class LaternaView implements View {
                                 this.unregister();
                                 view.getGui().getScreen().stopScreen();
                             } catch (IOException e) {
-                                throw new RuntimeException(e);
+                                logger.error("Fehler beim Stoppen des Bildschirms: ", e);
                             }
                         }
                     }
@@ -61,7 +64,6 @@ public class LaternaView implements View {
             }
         };
     }
-
 
     public String getName() {
         return name;
@@ -84,7 +86,7 @@ public class LaternaView implements View {
             this.gui = new MultiWindowTextGUI(screen);
             screen.startScreen();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Fehler beim Erstellen des Bildschirms: ", e);
         }
     }
 

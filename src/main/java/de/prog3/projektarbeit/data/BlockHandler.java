@@ -7,10 +7,13 @@ import de.prog3.projektarbeit.eventHandling.events.ui.OpenPageEvent;
 import de.prog3.projektarbeit.eventHandling.listeners.data.player.BlockPlayerListener;
 import de.prog3.projektarbeit.eventHandling.listeners.ui.OpenPageEventListener;
 import de.prog3.projektarbeit.ui.pages.PageType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 
 public class BlockHandler {
+    private static final Logger logger = LoggerFactory.getLogger(BlockHandler.class);
     private static BlockHandler instance;
     private final ArrayList<Player> blockedPlayers;
 
@@ -26,8 +29,8 @@ public class BlockHandler {
         return instance;
     }
 
-
     private void registerListeners() {
+        logger.info("Registriere OpenPageEventListener");
         new OpenPageEventListener(Priority.HIGHEST) {
             @Override
             public void onEvent(OpenPageEvent event) {
@@ -35,12 +38,13 @@ public class BlockHandler {
                 switch (type) {
                     case EDIT_PLAYER:
                         Player player = (Player) event.getArgs()[0];
-                        if(blockedPlayers.contains(player)) {
+                        if (blockedPlayers.contains(player)) {
+                            logger.info("Spieler {} ist für weitere Bearbeitungen blockiert", player.getFullName());
                             event.setCancelled(true);
                         }
                         break;
                     case TRANSFER_PLAYER:
-                        // System.out.println(event.getArgs().length);
+                        // TODO: Implementierung
                         break;
                     default:
                         break;
@@ -48,17 +52,19 @@ public class BlockHandler {
             }
         };
 
-        new BlockPlayerListener(){
+        logger.info("Registriere BlockPlayerListener");
+        new BlockPlayerListener() {
             @Override
             public void onEvent(BlockPlayerEvent event) {
-                if(event.isBlocked()){
-                    blockedPlayers.add(event.getPlayer());
+                Player player = event.getPlayer();
+                if (event.isBlocked()) {
+                    blockedPlayers.add(player);
+                    logger.info("Spieler {} wurde blockiert", player.getFirstName());
                 } else {
-                    blockedPlayers.remove(event.getPlayer());
+                    blockedPlayers.remove(player);
+                    logger.info("Spieler {} wurde entsperrt", player.getFullName());
                 }
             }
         };
-
     }
-
 }
