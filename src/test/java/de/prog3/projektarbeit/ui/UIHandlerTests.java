@@ -10,6 +10,7 @@ import de.prog3.projektarbeit.ui.views.laterna.LaternaView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 
 import java.util.ArrayList;
 
@@ -41,6 +42,7 @@ class UIHandlerTests {
 
     @Test
     @DisplayName("RequestNewViewListener should add LaternaView to views")
+    @DisabledIfSystemProperty(named = "java.awt.headless", matches = "true")
     void requestNewViewListener_addsLaternaViewAndCallsOpenPageEvent() {
         RequestNewViewEvent mockEvent = mock(RequestNewViewEvent.class);
         when(mockEvent.getViewType()).thenReturn(ViewType.LATERNA);
