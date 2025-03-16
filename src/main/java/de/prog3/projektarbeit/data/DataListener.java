@@ -17,6 +17,7 @@ import de.prog3.projektarbeit.eventHandling.listeners.data.team.AttemptTeamCreat
 import de.prog3.projektarbeit.exceptions.UnableToSavePlayerExeption;
 import de.prog3.projektarbeit.exceptions.UnableToSaveTeamExeption;
 import de.prog3.projektarbeit.exceptions.ValidationException;
+import de.prog3.projektarbeit.utils.Parser;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class DataListener {
                 ArrayList<Exception> exceptions = new ArrayList<>();
                 PlayerFactory factory = new PlayerFactory();
                 try {
-                    factory = factory.setDateOfBirth(Player.parseStringToDate(event.getDateOfBirth()));
+                    factory = factory.setDateOfBirth(Parser.parseStringToDate(event.getDateOfBirth()));
                 } catch (ParseException e){
                     exceptions.add(new ParseException("Das Geburtsdatum muss das Format dd-mm-yyyy oder dd.mm.yyyy haben aber sah so aus: " + event.getDateOfBirth(), e.getErrorOffset()));
                 }
@@ -96,7 +97,7 @@ public class DataListener {
                 ArrayList<Exception> exceptions = new ArrayList<>();
                 PlayerFactory factory = new PlayerFactory();
                 try {
-                    factory = factory.setDateOfBirth(Player.parseStringToDate(event.getDateOfBirth()));
+                    factory = factory.setDateOfBirth(Parser.parseStringToDate(event.getDateOfBirth()));
                 } catch (ParseException e){
                     exceptions.add(new ParseException("Das Geburtsdatum muss das Format dd-mm-yyyy oder dd.mm.yyyy haben aber sah so aus: " + event.getDateOfBirth(), e.getErrorOffset()));
                 }
