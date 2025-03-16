@@ -1,6 +1,6 @@
 package de.prog3.projektarbeit.data.objects;
 
-import de.prog3.projektarbeit.data.database.query.Transfers;
+import de.prog3.projektarbeit.data.database.query.TransferQuery;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class TransferHistory {
     }
 
     private void loadTransfers(Player player) {
-        this.transfers = Transfers.getTransfers(player);
+        this.transfers = TransferQuery.getTransfers(player);
     }
 
     @Override

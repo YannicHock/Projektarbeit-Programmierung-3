@@ -14,7 +14,7 @@ import static de.prog3.projektarbeit.data.jooq.tables.Team.TEAM;
 import static de.prog3.projektarbeit.data.jooq.tables.Transfer.TRANSFER;
 import static org.jooq.impl.DSL.coalesce;
 
-public class Transfers {
+public class TransferQuery {
 
     public static ArrayList<TransferHistory.Transfer> getTransfers(Player player) {
         ArrayList<TransferHistory.Transfer> transfers = new ArrayList<>();

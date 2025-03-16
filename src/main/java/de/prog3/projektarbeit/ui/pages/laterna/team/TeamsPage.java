@@ -3,6 +3,7 @@ package de.prog3.projektarbeit.ui.pages.laterna.team;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialog;
 import com.googlecode.lanterna.gui2.table.Table;
+import de.prog3.projektarbeit.data.database.query.TeamQuery;
 import de.prog3.projektarbeit.data.factories.PlayerFactory;
 import de.prog3.projektarbeit.data.factories.TeamFactory;
 import de.prog3.projektarbeit.data.objects.Team;
@@ -31,7 +32,7 @@ public class TeamsPage extends LaternaPage {
 
     public TeamsPage(LaternaView view) {
         this.name = "Team übersicht";
-        this.teams = TeamFactory.getAllWithoutPlayers();
+        this.teams = TeamQuery.getAllWithoutPlayers();
         this.window = new BasicWindow(name);
         this.view = view;
         this.table = new Table<>("ID", "Teamname", "Spieleranzahl");
@@ -60,7 +61,7 @@ public class TeamsPage extends LaternaPage {
             List<String> data = table.getTableModel().getRow(table.getSelectedRow());
             int id = Integer.parseInt(data.getFirst());
             try {
-                new OpenPageEvent(view, PageType.TEAM, TeamFactory.getTeamById(id)).call();
+                new OpenPageEvent(view, PageType.TEAM, TeamQuery.getTeamById(id)).call();
             } catch (TeamNotFoundExeption e) {
                 MessageDialog.showMessageDialog(window.getTextGUI(), "Fehler beim aktualisieren des Spielers", "");
             }
