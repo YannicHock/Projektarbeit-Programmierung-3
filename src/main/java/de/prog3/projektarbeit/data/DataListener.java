@@ -1,5 +1,6 @@
 package de.prog3.projektarbeit.data;
 
+import de.prog3.projektarbeit.data.database.query.PlayerQuery;
 import de.prog3.projektarbeit.data.factories.PlayerFactory;
 import de.prog3.projektarbeit.data.factories.TeamFactory;
 import de.prog3.projektarbeit.data.objects.Player;
@@ -50,7 +51,7 @@ public class DataListener {
 
                 if(player!=null){
                     try {
-                        player.save();
+                        PlayerQuery.save(player);
                         new PlayerCreationFinishedEvent(player).call();
                         return;
                     } catch (UnableToSavePlayerExeption e) {
@@ -118,7 +119,7 @@ public class DataListener {
 
                 if(player!=null){
                     try {
-                        player.save();
+                        PlayerQuery.save(player);
                         new PlayerUpdateFinishedEvent(player, event.getPlayer()).call();
                         return;
                     } catch (UnableToSavePlayerExeption e) {

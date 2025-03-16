@@ -2,7 +2,7 @@ package de.prog3.projektarbeit.ui.pages.laterna.player;
 
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.table.Table;
-import de.prog3.projektarbeit.data.factories.PlayerFactory;
+import de.prog3.projektarbeit.data.database.query.PlayerQuery;
 import de.prog3.projektarbeit.data.objects.Player;
 import de.prog3.projektarbeit.eventHandling.events.Event;
 import de.prog3.projektarbeit.eventHandling.events.data.player.PlayerCreationFinishedEvent;
@@ -33,7 +33,7 @@ public class FreeAgentsPage extends LaternaPage {
         this.name = "Vereinslose Spieler";
         this.window = new BasicWindow(name);
         this.view = view;
-        this.players = PlayerFactory.getFreeAgents();
+        this.players = PlayerQuery.getFreeAgents();
         this.table = new Table<>("ID", "Spielername", "Alter", "Rückennummer");
         listeners = new ArrayList<>();
         registerListener();
@@ -80,7 +80,7 @@ public class FreeAgentsPage extends LaternaPage {
         ArrayList<Player> playerList = new ArrayList<>(players.values());
         playerList.sort(Comparator.comparing(Player::getLastName));
         for (Player player : playerList) {
-            table.getTableModel().addRow(player.getId() + "", player.getFirstName() + " " + player.getLastName(), player.getAge() + "", player.getNumber() + "");
+            table.getTableModel().addRow(player.getId() + "", player.getFullName(), player.getAge() + "", player.getNumber() + "");
         }
     }
 

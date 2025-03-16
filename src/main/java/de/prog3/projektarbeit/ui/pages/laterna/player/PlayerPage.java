@@ -1,6 +1,7 @@
 package de.prog3.projektarbeit.ui.pages.laterna.player;
 
 import com.googlecode.lanterna.gui2.*;
+import de.prog3.projektarbeit.data.database.query.TeamQuery;
 import de.prog3.projektarbeit.data.factories.TeamFactory;
 import de.prog3.projektarbeit.data.objects.Player;
 import de.prog3.projektarbeit.eventHandling.events.Event;
@@ -49,7 +50,7 @@ public class PlayerPage extends LaternaPage {
 
     private void updatePlayer(Player player){
         this.player = player;
-        nameContent.setText(player.getFirstName() + " " + player.getLastName());
+        nameContent.setText(player.getFullName());
         ageContent.setText(player.getAge() + "");
         try {
             birthDateContent.setText(Player.parseDateToString(player.getDateOfBirth()));
@@ -58,7 +59,7 @@ public class PlayerPage extends LaternaPage {
         }
         numberContent.setText(player.getNumber() + "");
         try {
-            currentTeamContent.setText(TeamFactory.getNameById(player.getTeamId()));
+            currentTeamContent.setText(TeamQuery.getNameById(player.getTeamId()));
         } catch (TeamNotFoundExeption e){
             currentTeamContent.setText("Fehler beim Laden des Teams");
         }
@@ -89,7 +90,7 @@ public class PlayerPage extends LaternaPage {
 
         Label nameLabel = new Label("Name: ");
         mainpanel.addComponent(nameLabel);
-        nameContent.setText(player.getFirstName() + " " + player.getLastName());
+        nameContent.setText(player.getFullName());
         mainpanel.addComponent(nameContent);
 
 
@@ -115,7 +116,7 @@ public class PlayerPage extends LaternaPage {
         Label currentTeamLabel = new Label("Aktuelles Team: ");
         mainpanel.addComponent(currentTeamLabel);
         try {
-            currentTeamContent.setText(TeamFactory.getNameById(player.getTeamId()));
+            currentTeamContent.setText(TeamQuery.getNameById(player.getTeamId()));
         } catch (TeamNotFoundExeption e){
             currentTeamContent.setText("Fehler beim Laden des Teams");
         }
