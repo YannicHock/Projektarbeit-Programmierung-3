@@ -1,6 +1,7 @@
 package de.prog3.projektarbeit.data.objects;
 
 import de.prog3.projektarbeit.data.database.query.TransferQuery;
+import de.prog3.projektarbeit.utils.Parser;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ public class TransferHistory {
         @Override
         public String toString() {
             try {
-                return "(" + Player.parseDateToString(date) + ") " + amount + " from " + fromTeam + " to " + toTeam;
+                return "(" + Parser.parseDateToString(date) + ") " + amount + " from " + fromTeam + " to " + toTeam;
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }

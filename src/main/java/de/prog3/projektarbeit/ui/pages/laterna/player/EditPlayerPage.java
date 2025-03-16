@@ -14,6 +14,7 @@ import de.prog3.projektarbeit.eventHandling.listeners.Priority;
 import de.prog3.projektarbeit.eventHandling.listeners.data.player.PlayerUpdateFinishedListener;
 import de.prog3.projektarbeit.ui.pages.laterna.LaternaPage;
 import de.prog3.projektarbeit.ui.views.laterna.LaternaView;
+import de.prog3.projektarbeit.utils.Parser;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -87,7 +88,7 @@ public class EditPlayerPage extends LaternaPage {
         mainPanel.addComponent(birthDate);
         TextBox birthDateTextBox = new TextBox().setPreferredSize(size);
         try {
-            birthDateTextBox.setText(Player.parseDateToString(player.getDateOfBirth()));
+            birthDateTextBox.setText(Parser.parseDateToString(player.getDateOfBirth()));
         } catch (ParseException e){
             birthDateTextBox.setText("");
         }

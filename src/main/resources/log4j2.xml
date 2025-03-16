@@ -28,12 +28,9 @@
             </AppenderRef>
             <AppenderRef ref="Console"/>
         </Logger>
-        <!--
-        <Logger name="com.zaxxer.hikari" level="info" additivity="false">
-            <AppenderRef ref="File"/>
-            <AppenderRef ref="Console"/>
-        </Logger>
-        -->
+        <logger name="org.jooq" level="warn" additivity="false">
+            <appender-ref ref="Console" />
+        </logger>
         <Root level="info">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="File"/>

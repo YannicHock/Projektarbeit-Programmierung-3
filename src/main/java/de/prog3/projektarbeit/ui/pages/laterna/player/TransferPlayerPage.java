@@ -2,20 +2,14 @@ package de.prog3.projektarbeit.ui.pages.laterna.player;
 
 import com.googlecode.lanterna.gui2.*;
 import de.prog3.projektarbeit.data.database.query.TeamQuery;
-import de.prog3.projektarbeit.data.factories.TeamFactory;
 import de.prog3.projektarbeit.data.objects.Player;
 import de.prog3.projektarbeit.data.objects.Team;
 import de.prog3.projektarbeit.eventHandling.events.Event;
-import de.prog3.projektarbeit.eventHandling.events.data.player.PlayerUpdateFinishedEvent;
-import de.prog3.projektarbeit.eventHandling.events.ui.OpenPageEvent;
 import de.prog3.projektarbeit.eventHandling.listeners.EventListener;
-import de.prog3.projektarbeit.eventHandling.listeners.data.player.PlayerUpdateFinishedListener;
 import de.prog3.projektarbeit.exceptions.TeamNotFoundExeption;
-import de.prog3.projektarbeit.ui.pages.PageType;
 import de.prog3.projektarbeit.ui.pages.laterna.LaternaPage;
 import de.prog3.projektarbeit.ui.views.laterna.LaternaView;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -79,7 +73,7 @@ public class TransferPlayerPage extends LaternaPage {
         mainpanel.addComponent(targetTeamLabel);
         ComboBox<String> teamComboBox = new ComboBox<>();
         int index = 0;
-        for(Team team : TeamQuery.getAllWithoutPlayers().values()){
+        for(Team team : TeamQuery.getAll().values()){
             indexMap.put(index, team.getId());
             index++;
             teamComboBox.addItem(team.getName());
