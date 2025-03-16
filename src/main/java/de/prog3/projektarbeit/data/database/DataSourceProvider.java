@@ -1,4 +1,4 @@
-package de.prog3.projektarbeit.data;
+package de.prog3.projektarbeit.data.database;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;

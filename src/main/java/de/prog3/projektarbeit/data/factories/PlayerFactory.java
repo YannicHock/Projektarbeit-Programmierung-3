@@ -1,6 +1,6 @@
 package de.prog3.projektarbeit.data.factories;
 
-import de.prog3.projektarbeit.data.JooqContextProvider;
+import de.prog3.projektarbeit.data.database.JooqContextProvider;
 import de.prog3.projektarbeit.data.Position;
 import de.prog3.projektarbeit.data.jooq.tables.records.PlayerRecord;
 import de.prog3.projektarbeit.data.objects.Player;
