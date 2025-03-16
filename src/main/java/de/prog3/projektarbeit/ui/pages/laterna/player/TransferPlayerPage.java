@@ -1,6 +1,7 @@
 package de.prog3.projektarbeit.ui.pages.laterna.player;
 
 import com.googlecode.lanterna.gui2.*;
+import de.prog3.projektarbeit.data.database.query.TeamQuery;
 import de.prog3.projektarbeit.data.factories.TeamFactory;
 import de.prog3.projektarbeit.data.objects.Player;
 import de.prog3.projektarbeit.data.objects.Team;
@@ -23,7 +24,7 @@ public class TransferPlayerPage extends LaternaPage {
 
     private final Window window;
     private final LaternaView view;
-    private Player player;
+    private final Player player;
     private final String name;
     private final Label nameContent;
     private final Label currentTeamContent;
@@ -56,7 +57,7 @@ public class TransferPlayerPage extends LaternaPage {
 
         Label nameLabel = new Label("Spieler: ");
         mainpanel.addComponent(nameLabel);
-        nameContent.setText(player.getFirstName() + " " + player.getLastName());
+        nameContent.setText(player.getFullName());
         mainpanel.addComponent(nameContent);
 
         Label numberLabel = new Label("Rückennummer: ");
@@ -68,7 +69,7 @@ public class TransferPlayerPage extends LaternaPage {
         Label currentTeamLabel = new Label("Aktuelles Team: ");
         mainpanel.addComponent(currentTeamLabel);
         try {
-            currentTeamContent.setText(TeamFactory.getNameById(player.getTeamId()));
+            currentTeamContent.setText(TeamQuery.getNameById(player.getTeamId()));
         } catch (TeamNotFoundExeption e){
             currentTeamContent.setText("Fehler beim Laden des Teams");
         }
@@ -78,7 +79,7 @@ public class TransferPlayerPage extends LaternaPage {
         mainpanel.addComponent(targetTeamLabel);
         ComboBox<String> teamComboBox = new ComboBox<>();
         int index = 0;
-        for(Team team : TeamFactory.getAllWithoutPlayers().values()){
+        for(Team team : TeamQuery.getAllWithoutPlayers().values()){
             indexMap.put(index, team.getId());
             index++;
             teamComboBox.addItem(team.getName());

@@ -123,7 +123,7 @@ public class TeamPage extends LaternaPage {
                     case GOALKEEPER -> table = GK_table;
                     default -> table = null;
                 }
-                table.getTableModel().addRow(player.getId() + "", player.getFirstName() + " " + player.getLastName(), player.getAge() + "", player.getNumber() + "");
+                table.getTableModel().addRow(player.getId() + "", player.getFullName(), player.getAge() + "", player.getNumber() + "");
             });
         });
     }

@@ -26,7 +26,7 @@ public class EditPlayerPage extends LaternaPage {
     private final Player player;
 
     public EditPlayerPage(LaternaView view, Player player) {
-        String name = player.getFirstName() + " " + player.getLastName() + " - Bearbeiten";
+        String name = player.getFullName() + " - Bearbeiten";
         this.player = player;
         this.window = new BasicWindow(name);
         this.view = view;
