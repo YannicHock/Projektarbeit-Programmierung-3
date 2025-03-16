@@ -1,6 +1,6 @@
 package de.prog3.projektarbeit.data.objects;
 
-import de.prog3.projektarbeit.data.JooqContextProvider;
+import de.prog3.projektarbeit.data.database.JooqContextProvider;
 import de.prog3.projektarbeit.exceptions.UnableToSaveTeamExeption;
 import org.jooq.DSLContext;
 

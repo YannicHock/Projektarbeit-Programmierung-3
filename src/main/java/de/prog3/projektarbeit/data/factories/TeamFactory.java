@@ -1,7 +1,6 @@
 package de.prog3.projektarbeit.data.factories;
 
-import de.prog3.projektarbeit.data.JooqContextProvider;
-import de.prog3.projektarbeit.data.objects.Player;
+import de.prog3.projektarbeit.data.database.JooqContextProvider;
 import de.prog3.projektarbeit.data.objects.Team;
 import de.prog3.projektarbeit.exceptions.TeamNotFoundExeption;
 import org.jooq.DSLContext;
@@ -10,7 +9,6 @@ import org.jooq.Record3;
 import org.jooq.Result;
 import org.jooq.impl.DSL;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import static de.prog3.projektarbeit.data.jooq.tables.Player.PLAYER;
