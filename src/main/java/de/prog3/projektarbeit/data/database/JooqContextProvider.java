@@ -1,4 +1,4 @@
-package de.prog3.projektarbeit.data;
+package de.prog3.projektarbeit.data.database;
 
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
