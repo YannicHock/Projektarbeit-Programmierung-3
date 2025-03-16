@@ -2,6 +2,7 @@ package de.prog3.projektarbeit.data;
 
 
 import de.prog3.projektarbeit.data.objects.Player;
+import de.prog3.projektarbeit.utils.Parser;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -30,7 +31,7 @@ public class Scraper {
                     .filter(element -> element.text().startsWith("Geboren:"))
                     .map(element -> element.text().split(" ")[1])
                     .findFirst().orElse("Unbekannt").replaceAll("\\.", "-");
-            date = Player.parseStringToDate(dateString);
+            date = Parser.parseStringToDate(dateString);
 
             String team = playerInfo.getElementsByClass("kick__vita__header__team-name").getFirst().text();
             //kick__player__number

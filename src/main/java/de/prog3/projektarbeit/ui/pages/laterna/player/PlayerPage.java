@@ -13,6 +13,7 @@ import de.prog3.projektarbeit.exceptions.TeamNotFoundExeption;
 import de.prog3.projektarbeit.ui.pages.PageType;
 import de.prog3.projektarbeit.ui.pages.laterna.LaternaPage;
 import de.prog3.projektarbeit.ui.views.laterna.LaternaView;
+import de.prog3.projektarbeit.utils.Parser;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ public class PlayerPage extends LaternaPage {
         nameContent.setText(player.getFullName());
         ageContent.setText(player.getAge() + "");
         try {
-            birthDateContent.setText(Player.parseDateToString(player.getDateOfBirth()));
+            birthDateContent.setText(Parser.parseDateToString(player.getDateOfBirth()));
         } catch (ParseException e){
             birthDateContent.setText("Fehler beim Konvertieren des Geburtsdatums");
         }
@@ -102,7 +103,7 @@ public class PlayerPage extends LaternaPage {
         Label birthDateLabel = new Label("Geburtsdatum: ");
         mainpanel.addComponent(birthDateLabel);
         try {
-            birthDateContent.setText(Player.parseDateToString(player.getDateOfBirth()));
+            birthDateContent.setText(Parser.parseDateToString(player.getDateOfBirth()));
         } catch (ParseException e){
             birthDateContent.setText("Fehler beim Konvertieren des Geburtsdatums");
         }
