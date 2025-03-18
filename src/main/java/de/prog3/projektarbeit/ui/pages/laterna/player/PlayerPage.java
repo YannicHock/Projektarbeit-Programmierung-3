@@ -2,7 +2,6 @@ package de.prog3.projektarbeit.ui.pages.laterna.player;
 
 import com.googlecode.lanterna.gui2.*;
 import de.prog3.projektarbeit.data.database.query.TeamQuery;
-import de.prog3.projektarbeit.data.factories.TeamFactory;
 import de.prog3.projektarbeit.data.objects.Player;
 import de.prog3.projektarbeit.eventHandling.events.Event;
 import de.prog3.projektarbeit.eventHandling.events.data.player.PlayerUpdateFinishedEvent;
@@ -13,7 +12,7 @@ import de.prog3.projektarbeit.exceptions.TeamNotFoundExeption;
 import de.prog3.projektarbeit.ui.pages.PageType;
 import de.prog3.projektarbeit.ui.pages.laterna.LaternaPage;
 import de.prog3.projektarbeit.ui.views.laterna.LaternaView;
-import de.prog3.projektarbeit.utils.Parser;
+import de.prog3.projektarbeit.utils.Formatter;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -54,7 +53,7 @@ public class PlayerPage extends LaternaPage {
         nameContent.setText(player.getFullName());
         ageContent.setText(player.getAge() + "");
         try {
-            birthDateContent.setText(Parser.parseDateToString(player.getDateOfBirth()));
+            birthDateContent.setText(Formatter.parseDateToString(player.getDateOfBirth()));
         } catch (ParseException e){
             birthDateContent.setText("Fehler beim Konvertieren des Geburtsdatums");
         }
@@ -103,7 +102,7 @@ public class PlayerPage extends LaternaPage {
         Label birthDateLabel = new Label("Geburtsdatum: ");
         mainpanel.addComponent(birthDateLabel);
         try {
-            birthDateContent.setText(Parser.parseDateToString(player.getDateOfBirth()));
+            birthDateContent.setText(Formatter.parseDateToString(player.getDateOfBirth()));
         } catch (ParseException e){
             birthDateContent.setText("Fehler beim Konvertieren des Geburtsdatums");
         }
@@ -122,18 +121,17 @@ public class PlayerPage extends LaternaPage {
             currentTeamContent.setText("Fehler beim Laden des Teams");
         }
         mainpanel.addComponent(currentTeamContent);
+        mainpanel.addComponent(new EmptySpace());
+        mainpanel.addComponent(new Button("Transferhistorie", () -> new OpenPageEvent(view, PageType.PLAYER_TRANSFER_HISTORY, player).call()));
 
-
+        mainpanel.addComponent(new EmptySpace().setLayoutData(GridLayout.createHorizontallyFilledLayoutData(2)));
 
         Label positionLabel = new Label("Position(en): ");
         mainpanel.addComponent(positionLabel);
-        positionContent.setText(player.getPositionsAsString());
-        mainpanel.addComponent(positionContent);
-        mainpanel.addComponent(new EmptySpace());
         Panel positionPanel = new Panel(new GridLayout(1));
-        positionPanel.addComponent(positionLabel);
-        positionPanel.addComponent(positionContent);
         contentPanel.addComponent(positionPanel);
+        positionPanel.addComponent(positionContent);
+        positionContent.setText(player.getPositionsAsString());
 
         contentPanel.addComponent(new EmptySpace().setLayoutData(GridLayout.createHorizontallyFilledLayoutData(2)));
         Panel buttonPanel = new Panel(new GridLayout(3));

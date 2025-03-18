@@ -1,11 +1,15 @@
 package de.prog3.projektarbeit.ui.pages.laterna.player;
 
 import com.googlecode.lanterna.gui2.*;
+import com.googlecode.lanterna.gui2.dialogs.MessageDialog;
 import de.prog3.projektarbeit.data.database.query.TeamQuery;
 import de.prog3.projektarbeit.data.objects.Player;
 import de.prog3.projektarbeit.data.objects.Team;
 import de.prog3.projektarbeit.eventHandling.events.Event;
+import de.prog3.projektarbeit.eventHandling.events.data.player.AttemptPlayerTransferEvent;
+import de.prog3.projektarbeit.eventHandling.events.data.player.PlayerTransferFinishedEvent;
 import de.prog3.projektarbeit.eventHandling.listeners.EventListener;
+import de.prog3.projektarbeit.eventHandling.listeners.data.player.PlayerTransferFinishedListener;
 import de.prog3.projektarbeit.exceptions.TeamNotFoundExeption;
 import de.prog3.projektarbeit.ui.pages.laterna.LaternaPage;
 import de.prog3.projektarbeit.ui.views.laterna.LaternaView;
@@ -39,6 +43,24 @@ public class TransferPlayerPage extends LaternaPage {
     }
 
     private void registerListener(){
+        listeners.add(new PlayerTransferFinishedListener() {
+            @Override
+            public void onEvent(PlayerTransferFinishedEvent event) {
+                event.getPlayer().ifPresent(player -> {
+                    if(player.getId() == TransferPlayerPage.this.player.getId()){
+                        close();
+                    }
+                });
+                event.getExceptions().ifPresent(exceptions -> {
+                    StringBuilder builder = new StringBuilder();
+                    exceptions.forEach(exception -> {
+                        builder.append(exception.getMessage());
+                        builder.append("\n");
+                    });
+                    MessageDialog.showMessageDialog(window.getTextGUI(), "Fehler beim Transfer des Spielers", builder.toString());
+                });
+            }
+        });
     }
 
 
@@ -59,6 +81,12 @@ public class TransferPlayerPage extends LaternaPage {
         TextBox numberTextBox = new TextBox();
         numberTextBox.setText(player.getNumber() + "");
         mainpanel.addComponent(numberTextBox);
+
+        Label amountLabel = new Label("Transfersumme: ");
+        mainpanel.addComponent(amountLabel);
+        TextBox amountTextBox = new TextBox();
+        mainpanel.addComponent(amountTextBox);
+
 
         Label currentTeamLabel = new Label("Aktuelles Team: ");
         mainpanel.addComponent(currentTeamLabel);
@@ -87,9 +115,10 @@ public class TransferPlayerPage extends LaternaPage {
 
         contentPanel.addComponent(new EmptySpace().setLayoutData(GridLayout.createHorizontallyFilledLayoutData(2)));
         buttonPanel.addComponent(new Button("Fertig", () -> {
+            String amountString = amountTextBox.getText();
             String numberString = numberTextBox.getText();
             int teamId = indexMap.get(teamComboBox.getSelectedIndex());
-            System.out.printf("Number: %s, TeamId: %d\n", numberString, teamId);
+            new AttemptPlayerTransferEvent(player, numberString, teamId, amountString).call();
         }));
         contentPanel.addComponent(buttonPanel);
         contentPanel.addComponent(footer(false, false));

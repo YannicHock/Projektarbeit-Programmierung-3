@@ -15,7 +15,7 @@ public class AttemptPlayerCreationEvent extends Event {
 
 
     public AttemptPlayerCreationEvent(String firstName, String lastName, String dateOfBirth, String number, ArrayList<Position> positions) {
-        super("CreatePlayerEvent");
+        super("AttemptPlayerCreationEvent");
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;

@@ -31,6 +31,9 @@ public enum PageType {
     TRANSFER_PLAYER(new HashMap<>() {{
         put(ViewType.LATERNA, TransferPlayerPage.class);
     }}),
+    PLAYER_TRANSFER_HISTORY(new HashMap<>() {{
+        put(ViewType.LATERNA, PlayerTransferHistoryPage.class);
+    }}),
     TEAM(new HashMap<>() {{
         put(ViewType.LATERNA, TeamPage.class);
     }}),
