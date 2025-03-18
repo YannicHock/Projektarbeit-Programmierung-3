@@ -55,7 +55,6 @@ public class TeamQuery {
             });
         }
         if (team == null) {
-            logger.info("Gefundene Spieler: {}", team.getPlayerCount());
             logger.warn("Team mit ID {} nicht gefunden", id);
             throw new TeamNotFoundExeption("Team mit der ID " + id + " nicht gefunden");
         }
@@ -70,7 +69,7 @@ public class TeamQuery {
             DSLContext ctx = JooqContextProvider.getDSLContext();
             Record result = ctx.select().from(TEAM).where(TEAM.ID.eq(id)).fetchOne();
             if (result == null) {
-                logger.warn("Team mit ID {} nicht gefunden", id);
+                logger.warn("Teamname für das Team mit ID {} nicht gefunden", id);
                 throw new TeamNotFoundExeption("Team mit der ID " + id + " nicht gefunden");
             }
             return result.get(TEAM.NAME);

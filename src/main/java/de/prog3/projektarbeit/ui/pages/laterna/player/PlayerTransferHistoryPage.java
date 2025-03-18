@@ -21,7 +21,7 @@ public class PlayerTransferHistoryPage extends LaternaPage {
     private final LaternaView view;
     private final Player player;
     private final String name;
-    private ArrayList<Transfer> transferHistory;
+    private final ArrayList<Transfer> transferHistory;
     private final Table<String> table;
     private final ArrayList<EventListener<? extends Event>> listeners;
 
@@ -55,11 +55,7 @@ public class PlayerTransferHistoryPage extends LaternaPage {
                                 GridLayout.createHorizontallyFilledLayoutData(1)));
 
         for (Transfer transfer : transferHistory) {
-            try {
-                table.getTableModel().addRow(Formatter.parseDateToString(transfer.getDate()), transfer.getFromTeamName(), transfer.getToTeamName(), Formatter.formatCurrency(transfer.getAmount()));
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
-            }
+            table.getTableModel().addRow(Formatter.parseDateToString(transfer.getDate()), transfer.getFromTeamName(), transfer.getToTeamName(), Formatter.formatCurrency(transfer.getAmount()));
         }
 
         mainpanel.addComponent(table);

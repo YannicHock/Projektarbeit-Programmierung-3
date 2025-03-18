@@ -43,3 +43,4 @@ build/
 /src/main/java/de/prog3/projektarbeit/data/jooq/
 /data/
 /logs/
+/qodana.yaml
