@@ -87,11 +87,7 @@ public class EditPlayerPage extends LaternaPage {
         Label birthDate = new Label("Geburtsdatum");
         mainPanel.addComponent(birthDate);
         TextBox birthDateTextBox = new TextBox().setPreferredSize(size);
-        try {
-            birthDateTextBox.setText(Formatter.parseDateToString(player.getDateOfBirth()));
-        } catch (ParseException e){
-            birthDateTextBox.setText("");
-        }
+        birthDateTextBox.setText(Formatter.parseDateToString(player.getDateOfBirth()));
         mainPanel.addComponent(birthDateTextBox);
 
         mainPanel.addComponent(new EmptySpace().setLayoutData(GridLayout.createHorizontallyFilledLayoutData(2)));

@@ -82,13 +82,9 @@ public class DataListener {
                 }
 
                 if(team!=null){
-                    try {
-                        team.save();
-                        new TeamCreationFinishedEvent(team).call();
-                        return;
-                    } catch (UnableToSaveTeamExeption e) {
-                        exceptions.add(e);
-                    }
+                    team.save();
+                    new TeamCreationFinishedEvent(team).call();
+                    return;
                 }
                 new PlayerCreationFinishedEvent(exceptions).call();
             }

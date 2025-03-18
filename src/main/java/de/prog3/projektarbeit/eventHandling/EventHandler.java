@@ -56,6 +56,7 @@ public class EventHandler {
         return listeners;
     }
 
+    @SuppressWarnings("unchecked")
     public void callEvent(Event event) {
         ArrayList<EventListener<? extends Event>> listenerList = listeners.get(event.getClass());
         if(listenerList != null && !listenerList.isEmpty()) {
@@ -68,6 +69,7 @@ public class EventHandler {
                     }
                     logger.info(DEBUG_DISABLED_MARKER, "Verarbeite Listener {} für Event {}", listenerName, event.getClass().getSimpleName());
                     logger.debug("Verarbeite Listener {} für Event {}", listener.getClass().getName(), event.getClass().getName());
+
                     ((EventListener<Event>) listener).onEvent(event);
                 });
             } catch (ConcurrentModificationException ignore) {}

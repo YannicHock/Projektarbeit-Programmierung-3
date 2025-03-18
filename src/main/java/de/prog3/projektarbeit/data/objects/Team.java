@@ -52,7 +52,7 @@ public class Team extends DataObject {
         return players;
     }
 
-    public void save() throws UnableToSaveTeamExeption {
+    public void save() {
         DSLContext ctx = JooqContextProvider.getDSLContext();
 
         ctx.insertInto(TEAM)

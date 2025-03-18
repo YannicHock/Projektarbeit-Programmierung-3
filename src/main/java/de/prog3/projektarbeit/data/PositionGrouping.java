@@ -21,7 +21,7 @@ public enum PositionGrouping {
         add(Position.CM);
         add(Position.CAM);
     }}),
-    STRIKER("Stürmer", new ArrayList<>(){{;
+    STRIKER("Stürmer", new ArrayList<>(){{
         add(Position.ST);
         add(Position.RW);
         add(Position.LW);

@@ -1,9 +1,7 @@
 package de.prog3.projektarbeit.ui;
 
-import de.prog3.projektarbeit.eventHandling.events.ui.OpenPageEvent;
 import de.prog3.projektarbeit.eventHandling.events.ui.RequestNewViewEvent;
 import de.prog3.projektarbeit.eventHandling.listeners.ui.RequestNewViewListener;
-import de.prog3.projektarbeit.ui.pages.PageType;
 import de.prog3.projektarbeit.ui.views.View;
 import de.prog3.projektarbeit.ui.views.ViewType;
 import de.prog3.projektarbeit.ui.views.laterna.LaternaView;
@@ -12,7 +10,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;

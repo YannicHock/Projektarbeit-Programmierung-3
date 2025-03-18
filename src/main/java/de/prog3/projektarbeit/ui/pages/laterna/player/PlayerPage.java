@@ -52,11 +52,7 @@ public class PlayerPage extends LaternaPage {
         this.player = player;
         nameContent.setText(player.getFullName());
         ageContent.setText(player.getAge() + "");
-        try {
-            birthDateContent.setText(Formatter.parseDateToString(player.getDateOfBirth()));
-        } catch (ParseException e){
-            birthDateContent.setText("Fehler beim Konvertieren des Geburtsdatums");
-        }
+        birthDateContent.setText(Formatter.parseDateToString(player.getDateOfBirth()));
         numberContent.setText(player.getNumber() + "");
         try {
             currentTeamContent.setText(TeamQuery.getNameById(player.getTeamId()));
@@ -101,11 +97,7 @@ public class PlayerPage extends LaternaPage {
 
         Label birthDateLabel = new Label("Geburtsdatum: ");
         mainpanel.addComponent(birthDateLabel);
-        try {
-            birthDateContent.setText(Formatter.parseDateToString(player.getDateOfBirth()));
-        } catch (ParseException e){
-            birthDateContent.setText("Fehler beim Konvertieren des Geburtsdatums");
-        }
+        birthDateContent.setText(Formatter.parseDateToString(player.getDateOfBirth()));
         mainpanel.addComponent(birthDateContent);
 
         Label numberLabel = new Label("Rückennummer: ");

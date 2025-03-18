@@ -62,11 +62,7 @@ public class AttemptPlayerUpdateEvent extends Event {
 
     public String getDateOfBirth() {
         if (dateOfBirth == null) {
-            try {
-                return Formatter.parseDateToString(oldPlayer.getDateOfBirth());
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
-            }
+            return Formatter.parseDateToString(oldPlayer.getDateOfBirth());
         }
         return dateOfBirth;
     }

@@ -29,46 +29,41 @@ public class PlayerQuery {
     private static final Logger logger = LoggerFactory.getLogger(PlayerQuery.class);
 
     public static void save(Player player) throws UnableToSavePlayerExeption {
+        DSLContext ctx = JooqContextProvider.getDSLContext();
         try {
-            DSLContext ctx = JooqContextProvider.getDSLContext();
-            try {
-                if (player.getId() == 0) {
-                    logger.info("Speichere neuen Spieler: {}", player.getFullName());
-                    ctx.insertInto(PLAYER)
-                            .columns(PLAYER.FIRSTNAME, PLAYER.LASTNAME, PLAYER.DATEOFBIRTH, PLAYER.NUMBER)
-                            .values(player.getFirstName(), player.getLastName(), Formatter.parseDateToString(player.getDateOfBirth()), player.getNumber())
-                            .onDuplicateKeyUpdate()
-                            .set(PLAYER.FIRSTNAME, player.getFirstName())
-                            .set(PLAYER.LASTNAME, player.getLastName())
-                            .set(PLAYER.DATEOFBIRTH, Formatter.parseDateToString(player.getDateOfBirth()))
-                            .set(PLAYER.NUMBER, player.getNumber())
-                            .set(PLAYER.TEAM_ID, player.getTeamId())
-                            .execute();
-                    player.setId(ctx.lastID().intValue());
-                } else {
-                    logger.info("Aktualisiere Spieler: {}", player.getFullName());
-                    ctx.update(PLAYER)
-                            .set(PLAYER.FIRSTNAME, player.getFirstName())
-                            .set(PLAYER.LASTNAME, player.getLastName())
-                            .set(PLAYER.DATEOFBIRTH, Formatter.parseDateToString(player.getDateOfBirth()))
-                            .set(PLAYER.NUMBER, player.getNumber())
-                            .set(PLAYER.TEAM_ID, player.getTeamId())
-                            .where(PLAYER.ID.eq(player.getId()))
-                            .execute();
-                }
-            } catch (DataAccessException e){
-                if(e.getCause().getMessage().contains("UNIQUE constraint failed: Player.team_id, Player.number")){
-                    throw new IntegrityConstraintViolationException("Das Team mit der ID: " + player.getTeamId() + " hat bereits einen Spieler mit der Rückennummer " + player.getNumber());
-                } else {
-                    logger.error("Fehler beim Speichern des Spielers mit ID: {}", player.getId(), e);
-                    throw new DataException("Fehler beim Speichern des Spielers mit ID: " + player.getId(), e);
-                }
+            if (player.getId() == 0) {
+                logger.info("Speichere neuen Spieler: {}", player.getFullName());
+                ctx.insertInto(PLAYER)
+                        .columns(PLAYER.FIRSTNAME, PLAYER.LASTNAME, PLAYER.DATEOFBIRTH, PLAYER.NUMBER)
+                        .values(player.getFirstName(), player.getLastName(), Formatter.parseDateToString(player.getDateOfBirth()), player.getNumber())
+                        .onDuplicateKeyUpdate()
+                        .set(PLAYER.FIRSTNAME, player.getFirstName())
+                        .set(PLAYER.LASTNAME, player.getLastName())
+                        .set(PLAYER.DATEOFBIRTH, Formatter.parseDateToString(player.getDateOfBirth()))
+                        .set(PLAYER.NUMBER, player.getNumber())
+                        .set(PLAYER.TEAM_ID, player.getTeamId())
+                        .execute();
+                player.setId(ctx.lastID().intValue());
+            } else {
+                logger.info("Aktualisiere Spieler: {}", player.getFullName());
+                ctx.update(PLAYER)
+                        .set(PLAYER.FIRSTNAME, player.getFirstName())
+                        .set(PLAYER.LASTNAME, player.getLastName())
+                        .set(PLAYER.DATEOFBIRTH, Formatter.parseDateToString(player.getDateOfBirth()))
+                        .set(PLAYER.NUMBER, player.getNumber())
+                        .set(PLAYER.TEAM_ID, player.getTeamId())
+                        .where(PLAYER.ID.eq(player.getId()))
+                        .execute();
             }
-            updatePlayerPositions(ctx, player);
-        } catch (ParseException e) {
-            logger.error("Fehler beim Speichern des Spielers: {}", player.getFullName(), e);
-            throw new UnableToSavePlayerExeption("Player {" + player.getFullName() + " (" + player.getId() + ")} could not be saved");
+        } catch (DataAccessException e){
+            if(e.getCause().getMessage().contains("UNIQUE constraint failed: Player.team_id, Player.number")){
+                throw new IntegrityConstraintViolationException("Das Team mit der ID: " + player.getTeamId() + " hat bereits einen Spieler mit der Rückennummer " + player.getNumber());
+            } else {
+                logger.error("Fehler beim Speichern des Spielers mit ID: {}", player.getId(), e);
+                throw new DataException("Fehler beim Speichern des Spielers mit ID: " + player.getId(), e);
+            }
         }
+        updatePlayerPositions(ctx, player);
     }
 
     private static void updatePlayerPositions(DSLContext ctx, Player player) {
