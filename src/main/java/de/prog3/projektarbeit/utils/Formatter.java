@@ -21,7 +21,7 @@ public class Formatter {
     }
 
 
-    public static String parseDateToString(Date date) throws ParseException {
+    public static String parseDateToString(Date date) {
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
         return format.format(date);
     }

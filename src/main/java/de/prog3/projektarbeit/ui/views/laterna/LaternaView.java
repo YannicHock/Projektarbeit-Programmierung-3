@@ -22,7 +22,7 @@ import java.util.List;
 public class LaternaView implements View {
     private static final Logger logger = LoggerFactory.getLogger(LaternaView.class);
     private WindowBasedTextGUI gui;
-    private String name;
+    private final String name;
     EventListener<OpenPageEvent> openPageEventListener;
     EventListener<WindowCloseEvent> closeEventEventListener;
 
@@ -46,7 +46,7 @@ public class LaternaView implements View {
             }
         };
 
-        this.closeEventEventListener =  new WindowCloseEventListener(view) {
+        this.closeEventEventListener =  new WindowCloseEventListener() {
             @Override
             public void onEvent(WindowCloseEvent event) {
                 if(view.equals(event.getView())) {

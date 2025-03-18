@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class UIHandler {
 
-    private ArrayList<View> views;
+    private final ArrayList<View> views;
 
     private UIHandler() {
         views = new ArrayList<>();

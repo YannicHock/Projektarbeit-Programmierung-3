@@ -7,11 +7,9 @@ import de.prog3.projektarbeit.data.PositionGrouping;
 import de.prog3.projektarbeit.data.objects.Player;
 import de.prog3.projektarbeit.data.objects.Team;
 import de.prog3.projektarbeit.eventHandling.events.Event;
-import de.prog3.projektarbeit.eventHandling.events.data.player.PlayerCreationFinishedEvent;
 import de.prog3.projektarbeit.eventHandling.events.data.player.PlayerUpdateFinishedEvent;
 import de.prog3.projektarbeit.eventHandling.events.ui.OpenPageEvent;
 import de.prog3.projektarbeit.eventHandling.listeners.EventListener;
-import de.prog3.projektarbeit.eventHandling.listeners.data.player.PlayerCreationFinishedListener;
 import de.prog3.projektarbeit.eventHandling.listeners.data.player.PlayerUpdateFinishedListener;
 import de.prog3.projektarbeit.ui.pages.PageType;
 import de.prog3.projektarbeit.ui.pages.laterna.LaternaPage;
@@ -21,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class TeamPage extends LaternaPage {
     private final Window window;
@@ -70,11 +67,7 @@ public class TeamPage extends LaternaPage {
                         Player oldPlayer = event.getOldPlayer().orElse(player);
                         PositionGrouping oldGrouping = PositionGrouping.getGrouping(oldPlayer);
                         PositionGrouping grouping = PositionGrouping.getGrouping(player);
-                        if(grouping != oldGrouping){
-                            clearOldPlayer(oldPlayer, oldGrouping);
-                        } else {
-                            clearOldPlayer(oldPlayer, grouping);
-                        }
+                        clearOldPlayer(oldPlayer, oldGrouping);
                         groupPlayer(player);
                         redrawTables();
                     }
