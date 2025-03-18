@@ -2,9 +2,12 @@ package de.prog3.projektarbeit.data.database.query;
 
 import de.prog3.projektarbeit.data.database.JooqContextProvider;
 import de.prog3.projektarbeit.data.objects.Player;
-import de.prog3.projektarbeit.data.objects.TransferHistory;
-import de.prog3.projektarbeit.utils.Parser;
+import de.prog3.projektarbeit.data.objects.Transfer;
+import de.prog3.projektarbeit.utils.Formatter;
 import org.jooq.DSLContext;
+import org.jooq.exception.DataAccessException;
+import org.jooq.exception.DataException;
+import org.jooq.exception.IntegrityConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,8 +24,8 @@ public class TransferQuery {
 
     private static final Logger logger = LoggerFactory.getLogger(TransferQuery.class);
 
-    public static ArrayList<TransferHistory.Transfer> getTransfers(Player player) {
-        ArrayList<TransferHistory.Transfer> transfers = new ArrayList<>();
+    public static ArrayList<Transfer> getTransfers(Player player) {
+        ArrayList<Transfer> transfers = new ArrayList<>();
         DSLContext ctx = JooqContextProvider.getDSLContext();
         logger.info("Lade Transfers für Spieler mit ID: {}", player.getId());
         ctx.select(TRANSFER.ID,
@@ -36,8 +39,8 @@ public class TransferQuery {
                 .where(TRANSFER.PLAYERID.eq(player.getId()))
                 .fetch().forEach(record -> {
                     try {
-                        Date date = Parser.parseStringToDate(record.get(TRANSFER.DATE));
-                        transfers.add(new TransferHistory.Transfer(
+                        Date date = Formatter.parseStringToDate(record.get(TRANSFER.DATE));
+                        transfers.add(new Transfer(
                                 record.get(TRANSFER.ID),
                                 record.get("fromTeamName", String.class),
                                 record.get("toTeamName", String.class),
@@ -54,8 +57,30 @@ public class TransferQuery {
                         throw new RuntimeException(e);
                     }
                 });
-        transfers.sort(Comparator.comparing(TransferHistory.Transfer::date));
+        transfers.sort(Comparator.comparing(Transfer::getDate));
         logger.info("Transfers für Spieler mit ID: {} erfolgreich geladen", player.getId());
         return transfers;
+    }
+
+    public static void addTransfer(Transfer transfer) throws ParseException, IntegrityConstraintViolationException {
+        DSLContext ctx = JooqContextProvider.getDSLContext();
+        try {
+            logger.info("Füge Transfer für Spieler mit ID: {} hinzu", transfer.getPlayerId());
+            ctx.insertInto(TRANSFER)
+                    .set(TRANSFER.PLAYERID, transfer.getPlayerId())
+                    .set(TRANSFER.OLDTEAMID, transfer.getFromTeamId())
+                    .set(TRANSFER.NEWTEAMID, transfer.getToTeamId())
+                    .set(TRANSFER.AMOUNT, transfer.getAmount())
+                    .set(TRANSFER.DATE, transfer.getDateString())
+                    .execute();
+            logger.info("Transfer für Spieler mit ID: {} erfolgreich hinzugefügt", transfer.getPlayerId());
+        } catch (DataAccessException e){
+            if(e.getCause().getMessage().contains("UNIQUE constraint failed: Player.team_id, Player.number")){
+                throw new IntegrityConstraintViolationException("Das Team mit der ID: " + transfer.getToTeamId() + " hat bereits einen Spieler mit dieser Rückennumer");
+            } else {
+                logger.error("Fehler beim Hinzufügen des Transfers für Spieler mit ID: {}", transfer.getPlayerId(), e);
+                throw new DataException("Fehler beim Hinzufügen des Transfers für Spieler mit ID: " + transfer.getPlayerId(), e);
+            }
+        }
     }
 }
