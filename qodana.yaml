@@ -4,3 +4,7 @@ profile:
   name: qodana.recommended
 include:
   - name: CheckDependencyLicenses
+  - name: SystemOutErr
+  - name: ObsoleteCollection
+  - name: UseOfObsoleteDateTimeApi
+  - name: SimplifiableIfStatement
