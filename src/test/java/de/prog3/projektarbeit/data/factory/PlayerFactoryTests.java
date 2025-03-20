@@ -1,4 +1,4 @@
-package de.prog3.projektarbeit.Factory;
+package de.prog3.projektarbeit.data.factory;
 
 import de.prog3.projektarbeit.data.Position;
 import de.prog3.projektarbeit.data.factories.PlayerFactory;
@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class PlayerFactoryTest {
+public class PlayerFactoryTests {
 
     private PlayerFactory playerFactory;
     private ArrayList<Position> validPositions;
