@@ -1,15 +1,14 @@
-package de.prog3.projektarbeit.eventHandling.events.data.team;
+package de.prog3.projektarbeit.data.objects;
 
-import de.prog3.projektarbeit.data.objects.Team;
 import de.prog3.projektarbeit.eventHandling.events.data.Match;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Tournament {
-        private String name;
-        private List<Team> teams;
-        private List<Match> matches;
+        private final String name;
+        private final List<Team> teams;
+        private final List<Match> matches;
 
         public Tournament(String name) {
             this.name = name;
