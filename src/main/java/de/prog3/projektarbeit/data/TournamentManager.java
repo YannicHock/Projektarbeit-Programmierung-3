@@ -1,24 +1,26 @@
-package de.prog3.projektarbeit.eventHandling.events.data.team;
+package de.prog3.projektarbeit.data;
 
 import de.prog3.projektarbeit.data.objects.Team;
 import de.prog3.projektarbeit.eventHandling.events.data.Match;
+import de.prog3.projektarbeit.data.objects.Tournament;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TournamentManager {
-    private List<Tournament> tournaments;
+    private final List<Tournament> tournaments;
 
 
     public TournamentManager(){
-        this.tournaments = new ArrayList<Tournament>();
+        this.tournaments = new ArrayList<>();
     }
 
     public List<Tournament> getTournaments() {
         return tournaments;
     }
 
-    public void createTournament(String tournament) {
+    public void createTournament(String tournamentName) {
+        Tournament tournament = new Tournament(tournamentName);
         this.tournaments.add(tournament);
     }
 
@@ -42,13 +44,12 @@ public class TournamentManager {
         throw new IllegalArgumentException("Tournament not found " + tournamentNmae + " does not exist");
     }
 
-    public void removeTeamFromTournament(String tournamentNmae, Team team) {
+    public void removeTeamFromTournament(String tournamentName, Team team) {
         for (Tournament tournament : tournaments) {
-            if (tournamentNmae.equals(tournament.getName())) {
+            if (tournamentName.equals(tournament.getName())) {
                 tournament.removeTeam(team);
             }
         }
-        if (team.equals(null)) throw new IllegalArgumentException("Team not found " + tournamentNmae + " does not exist");
     }
 
 
