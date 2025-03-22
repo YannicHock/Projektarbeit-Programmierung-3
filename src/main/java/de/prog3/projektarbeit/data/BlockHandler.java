@@ -44,7 +44,11 @@ public class BlockHandler {
                         }
                         break;
                     case TRANSFER_PLAYER:
-                        // TODO: Implementierung
+                        Player playerToTransfer = (Player) event.getArgs()[0];
+                        if (blockedPlayers.contains(playerToTransfer)) {
+                            logger.info("Spieler {} ist für Transfers blockiert", playerToTransfer.getFullName());
+                            event.setCancelled(true);
+                        }
                         break;
                     default:
                         break;
@@ -57,7 +61,10 @@ public class BlockHandler {
             @Override
             public void onEvent(BlockPlayerEvent event) {
                 Player player = event.getPlayer();
-                if (event.isBlocked()) {
+                if (event.isBlocked() && blockedPlayers.contains(player)) {
+                    logger.info("Spieler {} ist bereits blockiert", player.getFullName());
+                }
+                else if (event.isBlocked()) {
                     blockedPlayers.add(player);
                     logger.info("Spieler {} wurde blockiert", player.getFirstName());
                 } else {
