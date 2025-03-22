@@ -1,7 +1,7 @@
 package de.prog3.projektarbeit.data;
 
 import de.prog3.projektarbeit.data.objects.Team;
-import de.prog3.projektarbeit.eventHandling.events.data.Match;
+import de.prog3.projektarbeit.data.objects.Match;
 import de.prog3.projektarbeit.data.objects.Tournament;
 
 import java.util.ArrayList;

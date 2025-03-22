@@ -1,7 +1,5 @@
 package de.prog3.projektarbeit.data.objects;
 
-import de.prog3.projektarbeit.eventHandling.events.data.Match;
-
 import java.util.ArrayList;
 import java.util.List;
 
