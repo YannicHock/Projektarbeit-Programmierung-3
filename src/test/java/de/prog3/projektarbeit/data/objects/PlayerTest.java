@@ -12,14 +12,20 @@ import java.util.List;
 
 import static de.prog3.projektarbeit.data.Position.CM;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PlayerTest {
     @Test
     void TestAPlayerCreation (){
-        Player testPlayer1 = new Player(250, "Ashish", "Kumar", Date.from(Instant.now()), 24, new ArrayList<>(List.of(CM)), 450);
+        Instant currentTime = Instant.now();
+        Player testPlayer1 = new Player(250, "Ashish", "Kumar", Date.from(currentTime), 24, new ArrayList<>(List.of(CM)), 450);
         assertEquals("Ashish",testPlayer1.getFirstName());
         assertEquals("Kumar",testPlayer1.getLastName());
         assertEquals(24,testPlayer1.getNumber());
+        assertEquals(450,testPlayer1.getTeamId());
+        assertEquals(Date.from(currentTime),testPlayer1.getDateOfBirth());
+        assertTrue(testPlayer1.getPositions().contains(CM));
+        assertTrue(testPlayer1.getPositions().size() == 1);
         assertEquals(250,testPlayer1.getId());
 
     }
