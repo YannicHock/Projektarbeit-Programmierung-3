@@ -52,7 +52,7 @@ public class PlayerFactory {
         return this;
     }
 
-    public static void validDateData(String firstName, String lastName, Date dateOfBirth, int number, ArrayList<Position> positions) throws ValidationException {
+    public static void validateData(String firstName, String lastName, Date dateOfBirth, int number, ArrayList<Position> positions) throws ValidationException {
         ArrayList<Exception> exceptions = new ArrayList<>();
         if (firstName == null || firstName.isBlank()) {
             exceptions.add(new IllegalArgumentException("Fehlender Vorname"));
@@ -75,7 +75,7 @@ public class PlayerFactory {
     }
 
     public Player build() throws ValidationException {
-        validDateData(firstName, lastName, dateOfBirth, number, positions);
+        validateData(firstName, lastName, dateOfBirth, number, positions);
         return new Player(id, firstName, lastName, dateOfBirth, number, positions, teamId);
     }
 }
