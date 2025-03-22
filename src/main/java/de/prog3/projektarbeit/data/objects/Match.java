@@ -1,32 +1,29 @@
 package de.prog3.projektarbeit.data.objects;
 
+import java.util.Date;
+
 public class Match {
-    Team homeTeam;
-    Team awayTeam;
-    String date;
-    public Match(Team team1, Team team2, String date) {
-            this.homeTeam = team1;
-            this.awayTeam = team2;
+    private final Team homeTeam;
+    private final Team awayTeam;
+    private final Date date;
+
+
+    public Match(Team homeTeam, Team awayTeam, Date date) {
+            this.homeTeam = homeTeam;
+            this.awayTeam = awayTeam;
             this.date = date;
     }
 
-    public Team getHomeTeam() {
-       return this.homeTeam = homeTeam;
-    }
     public Team getAwayTeam() {
-        return this.awayTeam = awayTeam;
+        return awayTeam;
     }
 
-    public void setAwayTeam(Team awayTeam) {
-        this.awayTeam = awayTeam;
+    public Team getHomeTeam() {
+        return homeTeam;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
     }
 
     @Override
