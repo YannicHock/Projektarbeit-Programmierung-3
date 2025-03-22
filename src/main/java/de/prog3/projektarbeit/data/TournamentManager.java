@@ -24,24 +24,24 @@ public class TournamentManager {
         this.tournaments.add(tournament);
     }
 
-    public void addTeamToTournament(String tournamentNmae, Team team) {
+    public void addTeamToTournament(String tournamentName, Team team) {
         for (Tournament tournament : tournaments) {
-            if (tournamentNmae.equals(tournament.getName())) {
+            if (tournamentName.equals(tournament.getName())) {
                 tournament.addTeam(team);
                 return;
             }
         }
-        throw new IllegalArgumentException("Tournament not found " + tournamentNmae + " does not exist");
+        throw new IllegalArgumentException("Turnier nicht gefunden");
     }
 
-    public void addMatchToTournament(String tournamentNmae, Match match) {
+    public void addMatchToTournament(String tournamentName, Match match) {
         for (Tournament tournament : tournaments) {
-            if (tournamentNmae.equals(tournament.getName())) {
+            if (tournamentName.equals(tournament.getName())) {
                 tournament.addMatch(match);
                 return;
             }
         }
-        throw new IllegalArgumentException("Tournament not found " + tournamentNmae + " does not exist");
+        throw new IllegalArgumentException("Turnier nicht gefunden");
     }
 
     public void removeTeamFromTournament(String tournamentName, Team team) {
