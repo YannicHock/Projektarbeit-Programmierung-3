@@ -25,7 +25,7 @@ class TeamFactoryTests {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             teamFactory.build();
         });
-        assertEquals("Fehlender Vorname", exception.getMessage());
+        assertEquals("Fehlender Teamname", exception.getMessage());
     }
 
     @Test
@@ -35,7 +35,7 @@ class TeamFactoryTests {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             teamFactory.build();
         });
-        assertEquals("Fehlender Vorname", exception.getMessage());
+        assertEquals("Fehlender Teamname", exception.getMessage());
     }
 
     @Test
@@ -45,7 +45,7 @@ class TeamFactoryTests {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             teamFactory.build();
         });
-        assertEquals("Fehlender Vorname", exception.getMessage());
+        assertEquals("Fehlender Teamname", exception.getMessage());
     }
 
     @Test

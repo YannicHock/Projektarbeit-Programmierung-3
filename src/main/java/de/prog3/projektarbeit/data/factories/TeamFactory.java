@@ -8,7 +8,7 @@ public class TeamFactory {
 
     public Team build() throws IllegalArgumentException {
         if(name == null || name.isEmpty() || name.isBlank()){
-            throw new IllegalArgumentException("Fehlender Vorname");
+            throw new IllegalArgumentException("Fehlender Teamname");
         }
 
         return new Team(name);
