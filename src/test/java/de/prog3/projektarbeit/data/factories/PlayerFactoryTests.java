@@ -1,7 +1,6 @@
-package de.prog3.projektarbeit.data.factory;
+package de.prog3.projektarbeit.data.factories;
 
 import de.prog3.projektarbeit.data.Position;
-import de.prog3.projektarbeit.data.factories.PlayerFactory;
 import de.prog3.projektarbeit.data.objects.Player;
 import de.prog3.projektarbeit.exceptions.ValidationException;
 import org.junit.jupiter.api.BeforeEach;
@@ -92,5 +91,22 @@ public class PlayerFactoryTests {
     void build_emptyPositions_throwsException() {
         playerFactory.setPositions(new ArrayList<>());
         assertThrows(ValidationException.class, () -> playerFactory.build());
+    }
+
+
+    @Test
+    @DisplayName("Build with valid id returns Player with correct id")
+    void build_validId_returnsPlayerWithId() throws ValidationException {
+        playerFactory.setId(1);
+        Player player = playerFactory.build();
+        assertEquals(1, player.getId(), "Die ID des Spielers sollte 1 sein.");
+    }
+
+    @Test
+    @DisplayName("Build with valid teamId returns Player with correct teamId")
+    void build_validTeamId_returnsPlayerWithTeamId() throws ValidationException {
+        playerFactory.setTeamId(2);
+        Player player = playerFactory.build();
+        assertEquals(2, player.getTeamId(), "Die Team-ID des Spielers sollte 2 sein.");
     }
 }
