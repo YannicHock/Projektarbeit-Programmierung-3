@@ -1,9 +1,4 @@
-package de.prog3.projektarbeit.eventHandling.events.data;
-
-import de.prog3.projektarbeit.data.objects.Team;
-
-import java.util.ArrayList;
-import java.util.List;
+package de.prog3.projektarbeit.data.objects;
 
 public class Match {
     Team homeTeam;

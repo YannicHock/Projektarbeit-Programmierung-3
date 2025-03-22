@@ -1,7 +1,7 @@
 package de.prog3.projektarbeit.events;
 
 import de.prog3.projektarbeit.data.objects.Team;
-import de.prog3.projektarbeit.eventHandling.events.data.Match;
+import de.prog3.projektarbeit.data.objects.Match;
 import de.prog3.projektarbeit.data.TournamentManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
