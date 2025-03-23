@@ -14,12 +14,16 @@ import de.prog3.projektarbeit.exceptions.TeamNotFoundExeption;
 import de.prog3.projektarbeit.ui.pages.PageType;
 import de.prog3.projektarbeit.ui.pages.laterna.LaternaPage;
 import de.prog3.projektarbeit.ui.views.laterna.LaternaView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class TeamsPage extends LaternaPage {
+
+    private static final Logger logger = LoggerFactory.getLogger(TeamsPage.class);
 
     private final Window window;
     private final LaternaView view;
@@ -30,7 +34,9 @@ public class TeamsPage extends LaternaPage {
 
     public TeamsPage(LaternaView view) {
         this.name = "Team übersicht";
+        logger.info("Erstelle TeamsPage mit Namen: {}", name);
         this.teams = TeamQuery.getAll();
+        logger.info("Es wurden {} Teams geladen.", teams.size());
         this.window = new BasicWindow(name);
         this.view = view;
         this.table = new Table<>("ID", "Teamname", "Spieleranzahl");
@@ -38,13 +44,17 @@ public class TeamsPage extends LaternaPage {
         registerListener();
         addClickAction();
         open();
+        logger.info("TeamsPage wurde erfolgreich geöffnet.");
     }
 
     private void registerListener(){
+        logger.info("Registriere TeamCreationFinishedListener für TeamsPage.");
         EventListener<TeamCreationFinishedEvent> teamCreationFinishedEventEventListener = new TeamCreationFinishedListener() {
             @Override
             public void onEvent(TeamCreationFinishedEvent event) {
+                logger.info("TeamCreationFinishedEvent empfangen.");
                 event.getTeam().ifPresent(team -> {
+                    logger.info("Füge Team '{}' zur Tabelle hinzu.", team.getName());
                     table.getTableModel().addRow(team.getId() + "", team.getName(), team.getPlayers().size() + "");
                     teams.put(team.getId(), team);
                 });
@@ -55,19 +65,25 @@ public class TeamsPage extends LaternaPage {
     }
 
     private void addClickAction(){
+        logger.info("Füge Klickaktion zur Tabelle hinzu.");
         table.setSelectAction(() -> {
             List<String> data = table.getTableModel().getRow(table.getSelectedRow());
-            int id = Integer.parseInt(data.getFirst());
+            int id = Integer.parseInt(data.get(0));
+            logger.info("Ausgewählte Zeile in der Tabelle: ID = {}", id);
             try {
-                new OpenPageEvent(view, PageType.TEAM, TeamQuery.getTeamById(id)).call();
+                Team team = TeamQuery.getTeamById(id);
+                new OpenPageEvent(view, PageType.TEAM, team).call();
+                logger.info("OpenPageEvent erfolgreich für Team mit ID {} ausgelöst.", id);
             } catch (TeamNotFoundExeption e) {
-                MessageDialog.showMessageDialog(window.getTextGUI(), "Fehler beim aktualisieren des Spielers", "");
+                logger.error("TeamNotFoundExeption: Team mit ID {} konnte nicht gefunden werden.", id);
+                MessageDialog.showMessageDialog(window.getTextGUI(), "Fehler beim Aktualisieren des Spielers", "");
             }
         });
     }
 
     @Override
     protected Component get() {
+        logger.debug("Erstelle UI-Komponenten für TeamsPage.");
         Panel contentPanel = new Panel(new GridLayout(1));
 
         Panel mainpanel = new Panel(new GridLayout(2));
@@ -84,10 +100,7 @@ public class TeamsPage extends LaternaPage {
         }
 
         mainpanel.addComponent(table);
-
         contentPanel.addComponent(mainpanel);
-
-
         contentPanel.addComponent(footer(false));
         return contentPanel;
     }

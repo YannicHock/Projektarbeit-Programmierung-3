@@ -18,27 +18,35 @@ public class DataSourceProvider {
     private static final String DESTINATION_PATH = "data/db.sqlite";
 
     public static void init(){
+        logger.info("Starte Initialisierung des DataSourceProviders ...");
         File file = new File(DESTINATION_PATH);
         File parentDir = file.getParentFile();
+
         if (parentDir != null && !parentDir.mkdirs() && !parentDir.exists()) {
             logger.error("Erstellen des Verzeichnisses fehlgeschlagen: {}", parentDir);
+        } else {
+            logger.debug("Verzeichnis {} ist vorhanden oder wurde erfolgreich erstellt.", parentDir);
         }
+
         if(!file.exists()){
+            logger.info("Datenbankdatei {} existiert nicht. Kopiere aus Ressourcen ...", DESTINATION_PATH);
             copyDatabaseFile();
+        } else {
+            logger.debug("Datenbankdatei {} existiert bereits.", DESTINATION_PATH);
         }
+
         HikariConfig config = new HikariConfig();
-
         config.setJdbcUrl("jdbc:sqlite:data/db.sqlite");
-
         config.setDriverClassName("org.sqlite.JDBC");
-
         config.setMaximumPoolSize(10);
 
         dataSource = new HikariDataSource(config);
+        logger.info("DataSource wurde erfolgreich initialisiert.");
     }
 
     public static DataSource getDataSource() {
         if (dataSource == null) {
+            logger.info("DataSource noch nicht initialisiert. Führe init() aus.");
             init();
         }
         return dataSource;
@@ -51,6 +59,7 @@ public class DataSourceProvider {
                 throw new IllegalArgumentException("Datei nicht gefunden!");
             }
             Files.copy(inputStream, Paths.get(DESTINATION_PATH));
+            logger.info("Datenbankdatei wurde erfolgreich nach {} kopiert.", DESTINATION_PATH);
         } catch (Exception e) {
             logger.error("Fehler beim Kopieren der Datenbankdatei: ", e);
         }
