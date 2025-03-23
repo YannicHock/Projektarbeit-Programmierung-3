@@ -9,8 +9,7 @@ public class Tournament {
         private final String name;
         private final List<Team> teams;
         private final List<Match> matches;
-        private List<Match> FirtsLegMatches;
-        private List<Match> SecondLegMatches;
+
 
 
         public Tournament(String name) {
@@ -43,22 +42,24 @@ public class Tournament {
             this.teams.remove(team);
         }
 
-        public void firstMatchLeg(){
-            for (int i = 0; i < teams.size(); i++){
-                for (int j = i + 1; j < teams.size(); j++){
-                    FirtsLegMatches.add(new Match(teams.get(i), teams.get(j),MatchDate()));
+        public List<Match> firstMatchLeg(List<Team> teamsFirstleg ) {
+            List<Match> FirstLegMatches = new ArrayList<>();
+            for (int i = 0; i < teamsFirstleg.size(); i++){
+                for (int j = i + 1; j < teamsFirstleg.size(); j++){
+                    FirstLegMatches.add(new Match(teamsFirstleg.get(i), teamsFirstleg.get(j),MatchDate()));
                 }
             }
-            Collections.shuffle(matches);
+            return FirstLegMatches;
         }
 
-        public void secondMatchLeg(){
-            for (int i = 0; i < teams.size(); i++){
-                for (int j = i + 1; j < teams.size(); j++){
-                    SecondLegMatches.add(new Match(teams.get(j), teams.get(i),MatchDate()));
+        public List<Match> secondMatchLeg(List<Team> teamsSecondleg) {
+            List<Match> SecondLegMatches = new ArrayList<>();
+            for (int i = 0; i < teamsSecondleg.size(); i++){
+                for (int j = i + 1; j < teamsSecondleg.size(); j++){
+                    SecondLegMatches.add(new Match(teamsSecondleg.get(j), teamsSecondleg.get(i),MatchDate()));
                 }
             }
-            Collections.shuffle(matches);
+            return SecondLegMatches;
         }
 
         public Date MatchDate(){
