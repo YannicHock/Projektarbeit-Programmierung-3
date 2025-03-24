@@ -1,5 +1,7 @@
 package de.prog3.projektarbeit.data.objects;
 
+import de.prog3.projektarbeit.utils.Formatter;
+
 import java.util.Date;
 
 public class Match {
@@ -9,9 +11,9 @@ public class Match {
 
 
     public Match(Team homeTeam, Team awayTeam, Date date) {
-            this.homeTeam = homeTeam;
-            this.awayTeam = awayTeam;
-            this.date = date;
+        this.homeTeam = homeTeam;
+        this.awayTeam = awayTeam;
+        this.date = date;
     }
 
     public Team getAwayTeam() {
@@ -28,11 +30,9 @@ public class Match {
 
     @Override
     public String toString() {
-        return "Match{" +
-                "homeTeam=" + homeTeam.getName() +
-                ", awayTeam=" + awayTeam.getName() +
-                ", date='" + date + '\'' +
-                '}';
+        return Formatter.parseDateToString(date)
+                + " Heim: " + homeTeam.getName()
+                + " - Gast: " + awayTeam.getName();
     }
 }
 
