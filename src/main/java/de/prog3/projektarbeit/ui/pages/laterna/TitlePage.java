@@ -45,6 +45,7 @@ public class TitlePage extends LaternaPage {
         //Tournament Management
         Panel tournamentManagement = new Panel();
         mainPanel.addComponent(tournamentManagement.withBorder(Borders.singleLine("Tunierverwaltung")));
+        tournamentManagement.addComponent(new Button("Turniere Ansehen", () -> new OpenPageEvent(view, PageType.TOURNAMENT).call()));
         contentPanel.addComponent(mainPanel);
 
 

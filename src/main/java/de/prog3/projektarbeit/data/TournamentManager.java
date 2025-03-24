@@ -20,29 +20,23 @@ public class TournamentManager {
     }
 
     public void createTournament(String tournamentName) {
-        Tournament tournament = new Tournament(tournamentName);
-        this.tournaments.add(tournament);
     }
 
     public void addTeamToTournament(String tournamentName, Team team) {
-        for (Tournament tournament : tournaments) {
-            if (tournamentName.equals(tournament.getName())) {
-                tournament.addTeam(team);
-                return;
-            }
-        }
-        throw new IllegalArgumentException("Turnier nicht gefunden");
     }
 
     public void addMatchToTournament(String tournamentName, Match match) {
-        for (Tournament tournament : tournaments) {
+       /* for (Tournament tournament : tournaments) {
             if (tournamentName.equals(tournament.getName())) {
                 tournament.addMatch(match);
                 return;
             }
         }
         throw new IllegalArgumentException("Turnier nicht gefunden");
+        */
     }
+
+        
 
     public void removeTeamFromTournament(String tournamentName, Team team) {
         for (Tournament tournament : tournaments) {
