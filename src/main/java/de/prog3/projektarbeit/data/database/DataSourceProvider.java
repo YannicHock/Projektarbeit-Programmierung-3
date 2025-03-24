@@ -36,7 +36,7 @@ public class DataSourceProvider {
         }
 
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl("jdbc:sqlite:data/db.sqlite");
+        config.setJdbcUrl("jdbc:sqlite:" + DESTINATION_PATH);
         config.setDriverClassName("org.sqlite.JDBC");
         config.setMaximumPoolSize(10);
 
