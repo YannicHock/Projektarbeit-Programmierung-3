@@ -1,18 +1,16 @@
 package de.prog3.projektarbeit.data.objects;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class Tournament {
         private final String name;
         private final List<Team> teams;
         private final List<Match> matches;
+        private static final int WEEK_IN_MILLIS = 7*60*60*24*1000;
 
 
 
-        public Tournament(String name) {
+        public Tournament(String name, List<Team> teams) {
             this.name = name;
             this.teams = new ArrayList<>();
             this.matches = new ArrayList<>();
@@ -42,28 +40,54 @@ public class Tournament {
             this.teams.remove(team);
         }
 
-        public List<Match> firstMatchLeg(List<Team> teamsFirstleg ) {
-            List<Match> FirstLegMatches = new ArrayList<>();
-            for (int i = 0; i < teamsFirstleg.size(); i++){
-                for (int j = i + 1; j < teamsFirstleg.size(); j++){
-                    FirstLegMatches.add(new Match(teamsFirstleg.get(i), teamsFirstleg.get(j),MatchDate()));
+        /*
+        Spiele pro Spieltag: Anzahl der Teams/2
+        */
+
+        public void generate() {
+            Date date = new Date();
+            int totalMatchdays =(teams.size() - 1) * 2;
+            for (int round = 0; round < totalMatchdays; round++){
+                List <Match> matchdayMatches = new ArrayList<>();
+                Set <Team> teamsPlayedToday = new HashSet<>();
+                for (int i= 0; i < teams.size(); i++){
+                    int homeIndex = (round + i) % (teams.size()-1);
+                    int awayIndex = (round - 1 - i) % (teams.size() -1);
+                    if (i == 0) {
+                        awayIndex = teams.size() - 1;
+                    }
+
+                    Team homeTeam = (round % 2 == 0) ? teams.get(homeIndex) : teams.get(awayIndex);
+                    Team awayTeam = (round % 2 == 0) ? teams.get(awayIndex) : teams.get(homeIndex);
+
+                    if (teamsPlayedToday.contains(homeTeam) || teamsPlayedToday.contains(awayTeam)) {
+                        date = new Date(date.getTime() + WEEK_IN_MILLIS);
+                        teamsPlayedToday.clear();
+                    }
+
+                    matchdayMatches.add(new Match(homeTeam, awayTeam, date));
+                    teamsPlayedToday.add(homeTeam);
+                    teamsPlayedToday.add(awayTeam);
                 }
+
+                matches.addAll(matchdayMatches);
+                date = new Date(date.getTime() + WEEK_IN_MILLIS);
             }
-            return FirstLegMatches;
         }
 
-        public List<Match> secondMatchLeg(List<Team> teamsSecondleg) {
-            List<Match> SecondLegMatches = new ArrayList<>();
-            for (int i = 0; i < teamsSecondleg.size(); i++){
-                for (int j = i + 1; j < teamsSecondleg.size(); j++){
-                    SecondLegMatches.add(new Match(teamsSecondleg.get(j), teamsSecondleg.get(i),MatchDate()));
-                }
-            }
-            return SecondLegMatches;
+    @Override
+    public String toString() {
+        StringBuilder teamNames = new StringBuilder();
+        for (Team team : teams) {
+            teamNames.append(team.getName()).append(", ");
         }
-
-        public Date MatchDate(){
-            return new Date();
+        StringBuilder matches = new StringBuilder();
+        for (Match match : this.matches) {
+            matches.append(match.toString()).append("\n");
         }
+        return teamNames.toString() + "\n" + matches.toString();
     }
+}
+
+
 
