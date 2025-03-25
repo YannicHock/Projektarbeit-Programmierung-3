@@ -47,7 +47,7 @@ public class MassImport {
 
             Date dateOfBirth = parseDate(dateOfBirthStr);
 
-            // Erzeuge den Spieler mithilfe der PlayerFactory
+
             PlayerFactory factory = new PlayerFactory()
                     .setId(id)
                     .setFirstName(firstName)
