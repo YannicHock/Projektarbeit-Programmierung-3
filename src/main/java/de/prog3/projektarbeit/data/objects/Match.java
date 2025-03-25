@@ -30,8 +30,7 @@ public class Match {
 
     @Override
     public String toString() {
-        return Formatter.parseDateToString(date)
-                + " Heim: " + homeTeam.getName()
+        return Formatter.parseDateToString(date) + " Heim: " + homeTeam.getName()
                 + " - Gast: " + awayTeam.getName();
     }
 }
