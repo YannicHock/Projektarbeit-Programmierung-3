@@ -43,6 +43,10 @@ public class Team extends DataObject {
         players.put(player.getId(), player);
     }
 
+    
+    public void removePlayer(Player player) {
+        players.remove(player.getId());
+    }
 
     public String getName() {
         return name;
