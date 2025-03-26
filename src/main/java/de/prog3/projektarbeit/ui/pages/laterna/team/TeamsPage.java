@@ -69,7 +69,12 @@ public class TeamsPage extends LaternaPage {
                 event.getPlayer().ifPresent(player -> {
                     logger.info("PlayerTransferFinishedEvent empfangen.");
                     teams.values().forEach(team -> {
+                        if (team.getId() == player.getTeamId()) {
+                            team.addPlayer(player);
+                            table.getTableModel().setCell(Integer.parseInt(table.getTableModel().getRow(player.getId()).get(0)), 2, team.getPlayerCount() + "");
+                        }
                         if(team.getPlayers().containsKey(player.getId())){
+                            team.removePlayer(player);
                             table.getTableModel().setCell(Integer.parseInt(table.getTableModel().getRow(player.getId()).get(0)), 2, team.getPlayerCount() + "");
                         }
                     });
