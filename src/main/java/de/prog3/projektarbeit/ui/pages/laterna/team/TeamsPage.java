@@ -6,9 +6,11 @@ import com.googlecode.lanterna.gui2.table.Table;
 import de.prog3.projektarbeit.data.database.query.TeamQuery;
 import de.prog3.projektarbeit.data.objects.Team;
 import de.prog3.projektarbeit.eventHandling.events.Event;
+import de.prog3.projektarbeit.eventHandling.events.data.player.PlayerTransferFinishedEvent;
 import de.prog3.projektarbeit.eventHandling.events.data.team.TeamCreationFinishedEvent;
 import de.prog3.projektarbeit.eventHandling.events.ui.OpenPageEvent;
 import de.prog3.projektarbeit.eventHandling.listeners.EventListener;
+import de.prog3.projektarbeit.eventHandling.listeners.data.player.PlayerTransferFinishedListener;
 import de.prog3.projektarbeit.eventHandling.listeners.data.team.TeamCreationFinishedListener;
 import de.prog3.projektarbeit.exceptions.TeamNotFoundExeption;
 import de.prog3.projektarbeit.ui.pages.PageType;
@@ -60,6 +62,23 @@ public class TeamsPage extends LaternaPage {
                 });
             }
         };
+        
+        EventListener <PlayerTransferFinishedEvent> playerTransferFinishedEventEventListener = new PlayerTransferFinishedListener() {
+            @Override
+            public void onEvent(PlayerTransferFinishedEvent event) {
+                event.getPlayer().ifPresent(player -> {
+                    logger.info("PlayerTransferFinishedEvent empfangen.");
+                    teams.values().forEach(team -> {
+                        if(team.getPlayers().containsKey(player.getId())){
+                            table.getTableModel().setCell(Integer.parseInt(table.getTableModel().getRow(player.getId()).get(0)), 2, team.getPlayerCount() + "");
+                        }
+                    });
+                });
+            }
+        };
+
+
+        listeners.add(playerTransferFinishedEventEventListener);
 
         listeners.add(teamCreationFinishedEventEventListener);
     }
