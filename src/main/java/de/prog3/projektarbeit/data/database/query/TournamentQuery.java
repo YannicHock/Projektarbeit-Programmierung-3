@@ -5,6 +5,7 @@ import de.prog3.projektarbeit.data.jooq.tables.Match;
 import de.prog3.projektarbeit.data.objects.Team;
 import de.prog3.projektarbeit.data.objects.Tournament;
 import de.prog3.projektarbeit.exceptions.TournamentNotFoundException;
+import de.prog3.projektarbeit.utils.Formatter;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
@@ -29,13 +30,13 @@ public class TournamentQuery {
 
         List<Tournament> tournaments = new ArrayList<>();
         result.forEach(record -> {
-            Tournament tournament = new Tournament(
+            /*Tournament tournament = new Tournament(
                     record.get(TOURNAMENT.ID),
                     record.get(TOURNAMENT.NAME)
 
             );
             tournaments.add(tournament);
-            logger.debug("Gefundenes Turnier: {}", tournament.getName());
+            logger.debug("Gefundenes Turnier: {}", tournament.getName());*/
         });
         return tournaments;
     }
@@ -49,17 +50,18 @@ public class TournamentQuery {
             logger.warn("Turnier mit ID {} nicht gefunden", id);
             throw new TournamentNotFoundException("Turnier mit der ID " + id + " nicht gefunden");
         }
-        return new Tournament(
+        return null;
+        /*return new Tournament(
                 record.get(TOURNAMENT.ID),
                 record.get(TOURNAMENT.NAME)
-        );
+        );*/
     }
 
 
     private void addTeamToTournament(int tournamentId, int teamId) {
         DSLContext ctx = JooqContextProvider.getDSLContext();
         ctx.insertInto(TEAM)
-                .set(TEAM.TOURNAMENT_ID, tournamentId)
+                .set(TEAM.ID, tournamentId)
                 .set(TEAM.ID, teamId)
                 .execute();
     }
@@ -85,12 +87,12 @@ public class TournamentQuery {
             for (Team team : tournament.getTeams()) {
                 addTeamToTournament(tournamentId, team.getId());
             }
-            for (Match match : tournament.getMatches()) {
+            for (de.prog3.projektarbeit.data.objects.Match match : tournament.getMatches()) {
                 transactionalCtx.insertInto(MATCH)
-                        .set(MATCH.HOME_TEAM_ID, match.getHomeTeam.getId())
+                        .set(MATCH.HOME_TEAM_ID, match.getHomeTeam().getId())
                         .set(MATCH.AWAY_TEAM_ID, match.getAwayTeam().getId())
                         .set(MATCH.TOURNAMENT_ID, tournamentId)
-                        .set(MATCH.DATE, match.getDate())
+                        .set(MATCH.MATCH_DATE, Formatter.parseDateToString(match.getDate()))
                         .execute();
             }
         });
