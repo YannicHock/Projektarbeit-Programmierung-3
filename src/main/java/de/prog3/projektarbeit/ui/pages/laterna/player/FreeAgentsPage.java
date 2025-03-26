@@ -6,10 +6,12 @@ import de.prog3.projektarbeit.data.database.query.PlayerQuery;
 import de.prog3.projektarbeit.data.objects.Player;
 import de.prog3.projektarbeit.eventHandling.events.Event;
 import de.prog3.projektarbeit.eventHandling.events.data.player.PlayerCreationFinishedEvent;
+import de.prog3.projektarbeit.eventHandling.events.data.player.PlayerTransferFinishedEvent;
 import de.prog3.projektarbeit.eventHandling.events.data.player.PlayerUpdateFinishedEvent;
 import de.prog3.projektarbeit.eventHandling.events.ui.OpenPageEvent;
 import de.prog3.projektarbeit.eventHandling.listeners.EventListener;
 import de.prog3.projektarbeit.eventHandling.listeners.data.player.PlayerCreationFinishedListener;
+import de.prog3.projektarbeit.eventHandling.listeners.data.player.PlayerTransferFinishedListener;
 import de.prog3.projektarbeit.eventHandling.listeners.data.player.PlayerUpdateFinishedListener;
 import de.prog3.projektarbeit.ui.pages.PageType;
 import de.prog3.projektarbeit.ui.pages.laterna.LaternaPage;
@@ -66,9 +68,24 @@ public class FreeAgentsPage extends LaternaPage {
                 });
             }
         };
-        listeners.add(playerUpdateFinishedEventListener);
+        EventListener<PlayerTransferFinishedEvent> playerTransferFinishedEventEventListener = new PlayerTransferFinishedListener() {
+            @Override
+            public void onEvent(PlayerTransferFinishedEvent event) {
+                event.getPlayer().ifPresent(player -> {
+                    if(player.getTeamId() == 0){
+                        players.put(player.getId(), player);
+                        redrawTable();
+                    }else{
+                        players.remove(player.getId());
+                        redrawTable();
+                    }
+                });
+            }
+        };
 
+        listeners.add(playerUpdateFinishedEventListener);
         listeners.add(creation);
+        listeners.add(playerTransferFinishedEventEventListener);
     }
 
     private void redrawTable(){
