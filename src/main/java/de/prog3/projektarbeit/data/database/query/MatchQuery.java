@@ -29,7 +29,7 @@ public class MatchQuery {
         result.forEach(record -> {
             Team homeTeam = getTeamById(ctx, record.get(MATCH.HOME_TEAM_ID));
             Team awayTeam = getTeamById(ctx, record.get(MATCH.AWAY_TEAM_ID));
-            Match match = new Match(homeTeam, awayTeam, record.get(MATCH.DATE));
+            Match match = new Match(homeTeam, awayTeam, record.get(MATCH.MATCH_DATE));
             matches.add(match);
             logger.debug("Gefundenes Match: {} - {}", homeTeam.getName(), awayTeam.getName());
         });
