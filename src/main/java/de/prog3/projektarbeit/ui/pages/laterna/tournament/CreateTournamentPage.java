@@ -8,6 +8,7 @@ import com.googlecode.lanterna.gui2.dialogs.MessageDialogButton;
 import com.googlecode.lanterna.gui2.table.Table;
 import de.prog3.projektarbeit.data.Position;
 import de.prog3.projektarbeit.data.database.query.LeagueQuery;
+import de.prog3.projektarbeit.data.database.query.TournamentQuery;
 import de.prog3.projektarbeit.data.objects.League;
 import de.prog3.projektarbeit.data.objects.Match;
 import de.prog3.projektarbeit.data.objects.Team;
@@ -60,7 +61,12 @@ public class CreateTournamentPage extends LaternaPage {
                         .addButton(MessageDialogButton.Cancel)
                         .build();
                 MessageDialogButton res = dialog.showDialog(view.getGui());
-                System.out.println(res);
+                if(res.equals(MessageDialogButton.OK)){
+                    Tournament tournament = new Tournament(0, league.getName(), league.getParticipants());
+                    //TODO sauber über events lösen
+                    TournamentQuery.save(tournament);
+                    window.close();
+                }
             });
             contentPanel.addComponent(button);
         });

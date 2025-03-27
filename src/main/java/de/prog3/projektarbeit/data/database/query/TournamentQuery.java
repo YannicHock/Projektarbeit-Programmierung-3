@@ -2,6 +2,7 @@
 package de.prog3.projektarbeit.data.database.query;
 
 import de.prog3.projektarbeit.data.database.JooqContextProvider;
+import de.prog3.projektarbeit.data.jooq.tables.records.TournamentRecord;
 import de.prog3.projektarbeit.data.objects.Match;
 import de.prog3.projektarbeit.data.objects.Team;
 import de.prog3.projektarbeit.data.objects.Tournament;
@@ -30,6 +31,19 @@ import static de.prog3.projektarbeit.data.jooq.tables.Tournament.TOURNAMENT;
 
 public class TournamentQuery {
     private static final Logger logger = LoggerFactory.getLogger(TournamentQuery.class);
+
+    public static void save(Tournament tournament) {
+        logger.info("Speichere Turnier: {}", tournament.getName());
+        DSLContext ctx = JooqContextProvider.getDSLContext();
+        ctx.insertInto(TOURNAMENT)
+                .set(TOURNAMENT.NAME, tournament.getName())
+                .execute();
+        TournamentRecord tournamentRecord = ctx.insertInto(TOURNAMENT)
+                .set(TOURNAMENT.NAME, tournament.getName())
+                .returning(TOURNAMENT.ID)
+                .fetchOne();
+        tournament.getMatches().forEach((match) -> MatchQuery.save(match, tournamentRecord.get(TOURNAMENT.ID)));
+    }
 
     public static ArrayList<Tournament> getAll() {
         logger.info("Lade alle Turniere");

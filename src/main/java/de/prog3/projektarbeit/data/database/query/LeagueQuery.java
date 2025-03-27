@@ -2,6 +2,7 @@ package de.prog3.projektarbeit.data.database.query;
 
 import de.prog3.projektarbeit.data.database.JooqContextProvider;
 import de.prog3.projektarbeit.data.objects.League;
+import de.prog3.projektarbeit.data.objects.Team;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
@@ -36,7 +37,8 @@ public class LeagueQuery {
         Result<Record> result = ctx.select().from(LEAGUE).fetch();
         ArrayList<League> leagues = new ArrayList<>();
         result.forEach(record -> {
-            leagues.add(new League(record.get(LEAGUE.ID), record.get(LEAGUE.NAME)));
+            ArrayList<Team> participatingTeams = TeamQuery.getAllTeamsInLeague(record.get(LEAGUE.ID));
+            leagues.add(new League(record.get(LEAGUE.ID), record.get(LEAGUE.NAME),participatingTeams));
             logger.debug("Gefundene Liga: {} mit ID: {}", record.get(LEAGUE.NAME), record.get(LEAGUE.ID));
         });
         logger.info("Gefundene Ligen: {}", leagues.size());
