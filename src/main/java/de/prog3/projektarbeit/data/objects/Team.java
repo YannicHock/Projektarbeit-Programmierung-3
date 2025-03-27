@@ -45,13 +45,11 @@ public class Team extends DataObject {
 
     public void addPlayer(Player player) {
         players.put(player.getId(), player);
-        playerCount++;
     }
 
     
     public void removePlayer(Player player) {
         players.remove(player.getId());
-        playerCount--;
     }
 
     public String getName() {
