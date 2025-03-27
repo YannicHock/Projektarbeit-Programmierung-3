@@ -109,7 +109,7 @@ public class Tournament {
         for (Match match : this.matches) {
             matches.append(match.toString()).append("\n");
         }
-        return teamNames.toString() + "\n" + matches.toString();
+        return teamNames + "\n" + matches;
     }
 
 }

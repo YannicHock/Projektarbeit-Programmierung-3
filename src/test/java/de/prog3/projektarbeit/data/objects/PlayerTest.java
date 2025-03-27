@@ -25,7 +25,7 @@ public class PlayerTest {
         assertEquals(450,testPlayer1.getTeamId());
         assertEquals(Date.from(currentTime),testPlayer1.getDateOfBirth());
         assertTrue(testPlayer1.getPositions().contains(CM));
-        assertTrue(testPlayer1.getPositions().size() == 1);
+        assertEquals(1, testPlayer1.getPositions().size());
         assertEquals(250,testPlayer1.getId());
 
     }

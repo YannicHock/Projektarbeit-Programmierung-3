@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class League {
-    private int id;
-    private String name;
-    private List<Team> participants;
+    private final int id;
+    private final String name;
+    private final List<Team> participants;
 
     public League(int id, String name){
         this.id = id;
