@@ -186,7 +186,7 @@ public class DataListener {
                                 try {
                                     TransferQuery.addTransfer(transfer);
                                     logger.info("Transfer erfolgreich in der Datenbank eingetragen.");
-                                    new PlayerTransferFinishedEvent(newPlayer).call();
+                                    new PlayerTransferFinishedEvent(newPlayer, player.getTeamId(), transferEvent.getNewTeamId()).call();
                                 } catch (ParseException e) {
                                     exceptions.add(new ParseException("Das Datum des Transfers konnte nicht geparst werden", e.getErrorOffset()));
                                     logger.error("Fehler beim Parsen des Transferdatums: {}", e.getMessage());

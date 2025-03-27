@@ -39,6 +39,14 @@ public class Team extends DataObject {
         }
     }
 
+    public void incrementPlayerCount() {
+        playerCount++;
+    }
+
+    public void decrementPlayerCount() {
+        playerCount--;
+    }
+
     public int getPlayerCount_Int() {
         return playerCount;
     }

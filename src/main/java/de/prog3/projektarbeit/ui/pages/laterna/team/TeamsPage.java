@@ -70,15 +70,13 @@ public class TeamsPage extends LaternaPage {
                     logger.info("PlayerTransferFinishedEvent empfangen.");
                     teams.values().forEach(team -> {
                         if (team.getId() == player.getTeamId()) {
-                            team.addPlayer(player);
+                            team.incrementPlayerCount();
                         }
-                        if(team.getPlayers().containsKey(player.getId())){
-                            team.removePlayer(player);
+                        if(event.getFromTeamId() == team.getId()){
+                            team.decrementPlayerCount();
                         }
                     });
-                    //TODO Fix count error
                     teams.values().forEach(team -> {
-                        System.out.println(team);
                         int id = getRowByFirstCellContent(table, team.getId() + "");
                         table.getTableModel().setCell(2, id, team.getPlayerCount_Int() + "");
                     });
