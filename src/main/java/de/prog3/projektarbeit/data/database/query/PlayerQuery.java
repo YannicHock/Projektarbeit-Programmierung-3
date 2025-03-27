@@ -24,6 +24,12 @@ import java.util.Optional;
 import static de.prog3.projektarbeit.data.jooq.tables.Player.PLAYER;
 import static de.prog3.projektarbeit.data.jooq.tables.Positions.POSITIONS;
 
+/**
+ * Diese Klasse enthält Abfragen für die Verwaltung von Spielern in der Datenbank.
+ * Sie bietet Methoden zum Speichern, Aktualisieren, Löschen und Abrufen von Spielern.
+ * Außerdem können die Positionen der Spieler verwaltet werden.
+ */
+
 public class PlayerQuery {
 
     private static final Logger logger = LoggerFactory.getLogger(PlayerQuery.class);
@@ -65,7 +71,10 @@ public class PlayerQuery {
         }
         updatePlayerPositions(ctx, player);
     }
-
+    /**
+     * Aktualisiert die Positionen eines Spielers in der Datenbank.
+     * Entfernt alte Positionen und fügt neue hinzu.
+     */
     private static void updatePlayerPositions(DSLContext ctx, Player player) {
         logger.info("Aktualisiere Positionen für Spieler: {}", player.getFullName());
         ArrayList<Position> oldPositions = getPlayerPositions(ctx, player.getId());
