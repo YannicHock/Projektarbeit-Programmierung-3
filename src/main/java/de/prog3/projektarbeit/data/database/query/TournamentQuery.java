@@ -1,3 +1,4 @@
+
 package de.prog3.projektarbeit.data.database.query;
 
 import de.prog3.projektarbeit.data.database.JooqContextProvider;
@@ -21,6 +22,11 @@ import java.util.List;
 import static de.prog3.projektarbeit.data.jooq.tables.Match.MATCH;
 import static de.prog3.projektarbeit.data.jooq.tables.Team.TEAM;
 import static de.prog3.projektarbeit.data.jooq.tables.Tournament.TOURNAMENT;
+/**
+ * Diese Klasse enthält Abfragen für die Verwaltung von Turnieren in der Datenbank.
+ * Sie bietet Methoden zum Abrufen, Speichern und Aktualisieren von Turnieren.
+ * Außerdem können Teams zu Turnieren hinzugefügt und Matches gespeichert werden.
+ */
 
 public class TournamentQuery {
     private static final Logger logger = LoggerFactory.getLogger(TournamentQuery.class);

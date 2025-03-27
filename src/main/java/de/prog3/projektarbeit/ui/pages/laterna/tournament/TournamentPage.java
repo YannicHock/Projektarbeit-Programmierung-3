@@ -21,12 +21,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Die TournamentPage-Klasse repräsentiert eine Seite, die ein Turnier in der Laterna-Ansicht anzeigt.
+ */
 public class TournamentPage extends LaternaPage {
     private final Window window;
     private final LaternaView view;
     private final Tournament tournament;
     private final ArrayList<EventListener<? extends Event>> listeners;
 
+    /**
+     * Konstruktor der TournamentPage-Klasse.
+     * Initialisiert das Fenster, die Ansicht und das Turnier und öffnet die Seite.
+     *
+     * @param view Die LaternaView-Instanz, die diese Seite enthält.
+     */
     public TournamentPage(LaternaView view, Tournament tournament) {
         this.window = new BasicWindow("Spielplan " + tournament.getName());
         this.tournament = tournament;
@@ -39,7 +48,11 @@ public class TournamentPage extends LaternaPage {
     private void registerListener(){
     }
 
-
+    /**
+     * Erstellt und gibt die Hauptkomponente der Seite zurück.
+     *
+     * @return Die Hauptkomponente der Seite.
+     */
     @Override
     public Component get() {
 
@@ -48,7 +61,7 @@ public class TournamentPage extends LaternaPage {
         Panel mainPanel = new Panel(new GridLayout(2));
 
         //FirstLeg
-        Table<String> firstLegtable = new Table<>("Heim", "Gast", "Datum");
+        Table<String> firstLegtable = new Table<>("HomeTeam", "AwayTeam", "Date");
         List<Match> matches = tournament.getMatches();
         for (int i = 0; i < (matches.size())/2; i++) {
             Match match = matches.get(i);
@@ -68,6 +81,7 @@ public class TournamentPage extends LaternaPage {
 
         //SecondLeg
         Table<String> secondLegtable = new Table<>("HomeTeam", "AwayTeam", "Date");
+        System.out.println("Teams: " + tournament.getMatches().size());
         for (int i = (matches.size()) / 2; i < matches.size(); i++) {
             Match match = matches.get(i);
             secondLegtable.getTableModel().addRow(
@@ -91,21 +105,41 @@ public class TournamentPage extends LaternaPage {
         return contentPanel;
     }
 
+    /**
+     * Gibt das Fenster der Seite zurück.
+     *
+     * @return Das Fenster der Seite.
+     */
     @Override
     public Window getWindow() {
         return window;
     }
 
+    /**
+     * Gibt die LaternaView-Instanz der Seite zurück.
+     *
+     * @return Die LaternaView-Instanz.
+     */
     @Override
     public LaternaView getLaternaView() {
         return view;
     }
 
+    /**
+     * Gibt den Namen der Seite zurück.
+     *
+     * @return Der Name der Seite.
+     */
     @Override
     public String getName() {
         return "Spieler erstellen";
     }
 
+    /**
+     * Gibt die Liste der Event-Listener zurück.
+     *
+     * @return Eine Liste von Event-Listenern.
+     */
     @Override
     public ArrayList<EventListener<? extends Event>> getListeners() {
         return listeners;

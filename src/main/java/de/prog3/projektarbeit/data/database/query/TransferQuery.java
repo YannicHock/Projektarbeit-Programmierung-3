@@ -19,7 +19,10 @@ import java.util.Date;
 import static de.prog3.projektarbeit.data.jooq.tables.Team.TEAM;
 import static de.prog3.projektarbeit.data.jooq.tables.Transfer.TRANSFER;
 import static org.jooq.impl.DSL.coalesce;
-
+/**
+ * Diese Klasse enthält Abfragen für die Verwaltung von Transfers in der Datenbank.
+ * Sie bietet Methoden zum Abrufen und Hinzufügen von Transfers für Spieler.
+ */
 public class TransferQuery {
 
     private static final Logger logger = LoggerFactory.getLogger(TransferQuery.class);

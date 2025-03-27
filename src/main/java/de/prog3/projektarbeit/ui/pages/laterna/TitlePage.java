@@ -9,18 +9,32 @@ import de.prog3.projektarbeit.ui.views.laterna.LaternaView;
 
 import java.util.ArrayList;
 
-public class TitlePage extends LaternaPage {
+        /**
+         * Die TitlePage-Klasse repräsentiert die Hauptmenüseite in der Laterna-Ansicht.
+         */
+        public class TitlePage extends LaternaPage {
 
     private final Window window;
     private final LaternaView view;
 
-    public TitlePage(LaternaView view){
-        this.window = new BasicWindow("Hauptmenu");
-        this.view = view;
-        open();
-    }
+            /**
+             * Konstruktor der TitlePage-Klasse.
+             * Initialisiert das Fenster und die Ansicht und öffnet die Seite.
+             *
+             * @param view Die LaternaView-Instanz, die diese Seite enthält.
+             */
+            public TitlePage(LaternaView view){
+                this.window = new BasicWindow("Hauptmenu");
+                this.view = view;
+                open();
+            }
 
-    public Component get(){
+            /**
+             * Erstellt und gibt die Hauptkomponente der Seite zurück.
+             *
+             * @return Die Hauptkomponente der Seite.
+             */
+            public Component get(){
 
         Panel contentPanel = new Panel(new GridLayout(1));
 
@@ -56,23 +70,43 @@ public class TitlePage extends LaternaPage {
         return contentPanel;
     }
 
-    @Override
-    protected ArrayList<EventListener<? extends Event>> getListeners() {
-        return new ArrayList<>();
-    }
+            /**
+             * Gibt die Liste der Event-Listener zurück.
+             *
+             * @return Eine leere Liste von Event-Listenern.
+             */
+            @Override
+            protected ArrayList<EventListener<? extends Event>> getListeners() {
+                return new ArrayList<>();
+            }
 
-    @Override
-    public Window getWindow() {
-        return window;
-    }
+            /**
+             * Gibt das Fenster der Seite zurück.
+             *
+             * @return Das Fenster der Seite.
+             */
+            @Override
+            public Window getWindow() {
+                return window;
+            }
 
-    @Override
-    public LaternaView getLaternaView() {
-        return view;
-    }
+            /**
+             * Gibt die LaternaView-Instanz der Seite zurück.
+             *
+             * @return Die LaternaView-Instanz.
+             */
+            @Override
+            public LaternaView getLaternaView() {
+                return view;
+            }
 
-    @Override
-    public String getName() {
-        return "Hauptmenu";
-    }
-}
+            /**
+             * Gibt den Namen der Seite zurück.
+             *
+             * @return Der Name der Seite.
+             */
+            @Override
+            public String getName() {
+                return "Hauptmenu";
+            }
+        }
