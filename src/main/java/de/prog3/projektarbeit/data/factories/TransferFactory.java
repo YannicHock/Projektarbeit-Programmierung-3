@@ -3,6 +3,11 @@ package de.prog3.projektarbeit.data.factories;
 import de.prog3.projektarbeit.data.objects.Transfer;
 
 import java.util.Date;
+/**
+ * Die Klasse `TransferFactory` dient zur Erstellung von `Transfer`-Objekten.
+ * Sie ermöglicht das Setzen verschiedener Attribute eines Transfers und
+ * validiert die Daten vor der Erstellung des Objekts.
+ */
 
 /**
  * Die Klasse TransferFactory ist verantwortlich für die Erstellung von Transfer-Objekten.

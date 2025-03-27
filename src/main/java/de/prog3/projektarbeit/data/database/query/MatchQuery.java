@@ -16,7 +16,9 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import static de.prog3.projektarbeit.data.jooq.tables.Team.TEAM;
-
+/**
+ * /Diese Klasse enthält Abfragen für die Verwaltung von Matches in der Datenbank.
+ */
 public class MatchQuery {
 
     private static final Logger logger = LoggerFactory.getLogger(MatchQuery.class);
