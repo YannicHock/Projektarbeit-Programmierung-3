@@ -13,12 +13,18 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Testklasse für die EventHandler-Klasse.
+ */
 class EventHandlerTests {
 
     private EventHandler eventHandler;
     private EventListener<Event> mockListener;
     private Event mockEvent;
 
+    /**
+     * Initialisiert die Testobjekte vor jedem Test.
+     */
     @BeforeEach
     void setUp() {
         eventHandler = EventHandler.getInstance();
@@ -26,6 +32,9 @@ class EventHandlerTests {
         mockEvent = mock(Event.class);
     }
 
+    /**
+     * Testet, ob registerListener den Listener zum Event hinzufügt.
+     */
     @Test
     @DisplayName("registerListener should add listener to event")
     void registerListener_addsListenerToEvent() {
@@ -35,6 +44,9 @@ class EventHandlerTests {
         assertTrue(listeners.get(mockEvent.getClass()).contains(mockListener));
     }
 
+    /**
+     * Testet, ob unregisterListener den Listener vom Event entfernt.
+     */
     @Test
     @DisplayName("unregisterListener should remove listener from event")
     void unregisterListener_removesListenerFromEvent() {
@@ -45,6 +57,9 @@ class EventHandlerTests {
         assertFalse(listeners.get(mockEvent.getClass()).contains(mockListener));
     }
 
+    /**
+     * Testet, ob callEvent den Listener auf dem Event aufruft.
+     */
     @Test
     @DisplayName("callEvent should invoke listener on event")
     void callEvent_invokesListenerOnEvent() {
@@ -53,6 +68,9 @@ class EventHandlerTests {
         verify(mockListener, times(1)).onEvent(mockEvent);
     }
 
+    /**
+     * Testet, ob callEvent den Listener nicht aufruft, wenn keiner registriert ist.
+     */
     @Test
     @DisplayName("callEvent should not invoke listener if none registered")
     void callEvent_doesNotInvokeListenerIfNoneRegistered() {
@@ -60,6 +78,9 @@ class EventHandlerTests {
         verify(mockListener, never()).onEvent(mockEvent);
     }
 
+    /**
+     * Testet, ob getInstance dieselbe Instanz zurückgibt.
+     */
     @Test
     @DisplayName("getInstance should return the same instance")
     void getInstance_returnsSameInstance() {

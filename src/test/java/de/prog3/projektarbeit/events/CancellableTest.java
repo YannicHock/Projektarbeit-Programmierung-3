@@ -7,10 +7,16 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Testklasse für die Cancellable-Schnittstelle.
+ */
 class CancellableTest {
 
     private Cancellable cancellable;
 
+    /**
+     * Initialisiert das Cancellable-Objekt vor jedem Test.
+     */
     @BeforeEach
     void setUp() {
         cancellable = new Cancellable() {
@@ -28,12 +34,18 @@ class CancellableTest {
         };
     }
 
+    /**
+     * Testet, ob isCancelled() initial false zurückgibt.
+     */
     @Test
     @DisplayName("isCancelled should return false initially")
     void isCancelled_returnsFalseInitially() {
         assertFalse(cancellable.isCancelled());
     }
 
+    /**
+     * Testet, ob setCancelled(true) den Status auf true setzt.
+     */
     @Test
     @DisplayName("setCancelled should set cancelled to true")
     void setCancelled_setsCancelledToTrue() {
@@ -41,6 +53,9 @@ class CancellableTest {
         assertTrue(cancellable.isCancelled());
     }
 
+    /**
+     * Testet, ob setCancelled(false) den Status auf false setzt.
+     */
     @Test
     @DisplayName("setCancelled should set cancelled to false")
     void setCancelled_setsCancelledToFalse() {
