@@ -10,20 +10,32 @@ import de.prog3.projektarbeit.ui.views.ViewType;
 
 import java.util.ArrayList;
 
+/**
+ * Die UIHandler-Klasse verwaltet die UI-Ansichten und deren Listener.
+ */
 public class UIHandler {
 
     private final ArrayList<View> views;
 
+    /**
+     * Privater Konstruktor, der die Liste der Ansichten initialisiert.
+     */
     private UIHandler() {
         views = new ArrayList<>();
     }
 
     private static UIHandler instance;
 
+    /**
+     * Registriert alle notwendigen Listener.
+     */
     public void registerListeners(){
         registerViewListener();
     }
 
+    /**
+     * Registriert den Listener für neue Ansichten.
+     */
     private void registerViewListener(){
         new RequestNewViewListener() {
             @Override
@@ -37,10 +49,20 @@ public class UIHandler {
         };
     }
 
+    /**
+     * Gibt die Liste der Ansichten zurück.
+     *
+     * @return Eine Liste der registrierten Ansichten.
+     */
     public ArrayList<View> getViews() {
         return views;
     }
 
+    /**
+     * Gibt die Instanz des UIHandlers zurück. Erstellt eine neue Instanz, wenn keine existiert.
+     *
+     * @return Die Singleton-Instanz des UIHandlers.
+     */
     public static UIHandler getInstance() {
         if(instance == null) {
             instance = new UIHandler();
