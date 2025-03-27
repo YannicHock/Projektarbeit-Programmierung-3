@@ -1,11 +1,5 @@
 package de.prog3.projektarbeit.data.objects;
 
-import de.prog3.projektarbeit.data.database.JooqContextProvider;
-import org.jooq.DSLContext;
-import org.jooq.Record;
-import org.jooq.Result;
-import org.jooq.Table;
-
 import java.util.*;
 
 

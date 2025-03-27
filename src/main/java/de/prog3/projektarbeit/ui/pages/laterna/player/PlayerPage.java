@@ -14,7 +14,6 @@ import de.prog3.projektarbeit.ui.pages.laterna.LaternaPage;
 import de.prog3.projektarbeit.ui.views.laterna.LaternaView;
 import de.prog3.projektarbeit.utils.Formatter;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 
 

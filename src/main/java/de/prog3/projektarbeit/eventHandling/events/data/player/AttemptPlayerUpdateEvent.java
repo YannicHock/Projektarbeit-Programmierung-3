@@ -5,7 +5,6 @@ import de.prog3.projektarbeit.data.objects.Player;
 import de.prog3.projektarbeit.eventHandling.events.Event;
 import de.prog3.projektarbeit.utils.Formatter;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 
 

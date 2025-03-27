@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.List;
 
 import static de.prog3.projektarbeit.data.jooq.tables.Match.MATCH;
 import static de.prog3.projektarbeit.data.jooq.tables.Team.TEAM;
@@ -42,7 +41,11 @@ public class TournamentQuery {
                 .set(TOURNAMENT.NAME, tournament.getName())
                 .returning(TOURNAMENT.ID)
                 .fetchOne();
-        tournament.getMatches().forEach((match) -> MatchQuery.save(match, tournamentRecord.get(TOURNAMENT.ID)));
+        tournament.getMatches().forEach((match) -> {
+            if (tournamentRecord != null) {
+                MatchQuery.save(match, tournamentRecord.get(TOURNAMENT.ID));
+            }
+        });
     }
 
     public static ArrayList<Tournament> getAll() {

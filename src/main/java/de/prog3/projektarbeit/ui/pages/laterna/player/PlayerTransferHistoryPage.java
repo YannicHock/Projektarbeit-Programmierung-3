@@ -23,7 +23,7 @@ import java.util.ArrayList;
  * altes Team, neues Team und den Ablösebetrag. Die Daten werden über die TransferQuery aus
  * der Datenbank geladen. Zudem werden EventListener verwaltet, die in Zukunft auf Ereignisse
  * reagieren können (derzeit ist die Listener-Registrierung noch nicht implementiert).
- *
+ * <p>
  * Die Klasse erbt von LaternaPage und ist Teil der Lanterna-basierten Benutzeroberfläche.
  */
 public class PlayerTransferHistoryPage extends LaternaPage {

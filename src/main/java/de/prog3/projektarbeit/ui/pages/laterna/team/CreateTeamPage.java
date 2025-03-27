@@ -19,7 +19,7 @@ import java.util.HashMap;
 /**
  * Stellt eine Seite zum Erstellen eines neuen Teams bereit. Sie enthält ein Textfeld
  * für den Teamnamen und einen Button, der ein {@link AttemptTeamCreationEvent} auslöst.
- *
+ * <p>
  * Beim erfolgreichen Anlegen des Teams oder bei Fehlern reagiert ein Listener
  * auf das {@link TeamCreationFinishedEvent} und informiert den Nutzer entsprechend.
  */

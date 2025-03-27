@@ -5,7 +5,6 @@ import de.prog3.projektarbeit.data.database.JooqContextProvider;
 import de.prog3.projektarbeit.data.jooq.tables.records.PlayerRecord;
 import de.prog3.projektarbeit.data.objects.Player;
 import de.prog3.projektarbeit.exceptions.PlayerNotFoundExeption;
-import de.prog3.projektarbeit.exceptions.UnableToSavePlayerExeption;
 import de.prog3.projektarbeit.utils.Formatter;
 import org.jooq.DSLContext;
 import org.jooq.Record;
@@ -34,7 +33,7 @@ public class PlayerQuery {
 
     private static final Logger logger = LoggerFactory.getLogger(PlayerQuery.class);
 
-    public static void save(Player player) throws UnableToSavePlayerExeption {
+    public static void save(Player player) {
         DSLContext ctx = JooqContextProvider.getDSLContext();
         try {
             if (player.getId() == 0) {

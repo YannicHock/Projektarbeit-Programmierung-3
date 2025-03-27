@@ -3,19 +3,12 @@ package de.prog3.projektarbeit.data.database.query;
 import de.prog3.projektarbeit.data.database.JooqContextProvider;
 import de.prog3.projektarbeit.data.objects.Match;
 import static de.prog3.projektarbeit.data.jooq.tables.Match.MATCH;
-import de.prog3.projektarbeit.data.objects.Team;
-import de.prog3.projektarbeit.exceptions.MatchNotFoundException;
+
 import de.prog3.projektarbeit.utils.Formatter;
 import org.jooq.DSLContext;
-import org.jooq.Record;
-import org.jooq.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
-import static de.prog3.projektarbeit.data.jooq.tables.Team.TEAM;
 /**
  * /Diese Klasse enthält Abfragen für die Verwaltung von Matches in der Datenbank.
  */

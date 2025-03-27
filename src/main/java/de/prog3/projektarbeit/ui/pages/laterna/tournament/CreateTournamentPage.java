@@ -1,29 +1,19 @@
 package de.prog3.projektarbeit.ui.pages.laterna.tournament;
 
-import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialog;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialogBuilder;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialogButton;
-import com.googlecode.lanterna.gui2.table.Table;
-import de.prog3.projektarbeit.data.Position;
 import de.prog3.projektarbeit.data.database.query.LeagueQuery;
 import de.prog3.projektarbeit.data.database.query.TournamentQuery;
 import de.prog3.projektarbeit.data.objects.League;
-import de.prog3.projektarbeit.data.objects.Match;
-import de.prog3.projektarbeit.data.objects.Team;
 import de.prog3.projektarbeit.data.objects.Tournament;
 import de.prog3.projektarbeit.eventHandling.events.Event;
-import de.prog3.projektarbeit.eventHandling.events.data.player.AttemptPlayerCreationEvent;
-import de.prog3.projektarbeit.eventHandling.events.data.player.PlayerCreationFinishedEvent;
 import de.prog3.projektarbeit.eventHandling.listeners.EventListener;
-import de.prog3.projektarbeit.eventHandling.listeners.data.player.PlayerCreationFinishedListener;
 import de.prog3.projektarbeit.ui.pages.laterna.LaternaPage;
 import de.prog3.projektarbeit.ui.views.laterna.LaternaView;
-import de.prog3.projektarbeit.utils.Formatter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class CreateTournamentPage extends LaternaPage {

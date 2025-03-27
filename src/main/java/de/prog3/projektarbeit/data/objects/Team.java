@@ -1,12 +1,6 @@
 package de.prog3.projektarbeit.data.objects;
 
-import de.prog3.projektarbeit.data.database.JooqContextProvider;
-import de.prog3.projektarbeit.exceptions.UnableToSaveTeamExeption;
-import org.jooq.DSLContext;
-
 import java.util.HashMap;
-
-import static de.prog3.projektarbeit.data.jooq.tables.Team.TEAM;
 
 
 public class Team extends DataObject {

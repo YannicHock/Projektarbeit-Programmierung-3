@@ -5,11 +5,15 @@ import de.prog3.projektarbeit.utils.Formatter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.HashSet;
 
 public class Scraper {
+
+    private static final Logger log = LoggerFactory.getLogger(Scraper.class);
 
     public static void scrapePlayer(String url){
         try {
@@ -43,7 +47,7 @@ public class Scraper {
             System.out.println("Team: " + team);
             System.out.println("Nummer: " + number);
         } catch (Exception e){
-            System.err.println(e);
+            log.error("e: ", e);
         }
     }
 
@@ -56,9 +60,9 @@ public class Scraper {
                     .map(element -> element.attr("href"))
                     .filter(href -> href.contains("/spieler/"))
                     .forEach(links::add);
-            String teamName = doc.getElementsByClass("kick__head-breadcrumb__items").getLast().text().replaceAll(" Kader", "");
+            doc.getElementsByClass("kick__head-breadcrumb__items").getLast().text();
         } catch (Exception e){
-            System.err.println(e);
+            log.error("e: ", e);
         }
     }
 }

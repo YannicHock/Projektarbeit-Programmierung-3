@@ -1,6 +1,5 @@
 package de.prog3.projektarbeit.data.objects;
 
-import de.prog3.projektarbeit.data.Position;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;

@@ -2,7 +2,6 @@ package de.prog3.projektarbeit.data.objects;
 
 import de.prog3.projektarbeit.utils.Formatter;
 
-import java.text.ParseException;
 import java.util.Date;
 
 public class Transfer {
@@ -55,7 +54,7 @@ public class Transfer {
         return date;
     }
 
-    public String getDateString() throws ParseException {
+    public String getDateString() {
         return Formatter.parseDateToString(date);
     }
 

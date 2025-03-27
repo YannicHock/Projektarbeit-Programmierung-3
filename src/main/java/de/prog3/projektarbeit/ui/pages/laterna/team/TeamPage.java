@@ -31,7 +31,7 @@ public class TeamPage extends LaternaPage {
     private final Table<String> DEF_table;
     private final Table<String> MID_table;
     private final Table<String> ATK_table;
-    HashMap<PositionGrouping, List<Player>> playerGroupings;
+    final HashMap<PositionGrouping, List<Player>> playerGroupings;
     private final ArrayList<EventListener<? extends Event>> listeners;
 
 
@@ -68,7 +68,7 @@ public class TeamPage extends LaternaPage {
                     if(player.getTeamId() == team.getId()){
                         Player oldPlayer = event.getOldPlayer().orElse(player);
                         PositionGrouping oldGrouping = PositionGrouping.getGrouping(oldPlayer);
-                        PositionGrouping grouping = PositionGrouping.getGrouping(player);
+                        PositionGrouping.getGrouping(player);
                         clearOldPlayer(oldPlayer, oldGrouping);
                         groupPlayer(player);
                         redrawTables();

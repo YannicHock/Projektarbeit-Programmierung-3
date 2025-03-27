@@ -65,7 +65,7 @@ public class TransferQuery {
         return transfers;
     }
 
-    public static void addTransfer(Transfer transfer) throws ParseException, IntegrityConstraintViolationException {
+    public static void addTransfer(Transfer transfer) throws IntegrityConstraintViolationException {
         DSLContext ctx = JooqContextProvider.getDSLContext();
         try {
             logger.info("Füge Transfer für Spieler mit ID: {} hinzu", transfer.getPlayerId());

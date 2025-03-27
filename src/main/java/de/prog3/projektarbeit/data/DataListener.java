@@ -18,8 +18,6 @@ import de.prog3.projektarbeit.eventHandling.listeners.data.player.AttemptPlayerT
 import de.prog3.projektarbeit.eventHandling.listeners.data.player.AttemptPlayerUpdateListener;
 import de.prog3.projektarbeit.eventHandling.listeners.data.player.PlayerUpdateFinishedListener;
 import de.prog3.projektarbeit.eventHandling.listeners.data.team.AttemptTeamCreationListener;
-import de.prog3.projektarbeit.exceptions.UnableToSavePlayerExeption;
-import de.prog3.projektarbeit.exceptions.UnableToSaveTeamExeption;
 import de.prog3.projektarbeit.exceptions.ValidationException;
 import de.prog3.projektarbeit.utils.Formatter;
 import org.jooq.exception.IntegrityConstraintViolationException;
@@ -68,15 +66,10 @@ public class DataListener {
                 }
 
                 if(player != null){
-                    try {
-                        PlayerQuery.save(player);
-                        logger.info("Spieler erfolgreich gespeichert: {}", player);
-                        new PlayerCreationFinishedEvent(player).call();
-                        return;
-                    } catch (UnableToSavePlayerExeption e) {
-                        exceptions.add(e);
-                        logger.error("Fehler beim Speichern des Spielers: {}", e.getMessage());
-                    }
+                    PlayerQuery.save(player);
+                    logger.info("Spieler erfolgreich gespeichert: {}", player);
+                    new PlayerCreationFinishedEvent(player).call();
+                    return;
                 }
                 logger.info("PlayerCreationFinishedEvent wird mit Fehlern ausgelöst. Anzahl Fehler: {}", exceptions.size());
                 new PlayerCreationFinishedEvent(exceptions).call();
@@ -154,7 +147,7 @@ public class DataListener {
                         logger.info("Spieleraktualisierung erfolgreich gespeichert.");
                         new PlayerUpdateFinishedEvent(player, event.getOldPlayer()).call();
                         return;
-                    } catch (UnableToSavePlayerExeption | IntegrityConstraintViolationException e) {
+                    } catch (IntegrityConstraintViolationException e) {
                         exceptions.add(e);
                         logger.error("Fehler beim Speichern der Spieleraktualisierung: {}", e.getMessage());
                     }
@@ -191,9 +184,6 @@ public class DataListener {
                                     TransferQuery.addTransfer(transfer);
                                     logger.info("Transfer erfolgreich in der Datenbank eingetragen.");
                                     new PlayerTransferFinishedEvent(newPlayer, player.getTeamId(), transferEvent.getNewTeamId()).call();
-                                } catch (ParseException e) {
-                                    exceptions.add(new ParseException("Das Datum des Transfers konnte nicht geparst werden", e.getErrorOffset()));
-                                    logger.error("Fehler beim Parsen des Transferdatums: {}", e.getMessage());
                                 } catch (NumberFormatException e){
                                     exceptions.add(new IllegalArgumentException("Die Transfersumme muss eine ganze Zahl > 0 sein aber war: " + transferEvent.getAmount()));
                                     logger.error("Fehler bei der Transfersumme: {}", e.getMessage());
