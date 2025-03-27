@@ -12,24 +12,15 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Testklasse für die Priorität von Event-Listenern.
- */
 class PriorityTests {
 
     private List<String> callOrder;
 
-    /**
-     * Initialisiert die Liste zur Verfolgung der Aufrufreihenfolge vor jedem Test.
-     */
     @BeforeEach
     void setUp() {
         callOrder = new ArrayList<>();
     }
 
-    /**
-     * Testet, ob die Listener in der Reihenfolge ihrer Priorität aufgerufen werden.
-     */
     @Test
     @DisplayName("Listeners should be called in order of their priority")
     void listenersCalledInOrderOfPriority() {
@@ -38,7 +29,6 @@ class PriorityTests {
                 super("TestEvent");
             }
         }
-
         new EventListener<>(TestEvent.class, Priority.HIGH) {
             @Override
             public void onEvent(TestEvent event) {

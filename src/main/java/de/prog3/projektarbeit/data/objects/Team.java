@@ -39,10 +39,26 @@ public class Team extends DataObject {
         }
     }
 
+    public void incrementPlayerCount() {
+        playerCount++;
+    }
+
+    public void decrementPlayerCount() {
+        playerCount--;
+    }
+
+    public int getPlayerCount_Int() {
+        return playerCount;
+    }
+
     public void addPlayer(Player player) {
         players.put(player.getId(), player);
     }
 
+    
+    public void removePlayer(Player player) {
+        players.remove(player.getId());
+    }
 
     public String getName() {
         return name;
@@ -68,4 +84,13 @@ public class Team extends DataObject {
         this.players = players;
     }
 
+
+    @Override
+    public String toString() {
+        return "Team{" +
+                "name='" + name + '\'' +
+                ", players=" + players +
+                ", playerCount=" + playerCount +
+                '}';
+    }
 }

@@ -6,9 +6,11 @@ import com.googlecode.lanterna.gui2.table.Table;
 import de.prog3.projektarbeit.data.database.query.TeamQuery;
 import de.prog3.projektarbeit.data.objects.Team;
 import de.prog3.projektarbeit.eventHandling.events.Event;
+import de.prog3.projektarbeit.eventHandling.events.data.player.PlayerTransferFinishedEvent;
 import de.prog3.projektarbeit.eventHandling.events.data.team.TeamCreationFinishedEvent;
 import de.prog3.projektarbeit.eventHandling.events.ui.OpenPageEvent;
 import de.prog3.projektarbeit.eventHandling.listeners.EventListener;
+import de.prog3.projektarbeit.eventHandling.listeners.data.player.PlayerTransferFinishedListener;
 import de.prog3.projektarbeit.eventHandling.listeners.data.team.TeamCreationFinishedListener;
 import de.prog3.projektarbeit.exceptions.TeamNotFoundExeption;
 import de.prog3.projektarbeit.ui.pages.PageType;
@@ -60,6 +62,30 @@ public class TeamsPage extends LaternaPage {
                 });
             }
         };
+        
+        EventListener <PlayerTransferFinishedEvent> playerTransferFinishedEventEventListener = new PlayerTransferFinishedListener() {
+            @Override
+            public void onEvent(PlayerTransferFinishedEvent event) {
+                event.getPlayer().ifPresent(player -> {
+                    logger.info("PlayerTransferFinishedEvent empfangen.");
+                    teams.values().forEach(team -> {
+                        if (team.getId() == player.getTeamId()) {
+                            team.incrementPlayerCount();
+                        }
+                        if(event.getFromTeamId() == team.getId()){
+                            team.decrementPlayerCount();
+                        }
+                    });
+                    teams.values().forEach(team -> {
+                        int id = getRowByFirstCellContent(table, team.getId() + "");
+                        table.getTableModel().setCell(2, id, team.getPlayerCount_Int() + "");
+                    });
+                });
+            }
+        };
+
+
+        listeners.add(playerTransferFinishedEventEventListener);
 
         listeners.add(teamCreationFinishedEventEventListener);
     }
@@ -68,7 +94,7 @@ public class TeamsPage extends LaternaPage {
         logger.info("Füge Klickaktion zur Tabelle hinzu.");
         table.setSelectAction(() -> {
             List<String> data = table.getTableModel().getRow(table.getSelectedRow());
-            int id = Integer.parseInt(data.get(0));
+            int id = Integer.parseInt(data.getFirst());
             logger.info("Ausgewählte Zeile in der Tabelle: ID = {}", id);
             try {
                 Team team = TeamQuery.getTeamById(id);
@@ -123,5 +149,15 @@ public class TeamsPage extends LaternaPage {
     @Override
     public ArrayList<EventListener<? extends Event>> getListeners() {
         return listeners;
+    }
+
+
+    public static int getRowByFirstCellContent(Table<String> table, String content) {
+        for (int row = 0; row < table.getTableModel().getRowCount(); row++) {
+            if (table.getTableModel().getCell(0, row).equals(content)) {
+                return row;
+            }
+        }
+        return -1; // Content not found
     }
 }

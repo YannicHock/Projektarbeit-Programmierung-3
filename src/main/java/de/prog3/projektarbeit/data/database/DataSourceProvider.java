@@ -11,11 +11,24 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+/**
+ * Die Klasse DataSourceProvider ist verantwortlich für die Bereitstellung einer DataSource für die Anwendung.
+ * Sie verwendet HikariCP für Connection-Pooling und SQLite als Datenbank.
+ */
+
 public class DataSourceProvider {
     private static final Logger logger = LoggerFactory.getLogger(DataSourceProvider.class);
     private static HikariDataSource dataSource;
     private static final String SOURCE_PATH = "database.sqlite";
     private static final String DESTINATION_PATH = "data/db.sqlite";
+
+
+    /**
+     * Initialisiert den DataSourceProvider.
+     * Erstellt das Verzeichnis für die Datenbankdatei, falls es nicht existiert.
+     * Kopiert die Datenbankdatei aus den Ressourcen, falls sie nicht existiert.
+     * Konfiguriert und initialisiert die HikariDataSource.
+     */
 
     public static void init(){
         logger.info("Starte Initialisierung des DataSourceProviders ...");
@@ -44,6 +57,13 @@ public class DataSourceProvider {
         logger.info("DataSource wurde erfolgreich initialisiert.");
     }
 
+    /**
+     * Gibt die DataSource zurück.
+     * Initialisiert die DataSource, falls sie noch nicht initialisiert ist.
+     *
+     * @return die DataSource
+     */
+
     public static DataSource getDataSource() {
         if (dataSource == null) {
             logger.info("DataSource noch nicht initialisiert. Führe init() aus.");
@@ -52,6 +72,10 @@ public class DataSourceProvider {
         return dataSource;
     }
 
+    /**
+     * Kopiert die Datenbankdatei von den Ressourcen in das Zielverzeichnis.
+     * Verwendet einen InputStream, um die Datei zu lesen und mit Files.copy zu kopieren.
+     */
     private static void copyDatabaseFile() {
         ClassLoader classLoader = DataSourceProvider.class.getClassLoader();
         try (InputStream inputStream = classLoader.getResourceAsStream(SOURCE_PATH)) {

@@ -12,6 +12,7 @@ import org.jooq.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import static de.prog3.projektarbeit.data.jooq.tables.Team.TEAM;
@@ -29,7 +30,12 @@ public class MatchQuery {
         result.forEach(record -> {
             Team homeTeam = getTeamById(ctx, record.get(MATCH.HOME_TEAM_ID));
             Team awayTeam = getTeamById(ctx, record.get(MATCH.AWAY_TEAM_ID));
-            Match match = new Match(homeTeam, awayTeam, record.get(MATCH.DATE));
+            Match match = null;
+            try {
+                match = new Match(homeTeam, awayTeam, Formatter.parseStringToDate(record.get(MATCH.MATCH_DATE)));
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
             matches.add(match);
             logger.debug("Gefundenes Match: {} - {}", homeTeam.getName(), awayTeam.getName());
         });
@@ -37,7 +43,7 @@ public class MatchQuery {
         return matches;
     }
 
-    public static Match getMatchById(int id) throws MatchNotFoundException {
+    public static Match getMatchById(int id) throws MatchNotFoundException, ParseException {
         logger.info("Lade Match mit ID: {}", id);
         DSLContext ctx = JooqContextProvider.getDSLContext();
         Record record = ctx.select().from(MATCH).where(MATCH.ID.eq(id)).fetchOne();
@@ -49,7 +55,7 @@ public class MatchQuery {
 
         Team homeTeam = getTeamById(ctx, record.get(MATCH.HOME_TEAM_ID));
         Team awayTeam = getTeamById(ctx, record.get(MATCH.AWAY_TEAM_ID));
-        return new Match(homeTeam, awayTeam, record.get(MATCH.DATE));
+        return new Match(homeTeam, awayTeam, Formatter.parseStringToDate(record.get(MATCH.MATCH_DATE)));
     }
 
     public static void createMatch(Match match) {

@@ -1,8 +1,11 @@
 package de.prog3.projektarbeit.data.database.query;
 
 import de.prog3.projektarbeit.data.database.JooqContextProvider;
+import de.prog3.projektarbeit.data.jooq.tables.Match;
+import de.prog3.projektarbeit.data.objects.Team;
 import de.prog3.projektarbeit.data.objects.Tournament;
 import de.prog3.projektarbeit.exceptions.TournamentNotFoundException;
+import de.prog3.projektarbeit.utils.Formatter;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
@@ -13,7 +16,8 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-import static de.prog3.projektarbeit.data.jooq.tables.Player.PLAYER;
+import static de.prog3.projektarbeit.data.jooq.tables.Match.MATCH;
+import static de.prog3.projektarbeit.data.jooq.tables.Team.TEAM;
 import static de.prog3.projektarbeit.data.jooq.tables.Tournament.TOURNAMENT;
 
 public class TournamentQuery {
@@ -26,12 +30,13 @@ public class TournamentQuery {
 
         List<Tournament> tournaments = new ArrayList<>();
         result.forEach(record -> {
-            Tournament tournament = new Tournament(
-                    record.get(TOURNAMENT.NAME),
-                    record.get(DSL.count(TOURNAMENT.ID))
+            /*Tournament tournament = new Tournament(
+                    record.get(TOURNAMENT.ID),
+                    record.get(TOURNAMENT.NAME)
+
             );
             tournaments.add(tournament);
-            logger.debug("Gefundenes Turnier: {}", tournament.getName());
+            logger.debug("Gefundenes Turnier: {}", tournament.getName());*/
         });
         return tournaments;
     }
@@ -45,10 +50,53 @@ public class TournamentQuery {
             logger.warn("Turnier mit ID {} nicht gefunden", id);
             throw new TournamentNotFoundException("Turnier mit der ID " + id + " nicht gefunden");
         }
-
-        return new Tournament(
+        return null;
+        /*return new Tournament(
                 record.get(TOURNAMENT.ID),
                 record.get(TOURNAMENT.NAME)
-        );
+        );*/
     }
+
+
+    private void addTeamToTournament(int tournamentId, int teamId) {
+        DSLContext ctx = JooqContextProvider.getDSLContext();
+        ctx.insertInto(TEAM)
+                .set(TEAM.ID, tournamentId)
+                .set(TEAM.ID, teamId)
+                .execute();
+    }
+
+
+    public void saveTournamentWithMatches(Tournament tournament) {
+        logger.info("Speichere Turnier: {}", tournament.getName());
+        DSLContext ctx = JooqContextProvider.getDSLContext();
+        ctx.transaction(configuration -> {
+            DSLContext transactionalCtx = DSL.using(configuration);
+            transactionalCtx.insertInto(TOURNAMENT)
+                    .set(TOURNAMENT.NAME, tournament.getName())
+                    .execute();
+
+            // Ermittle die generierte ID für das neue Turnier
+            int tournamentId = transactionalCtx.select(TOURNAMENT.ID)
+                    .from(TOURNAMENT)
+                    .where(TOURNAMENT.NAME.eq(tournament.getName()))
+                    .fetchOne()
+                    .get(TOURNAMENT.ID);
+
+            // Speicher die Teams des Turniers
+            for (Team team : tournament.getTeams()) {
+                addTeamToTournament(tournamentId, team.getId());
+            }
+            for (de.prog3.projektarbeit.data.objects.Match match : tournament.getMatches()) {
+                transactionalCtx.insertInto(MATCH)
+                        .set(MATCH.HOME_TEAM_ID, match.getHomeTeam().getId())
+                        .set(MATCH.AWAY_TEAM_ID, match.getAwayTeam().getId())
+                        .set(MATCH.TOURNAMENT_ID, tournamentId)
+                        .set(MATCH.MATCH_DATE, Formatter.parseDateToString(match.getDate()))
+                        .execute();
+            }
+        });
+    }
+
+
 }

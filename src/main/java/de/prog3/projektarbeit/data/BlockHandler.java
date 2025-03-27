@@ -12,6 +12,11 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 
+
+/**
+ * Die Klasse BlockHandler verwaltet blockierte Spieler und registriert Event-Listener.
+ * Sie verwendet ein Singleton-Muster, um eine einzige Instanz zu gewährleisten.
+ */
 public class BlockHandler {
     private static final Logger logger = LoggerFactory.getLogger(BlockHandler.class);
     private static BlockHandler instance;
