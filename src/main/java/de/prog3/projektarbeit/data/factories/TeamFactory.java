@@ -1,6 +1,10 @@
 package de.prog3.projektarbeit.data.factories;
 
 import de.prog3.projektarbeit.data.objects.Team;
+/**
+ * Die Klasse `TeamFactory` dient zur Erstellung von `Team`-Objekten.
+ * Sie ermöglicht das Setzen des Teamnamens und validiert die Daten vor der Erstellung des Objekts.
+ */
 
 /**
  * Die Klasse TeamFactory ist verantwortlich für die Erstellung von Team-Objekten.

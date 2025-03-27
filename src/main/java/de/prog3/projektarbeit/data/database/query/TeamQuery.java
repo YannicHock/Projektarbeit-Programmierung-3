@@ -14,6 +14,11 @@ import java.util.HashMap;
 
 import static de.prog3.projektarbeit.data.jooq.tables.Player.PLAYER;
 import static de.prog3.projektarbeit.data.jooq.tables.Team.TEAM;
+/**
+ * Diese Klasse enthält Abfragen für die Verwaltung von Teams in der Datenbank.
+ * Sie bietet Methoden zum Abrufen aller Teams, Abrufen eines Teams nach ID,
+ * und Abrufen des Namens eines Teams nach ID.
+ */
 
 public class TeamQuery {
 
