@@ -77,7 +77,6 @@ public class CreateTeamPage extends LaternaPage {
             index++;
             leagueComboBox.addItem(league.getName());
         }
-        System.out.println(indexMap);
         mainPanel.addComponent(leagueComboBox);
 
         contentPanel.addComponent(mainPanel);

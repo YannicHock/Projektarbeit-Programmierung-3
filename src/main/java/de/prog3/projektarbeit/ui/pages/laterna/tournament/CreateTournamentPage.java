@@ -3,8 +3,12 @@ package de.prog3.projektarbeit.ui.pages.laterna.tournament;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialog;
+import com.googlecode.lanterna.gui2.dialogs.MessageDialogBuilder;
+import com.googlecode.lanterna.gui2.dialogs.MessageDialogButton;
 import com.googlecode.lanterna.gui2.table.Table;
 import de.prog3.projektarbeit.data.Position;
+import de.prog3.projektarbeit.data.database.query.LeagueQuery;
+import de.prog3.projektarbeit.data.objects.League;
 import de.prog3.projektarbeit.data.objects.Match;
 import de.prog3.projektarbeit.data.objects.Team;
 import de.prog3.projektarbeit.data.objects.Tournament;
@@ -24,11 +28,13 @@ import java.util.List;
 public class CreateTournamentPage extends LaternaPage {
     private final Window window;
     private final LaternaView view;
+    private final List<League> leagues;
     private final ArrayList<EventListener<? extends Event>> listeners;
 
     public CreateTournamentPage(LaternaView view) {
         this.window = new BasicWindow("Spielplan erstellen");
         this.view = view;
+        leagues = LeagueQuery.getAll();
         listeners = new ArrayList<>();
         registerListener();
         open();
@@ -42,6 +48,22 @@ public class CreateTournamentPage extends LaternaPage {
     public Component get() {
 
         Panel contentPanel = new Panel(new GridLayout(1));
+
+        Label title = new Label("Spielplan erstellen für:");
+        contentPanel.addComponent(title);
+
+        leagues.forEach(league -> {
+            Button button = new Button(league.getName(), () -> {
+                MessageDialog dialog = new MessageDialogBuilder().setTitle("Spielplan erstellen")
+                        .setText("Spielplan für " + league.getName() + " erstellen?")
+                        .addButton(MessageDialogButton.OK)
+                        .addButton(MessageDialogButton.Cancel)
+                        .build();
+                MessageDialogButton res = dialog.showDialog(view.getGui());
+                System.out.println(res);
+            });
+            contentPanel.addComponent(button);
+        });
 
         contentPanel.addComponent(footer(false));
 

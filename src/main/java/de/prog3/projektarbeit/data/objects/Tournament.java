@@ -32,6 +32,14 @@ public class Tournament {
         generate();
     }
 
+    public Tournament(int id, String name, List<Team> teams, List<Match> matches) {
+        this.id = id;
+        this.name = name;
+        this.teams = teams;
+        this.matches = matches;
+    }
+
+
     public int getId() {
         return id;
     }

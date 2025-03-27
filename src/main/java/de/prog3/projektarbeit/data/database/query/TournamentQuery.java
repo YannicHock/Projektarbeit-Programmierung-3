@@ -1,9 +1,10 @@
 package de.prog3.projektarbeit.data.database.query;
 
 import de.prog3.projektarbeit.data.database.JooqContextProvider;
-import de.prog3.projektarbeit.data.jooq.tables.Match;
+import de.prog3.projektarbeit.data.objects.Match;
 import de.prog3.projektarbeit.data.objects.Team;
 import de.prog3.projektarbeit.data.objects.Tournament;
+import de.prog3.projektarbeit.exceptions.TeamNotFoundExeption;
 import de.prog3.projektarbeit.exceptions.TournamentNotFoundException;
 import de.prog3.projektarbeit.utils.Formatter;
 import org.jooq.DSLContext;
@@ -13,6 +14,7 @@ import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,15 +42,30 @@ public class TournamentQuery {
         DSLContext ctx = JooqContextProvider.getDSLContext();
         Record record = ctx.select().from(TOURNAMENT).where(TOURNAMENT.ID.eq(id)).fetchOne();
 
+        ArrayList<Team> teams = new ArrayList<>();
+        Result<Record> teamRecords = ctx.select().from(TEAM).where(TEAM.LEAGUEID.eq(id)).fetch();
+        teamRecords.forEach(teamRecord -> {
+            teams.add(new Team(teamRecord.get(TEAM.NAME), teamRecord.get(TEAM.LEAGUEID)));
+        });
+
+        ArrayList<Match> matches = new ArrayList<>();
+        Result<Record> matchRecords = ctx.select().from(MATCH).where(MATCH.TOURNAMENT_ID.eq(id)).fetch();
+        matchRecords.forEach(matchRecord -> {
+            try {
+                matches.add(new Match(
+                        TeamQuery.getTeamById(matchRecord.get(MATCH.HOME_TEAM_ID)),
+                        TeamQuery.getTeamById(matchRecord.get(MATCH.AWAY_TEAM_ID)),
+                        Formatter.parseStringToDate(matchRecord.get(MATCH.MATCH_DATE))
+                ));
+            } catch (TeamNotFoundExeption | ParseException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
         if (record == null) {
-            logger.warn("Turnier mit ID {} nicht gefunden", id);
-            throw new TournamentNotFoundException("Turnier mit der ID " + id + " nicht gefunden");
+            throw new TournamentNotFoundException("Turnier mit ID " + id + " nicht gefunden");
         }
-        return null;
-        /*return new Tournament(
-                record.get(TOURNAMENT.ID),
-                record.get(TOURNAMENT.NAME)
-        );*/
+        return new Tournament(record.get(TOURNAMENT.ID), record.get(TOURNAMENT.NAME), teams, matches);
     }
 
 

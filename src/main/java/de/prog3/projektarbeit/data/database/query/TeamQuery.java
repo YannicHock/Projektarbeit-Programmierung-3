@@ -68,7 +68,6 @@ public class TeamQuery {
     public static void save(Team team) {
         DSLContext ctx = JooqContextProvider.getDSLContext();
 
-        System.out.println(team.getLeagueId());
         ctx.insertInto(TEAM)
                 .columns(TEAM.NAME, TEAM.LEAGUEID)
                 .values(team.getName(), team.getLeagueId())

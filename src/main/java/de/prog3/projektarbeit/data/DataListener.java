@@ -88,7 +88,6 @@ public class DataListener {
             public void onEvent(AttemptTeamCreationEvent event) {
                 logger.info("AttemptTeamCreationEvent empfangen: {}", event);
                 Team team = null;
-                System.out.println(event.getLeagueId());
                 ArrayList<Exception> exceptions = new ArrayList<>();
                 try {
                     TeamFactory teamFactory = new TeamFactory();

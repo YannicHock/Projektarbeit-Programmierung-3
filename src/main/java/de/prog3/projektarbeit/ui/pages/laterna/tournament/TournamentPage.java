@@ -48,7 +48,7 @@ public class TournamentPage extends LaternaPage {
         Panel mainPanel = new Panel(new GridLayout(2));
 
         //FirstLeg
-        Table<String> firstLegtable = new Table<>("HomeTeam", "AwayTeam", "Date");
+        Table<String> firstLegtable = new Table<>("Heim", "Gast", "Datum");
         List<Match> matches = tournament.getMatches();
         for (int i = 0; i < (matches.size())/2; i++) {
             Match match = matches.get(i);
@@ -68,7 +68,6 @@ public class TournamentPage extends LaternaPage {
 
         //SecondLeg
         Table<String> secondLegtable = new Table<>("HomeTeam", "AwayTeam", "Date");
-        System.out.println("Teams: " + tournament.getMatches().size());
         for (int i = (matches.size()) / 2; i < matches.size(); i++) {
             Match match = matches.get(i);
             secondLegtable.getTableModel().addRow(
