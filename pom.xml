@@ -6,7 +6,7 @@
 
     <groupId>de.prog3.projektarbeit</groupId>
     <artifactId>Projektarbeit</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>Abgabeversion</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
