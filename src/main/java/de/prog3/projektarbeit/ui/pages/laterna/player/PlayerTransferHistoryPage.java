@@ -2,20 +2,26 @@ package de.prog3.projektarbeit.ui.pages.laterna.player;
 
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.table.Table;
+
 import de.prog3.projektarbeit.data.database.query.TransferQuery;
 import de.prog3.projektarbeit.data.objects.Player;
 import de.prog3.projektarbeit.data.objects.Transfer;
 import de.prog3.projektarbeit.eventHandling.events.Event;
+import de.prog3.projektarbeit.eventHandling.events.data.player.PlayerTransferFinishedEvent;
 import de.prog3.projektarbeit.eventHandling.listeners.EventListener;
+import de.prog3.projektarbeit.eventHandling.listeners.data.player.PlayerTransferFinishedListener;
 import de.prog3.projektarbeit.ui.pages.laterna.LaternaPage;
 import de.prog3.projektarbeit.ui.views.laterna.LaternaView;
 import de.prog3.projektarbeit.utils.Formatter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 
 
 public class PlayerTransferHistoryPage extends LaternaPage {
+
+    private static final Logger logger = LoggerFactory.getLogger(PlayerTransferHistoryPage.class);
 
     private final Window window;
     private final LaternaView view;
@@ -38,6 +44,26 @@ public class PlayerTransferHistoryPage extends LaternaPage {
     }
 
     private void registerListener(){
+
+        EventListener <PlayerTransferFinishedEvent> playerTransferFinishedEventEventListener = new PlayerTransferFinishedListener() {
+            @Override
+            public void onEvent(PlayerTransferFinishedEvent event) {
+                logger.info("PlayerTransferFinishedEvent empfangen. {}",event);
+                event.getPlayer().ifPresent(player -> {
+                    if (player.getId() == PlayerTransferHistoryPage.this.player.getId()) {
+                        ArrayList<Transfer> newList = TransferQuery.getTransfers(player);
+                        for (Transfer transfer : newList) {
+                            if (!transferHistory.contains(transfer)) {
+                                transferHistory.add(transfer);
+                                table.getTableModel().addRow(Formatter.parseDateToString(transfer.getDate()), transfer.getFromTeamName(), transfer.getToTeamName(), Formatter.formatCurrency(transfer.getAmount()));
+                            }
+                        }
+                    }
+                });
+            }
+        };
+        listeners.add(playerTransferFinishedEventEventListener);
+
     }
 
 
