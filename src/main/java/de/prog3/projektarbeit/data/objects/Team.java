@@ -13,22 +13,30 @@ public class Team extends DataObject {
     private final String name;
     private HashMap<Integer, Player> players;
     private int playerCount;
+    private int leagueId;
 
-    public Team(String name) {
+    public Team(String name, int leagueId) {
         super(0);
         this.name = name;
+        this.leagueId = leagueId;
         players = new HashMap<>();
     }
 
-    public Team(int id, String name) {
+    public Team(int id, String name, int leagueId) {
         super(id);
         this.name = name;
+        this.leagueId = leagueId;
         players = new HashMap<>();
     }
 
-    public Team(int id, String name, int playerCount) {
-        this(id, name);
+    public Team(int id, String name, int leagueId, int playerCount) {
+        this(id, name, leagueId);
+        this.leagueId = leagueId;
         this.playerCount = playerCount;
+    }
+
+    public int getLeagueId() {
+        return leagueId;
     }
 
     public int getPlayerCount() {
@@ -68,18 +76,6 @@ public class Team extends DataObject {
         return players;
     }
 
-    public void save() {
-        DSLContext ctx = JooqContextProvider.getDSLContext();
-
-        ctx.insertInto(TEAM)
-                .columns(TEAM.NAME)
-                .values(this.name)
-                .onDuplicateKeyUpdate()
-                .set(TEAM.NAME, this.name)
-                .execute();
-        ctx.select(TEAM.ID).from(TEAM).where(TEAM.NAME.eq(this.name)).fetch().forEach(record -> super.setId(record.get(TEAM.ID)));
-    }
-
     public void setPlayers(HashMap<Integer, Player> players) {
         this.players = players;
     }
@@ -91,6 +87,7 @@ public class Team extends DataObject {
                 "name='" + name + '\'' +
                 ", players=" + players +
                 ", playerCount=" + playerCount +
+                ", leagueId=" + leagueId +
                 '}';
     }
 }

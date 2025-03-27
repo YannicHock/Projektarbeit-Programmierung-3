@@ -21,15 +21,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class TournamentPage extends LaternaPage {
+public class CreateTournamentPage extends LaternaPage {
     private final Window window;
     private final LaternaView view;
-    private final Tournament tournament;
     private final ArrayList<EventListener<? extends Event>> listeners;
 
-    public TournamentPage(LaternaView view, Tournament tournament) {
-        this.window = new BasicWindow("Spielplan " + tournament.getName());
-        this.tournament = tournament;
+    public CreateTournamentPage(LaternaView view) {
+        this.window = new BasicWindow("Spielplan erstellen");
         this.view = view;
         listeners = new ArrayList<>();
         registerListener();
@@ -45,48 +43,6 @@ public class TournamentPage extends LaternaPage {
 
         Panel contentPanel = new Panel(new GridLayout(1));
 
-        Panel mainPanel = new Panel(new GridLayout(2));
-
-        //FirstLeg
-        Table<String> firstLegtable = new Table<>("HomeTeam", "AwayTeam", "Date");
-        List<Match> matches = tournament.getMatches();
-        for (int i = 0; i < (matches.size())/2; i++) {
-            Match match = matches.get(i);
-            firstLegtable.getTableModel().addRow(
-                    match.getHomeTeam().getName(),
-                    match.getAwayTeam().getName(),
-                    Formatter.parseDateToString(match.getDate())
-            );
-        }
-
-        Panel panel = new Panel();
-        panel.setLayoutManager(new LinearLayout(Direction.HORIZONTAL));
-
-        Panel leftPanel = new Panel();
-        leftPanel.addComponent(firstLegtable);
-        panel.addComponent(leftPanel.withBorder(Borders.singleLine("Vorrunde")));
-
-        //SecondLeg
-        Table<String> secondLegtable = new Table<>("HomeTeam", "AwayTeam", "Date");
-        System.out.println("Teams: " + tournament.getMatches().size());
-        for (int i = (matches.size()) / 2; i < matches.size(); i++) {
-            Match match = matches.get(i);
-            secondLegtable.getTableModel().addRow(
-                    match.getHomeTeam().getName(),
-                    match.getAwayTeam().getName(),
-                    Formatter.parseDateToString(match.getDate())
-            );
-        }
-
-        Panel rightPanel = new Panel();
-        rightPanel.addComponent(secondLegtable);
-        panel.addComponent(rightPanel.withBorder(Borders.singleLine("Rückrunde")));
-
-        window.setComponent(panel.withBorder(Borders.singleLine("Spielplan")));
-
-
-
-        contentPanel.addComponent(panel);
         contentPanel.addComponent(footer(false));
 
         return contentPanel;

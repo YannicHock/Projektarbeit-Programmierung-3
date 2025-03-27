@@ -9,6 +9,7 @@ import de.prog3.projektarbeit.data.objects.Team;
 public class TeamFactory {
 
     private String name;
+    private int leagueId;
 
     /**
      * Setzt den Namen des Teams.
@@ -18,8 +19,11 @@ public class TeamFactory {
         if(name == null || name.isEmpty() || name.isBlank()){
             throw new IllegalArgumentException("Fehlender Teamname");
         }
+        if(leagueId <= 0){
+            throw new IllegalArgumentException("Fehlende Liga-ID");
+        }
 
-        return new Team(name);
+        return new Team(name, leagueId);
     }
 
     /**
@@ -29,6 +33,16 @@ public class TeamFactory {
      */
     public TeamFactory setName(String name) {
         this.name = name;
+        return this;
+    }
+
+    /**
+     * Setzt die ID der Liga, in der das Team spielt.
+     * @param leagueId die Liga-ID
+     * @return die TeamFactory-Instanz
+     */
+    public TeamFactory setLeagueId(int leagueId) {
+        this.leagueId = leagueId;
         return this;
     }
 }

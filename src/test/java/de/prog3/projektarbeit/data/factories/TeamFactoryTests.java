@@ -14,7 +14,7 @@ class TeamFactoryTests {
     void testBuildWithValidName() {
         String validName = "Dream Team";
         teamFactory = new TeamFactory();
-        teamFactory.setName(validName);
+        teamFactory.setName(validName).setLeagueId(1);
         Team team = teamFactory.build();
         assertNotNull(team, "Das Team sollte nicht null sein.");
         assertEquals(validName, team.getName(), "Der Teamname sollte dem gesetzten Namen entsprechen.");

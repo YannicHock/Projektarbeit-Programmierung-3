@@ -1,6 +1,7 @@
 package de.prog3.projektarbeit.data;
 
 import de.prog3.projektarbeit.data.database.query.PlayerQuery;
+import de.prog3.projektarbeit.data.database.query.TeamQuery;
 import de.prog3.projektarbeit.data.database.query.TransferQuery;
 import de.prog3.projektarbeit.data.factories.PlayerFactory;
 import de.prog3.projektarbeit.data.factories.TeamFactory;
@@ -87,10 +88,13 @@ public class DataListener {
             public void onEvent(AttemptTeamCreationEvent event) {
                 logger.info("AttemptTeamCreationEvent empfangen: {}", event);
                 Team team = null;
+                System.out.println(event.getLeagueId());
                 ArrayList<Exception> exceptions = new ArrayList<>();
                 try {
                     TeamFactory teamFactory = new TeamFactory();
-                    team = teamFactory.setName(event.getTeamName())
+                    team = teamFactory
+                            .setName(event.getTeamName())
+                            .setLeagueId(event.getLeagueId())
                             .build();
                     logger.info("TeamFactory erfolgreich verarbeitet.");
                 } catch (IllegalArgumentException e) {
@@ -99,7 +103,8 @@ public class DataListener {
                 }
 
                 if(team != null){
-                    team.save();
+                    //System.out.println(team.getLeagueId());
+                    TeamQuery.save(team);
                     logger.info("Team erfolgreich gespeichert: {}", team);
                     new TeamCreationFinishedEvent(team).call();
                     return;

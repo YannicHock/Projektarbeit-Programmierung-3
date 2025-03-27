@@ -10,17 +10,30 @@ import java.util.*;
 
 
 public class Tournament {
+    private final int id;
     private final String name;
     private final List<Team> teams;
     private final List<Match> matches;
 
     private static final int WEEK_IN_MILLIS = 7*60*60*24*1000;
 
-    public Tournament(String name, List<Team> teams) {
+    public Tournament(int id, String name) {
+        this.id = id;
+        this.name = name;
+        this.teams = new ArrayList<>();
+        this.matches = new ArrayList<>();
+    }
+
+    public Tournament(int id, String name, List<Team> teams) {
+        this.id = id;
         this.name = name;
         this.teams = teams;
         this.matches = new ArrayList<>();
         generate();
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {

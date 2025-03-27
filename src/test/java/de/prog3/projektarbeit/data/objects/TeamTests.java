@@ -16,7 +16,7 @@ public class TeamTests {
 
     @Test
     void testATeamWithNoPlayers() {
-        Team testTeam = new Team("TestTeam");
+        Team testTeam = new Team("TestTeam", 1);
         assertEquals("TestTeam", testTeam.getName());
         assertEquals(0, testTeam.getId());
         assertEquals(0, testTeam.getPlayerCount());
@@ -24,7 +24,7 @@ public class TeamTests {
 
     @Test
     void testATeamWithNoPlayersButGivenId() {
-        Team testTeam = new Team(450,"TestTeam");
+        Team testTeam = new Team(450,"TestTeam", 1);
         assertEquals("TestTeam", testTeam.getName());
         assertEquals(450, testTeam.getId());
         assertEquals(0, testTeam.getPlayerCount());
@@ -33,7 +33,7 @@ public class TeamTests {
     @Test
     void testTeamWithPlayers()
     {
-        Team testTeam = new Team(450,"TestTeam",1);
+        Team testTeam = new Team(450,"TestTeam",0, 1);
         Player testPlayer = new Player(250 , "Ashish " , "Kumar " , Date.from(Instant.now()) , 24 , new ArrayList<>(List.of(CM)),testTeam.getId() );
         testTeam.addPlayer(testPlayer);
         assertEquals(1, testTeam.getPlayerCount());
@@ -42,7 +42,7 @@ public class TeamTests {
 
     @Test
     void testNonGetPlayerCount() {
-        Team testTeam = new Team(450, "TestTeam", -1);
+        Team testTeam = new Team(450, "TestTeam", 0,-1);
         Player testPlayer1 = new Player(250, "Ashish", "Kumar", Date.from(Instant.now()), 24, new ArrayList<>(List.of(CM)), testTeam.getId());
         Player testPlayer2 = new Player(251, "Ram", "Kumar", Date.from(Instant.now()), 25, new ArrayList<>(List.of(CM)), testTeam.getId());
         testTeam.addPlayer(testPlayer1);

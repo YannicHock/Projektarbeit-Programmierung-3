@@ -6,6 +6,7 @@ import de.prog3.projektarbeit.ui.pages.laterna.team.TeamPage;
 import de.prog3.projektarbeit.ui.pages.laterna.team.TeamsPage;
 import de.prog3.projektarbeit.ui.pages.laterna.TitlePage;
 import de.prog3.projektarbeit.ui.pages.laterna.tournament.TournamentPage;
+import de.prog3.projektarbeit.ui.pages.laterna.tournament.TournamentsPage;
 import de.prog3.projektarbeit.ui.views.View;
 import de.prog3.projektarbeit.ui.views.ViewType;
 import org.slf4j.Logger;
@@ -43,6 +44,9 @@ public enum PageType {
     }}),
     TEAMS(new HashMap<>() {{
         put(ViewType.LATERNA, TeamsPage.class);
+    }}),
+    TOURNAMENTS(new HashMap<>() {{
+        put(ViewType.LATERNA, TournamentsPage.class);
     }}),
     TOURNAMENT(new HashMap<>() {{
         put(ViewType.LATERNA, TournamentPage.class);

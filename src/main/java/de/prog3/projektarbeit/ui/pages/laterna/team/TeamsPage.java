@@ -3,6 +3,7 @@ package de.prog3.projektarbeit.ui.pages.laterna.team;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialog;
 import com.googlecode.lanterna.gui2.table.Table;
+import de.prog3.projektarbeit.data.database.query.LeagueQuery;
 import de.prog3.projektarbeit.data.database.query.TeamQuery;
 import de.prog3.projektarbeit.data.objects.Team;
 import de.prog3.projektarbeit.eventHandling.events.Event;
@@ -41,7 +42,7 @@ public class TeamsPage extends LaternaPage {
         logger.info("Es wurden {} Teams geladen.", teams.size());
         this.window = new BasicWindow(name);
         this.view = view;
-        this.table = new Table<>("ID", "Teamname", "Spieleranzahl");
+        this.table = new Table<>("ID", "Teamname", "Spieleranzahl", "Liga");
         listeners = new ArrayList<>();
         registerListener();
         addClickAction();
@@ -122,7 +123,7 @@ public class TeamsPage extends LaternaPage {
                                 GridLayout.createHorizontallyFilledLayoutData(1)));
 
         for (Team team : teams.values()) {
-            table.getTableModel().addRow(team.getId() + "", team.getName(), team.getPlayerCount() + "");
+            table.getTableModel().addRow(team.getId() + "", team.getName(), team.getPlayerCount() + "", LeagueQuery.getNameById(team.getLeagueId()));
         }
 
         mainpanel.addComponent(table);

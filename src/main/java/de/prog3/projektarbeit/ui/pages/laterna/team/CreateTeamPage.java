@@ -3,6 +3,10 @@ package de.prog3.projektarbeit.ui.pages.laterna.team;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialog;
+import de.prog3.projektarbeit.data.database.query.LeagueQuery;
+import de.prog3.projektarbeit.data.database.query.TeamQuery;
+import de.prog3.projektarbeit.data.objects.League;
+import de.prog3.projektarbeit.data.objects.Team;
 import de.prog3.projektarbeit.eventHandling.events.Event;
 import de.prog3.projektarbeit.eventHandling.events.data.team.AttemptTeamCreationEvent;
 import de.prog3.projektarbeit.eventHandling.events.data.team.TeamCreationFinishedEvent;
@@ -12,18 +16,21 @@ import de.prog3.projektarbeit.ui.pages.laterna.LaternaPage;
 import de.prog3.projektarbeit.ui.views.laterna.LaternaView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class CreateTeamPage extends LaternaPage {
     private final Window window;
     private final LaternaView view;
     private final ArrayList<EventListener<? extends Event>> listeners;
     private final String name;
+    private final HashMap<Integer, Integer> indexMap;
 
     public CreateTeamPage(LaternaView view) {
         this.name = "Team erstellen";
         this.window = new BasicWindow(name);
         this.view = view;
         listeners = new ArrayList<>();
+        indexMap = new HashMap<>();
         registerListener();
         open();
     }
@@ -60,12 +67,26 @@ public class CreateTeamPage extends LaternaPage {
         TextBox teamNameTextBox = new TextBox().setPreferredSize(size);
         mainPanel.addComponent(teamNameTextBox);
 
+
+        Label leagueLable = new Label("Ligazugehörigkeit: ");
+        mainPanel.addComponent(leagueLable);
+        ComboBox<String> leagueComboBox = new ComboBox<>();
+        int index = 0;
+        for(League league : LeagueQuery.getAll()){
+            indexMap.put(index, league.getId());
+            index++;
+            leagueComboBox.addItem(league.getName());
+        }
+        System.out.println(indexMap);
+        mainPanel.addComponent(leagueComboBox);
+
         contentPanel.addComponent(mainPanel);
 
         contentPanel.addComponent(new Button("Fertig", () ->{
             String teamNameString = teamNameTextBox.getText();
+            int id = indexMap.get(leagueComboBox.getSelectedIndex());
 
-            new AttemptTeamCreationEvent(teamNameString).call();
+            new AttemptTeamCreationEvent(teamNameString, id).call();
 
         }));
         contentPanel.addComponent(footer(false));

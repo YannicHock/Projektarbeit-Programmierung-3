@@ -95,6 +95,6 @@ public class MatchQuery {
 
     private static Team getTeamById(DSLContext ctx, int teamId) {
         Record teamRecord = ctx.select().from(TEAM).where(TEAM.ID.eq(teamId)).fetchOne();
-        return teamRecord == null ? null : new Team(teamRecord.get(TEAM.ID), teamRecord.get(TEAM.NAME));
+        return teamRecord == null ? null : new Team(teamRecord.get(TEAM.ID), teamRecord.get(TEAM.NAME), teamRecord.get(TEAM.LEAGUEID));
     }
 }

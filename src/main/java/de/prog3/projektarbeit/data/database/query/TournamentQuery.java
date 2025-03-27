@@ -23,25 +23,19 @@ import static de.prog3.projektarbeit.data.jooq.tables.Tournament.TOURNAMENT;
 public class TournamentQuery {
     private static final Logger logger = LoggerFactory.getLogger(TournamentQuery.class);
 
-    public List<Tournament> getAllTournaments() {
+    public static ArrayList<Tournament> getAll() {
         logger.info("Lade alle Turniere");
         DSLContext ctx = JooqContextProvider.getDSLContext();
         Result<Record> result = ctx.select().from(TOURNAMENT).fetch();
-
-        List<Tournament> tournaments = new ArrayList<>();
+        ArrayList<Tournament> tournaments = new ArrayList<>();
         result.forEach(record -> {
-            /*Tournament tournament = new Tournament(
-                    record.get(TOURNAMENT.ID),
-                    record.get(TOURNAMENT.NAME)
-
-            );
-            tournaments.add(tournament);
-            logger.debug("Gefundenes Turnier: {}", tournament.getName());*/
+            tournaments.add(new Tournament(record.get(TOURNAMENT.ID), record.get(TOURNAMENT.NAME)));
         });
+        logger.info("Gefundene Turniere: {}", tournaments.size());
         return tournaments;
     }
 
-    public Tournament getTournamentById(int id) throws TournamentNotFoundException {
+    public static Tournament getById(int id) throws TournamentNotFoundException {
         logger.info("Lade Turnier mit ID: {}", id);
         DSLContext ctx = JooqContextProvider.getDSLContext();
         Record record = ctx.select().from(TOURNAMENT).where(TOURNAMENT.ID.eq(id)).fetchOne();
