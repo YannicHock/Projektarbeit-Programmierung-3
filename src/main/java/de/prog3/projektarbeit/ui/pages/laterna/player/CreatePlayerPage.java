@@ -15,11 +15,36 @@ import de.prog3.projektarbeit.ui.views.laterna.LaternaView;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Diese Klasse stellt die Benutzeroberfläche zum Erstellen eines neuen Spielers dar.
+ * Hier können Benutzer alle notwendigen Informationen (Vorname, Nachname, Geburtsdatum, Rückennummer und Positionen)
+ * eingeben. Nach Eingabe der Daten wird ein {@link AttemptPlayerCreationEvent} ausgelöst, das den Erstellungsprozess
+ * startet. Außerdem registriert die Seite einen Listener, der auf ein {@link PlayerCreationFinishedEvent} reagiert,
+ * um im Erfolgsfall das Fenster zu schließen oder bei Fehlern eine Fehlermeldung anzuzeigen.
+ */
 public class CreatePlayerPage extends LaternaPage {
+
+    /**
+     * Das Fenster, in dem die Spieler-Erstellungsseite angezeigt wird.
+     */
     private final Window window;
+
+    /**
+     * Die zugehörige LaternaView, die für die Verwaltung des Bildschirms zuständig ist.
+     */
     private final LaternaView view;
+
+    /**
+     * Liste der registrierten EventListener für diese Seite.
+     */
     private final ArrayList<EventListener<? extends Event>> listeners;
 
+    /**
+     * Konstruktor. Erstellt ein Fenster mit dem Titel "Spieler erstellen", registriert notwendige Event-Listener
+     * und öffnet die Seite.
+     *
+     * @param view Die übergeordnete LaternaView, in der die Seite dargestellt wird.
+     */
     public CreatePlayerPage(LaternaView view) {
         this.window = new BasicWindow("Spieler erstellen");
         this.view = view;
@@ -28,6 +53,11 @@ public class CreatePlayerPage extends LaternaPage {
         open();
     }
 
+    /**
+     * Registriert einen Listener für das PlayerCreationFinishedEvent.
+     * Der Listener schließt das Fenster, wenn ein Spieler erfolgreich erstellt wurde.
+     * Im Fehlerfall zeigt er eine Fehlermeldung an.
+     */
     private void registerListener(){
         EventListener<PlayerCreationFinishedEvent> creationFinishedEventEventListener = new PlayerCreationFinishedListener() {
             @Override
@@ -39,19 +69,25 @@ public class CreatePlayerPage extends LaternaPage {
                         builder.append(exception.getMessage());
                         builder.append("\n");
                     });
-                    MessageDialog.showMessageDialog(window.getTextGUI(), "Fehler beim erstellen des Spielers", builder.toString());
+                    MessageDialog.showMessageDialog(window.getTextGUI(),
+                            "Fehler beim Erstellen des Spielers", builder.toString());
                 });
             }
         };
         listeners.add(creationFinishedEventEventListener);
     }
 
-
+    /**
+     * Baut das Layout der Seite auf. Hier werden Eingabefelder für Vorname, Nachname, Geburtsdatum,
+     * Rückennummer und Positionen angeordnet. Außerdem wird ein Button hinzugefügt, der beim Klicken ein
+     * {@link AttemptPlayerCreationEvent} auslöst.
+     *
+     * @return Das erstellte UI-Element als Component.
+     */
     @Override
     public Component get() {
 
         Panel contentPanel = new Panel(new GridLayout(1));
-
         Panel mainPanel = new Panel(new GridLayout(2));
 
         TerminalSize size = new TerminalSize(30, 1);
@@ -91,7 +127,7 @@ public class CreatePlayerPage extends LaternaPage {
 
         contentPanel.addComponent(mainPanel);
 
-        contentPanel.addComponent(new Button("Fertig", () ->{
+        contentPanel.addComponent(new Button("Fertig", () -> {
             String firstNameString = firstNameTextBox.getText();
             String lastNameString = lastNameTextBox.getText();
             String birthDateString = birthDateTextBox.getText();
@@ -99,34 +135,52 @@ public class CreatePlayerPage extends LaternaPage {
             ArrayList<Position> positionResult = new ArrayList<>();
             checkBoxList.getCheckedItems().forEach(item -> {
                 Position checkedPosition = Position.getByFriendlyName(item);
-                if(checkedPosition != null){
+                if (checkedPosition != null) {
                     positionResult.add(checkedPosition);
                 }
             });
-
             new AttemptPlayerCreationEvent(firstNameString, lastNameString, birthDateString, numberString, positionResult).call();
-
         }));
         contentPanel.addComponent(footer(false));
 
         return contentPanel;
     }
 
+    /**
+     * Gibt das Fenster dieser Seite zurück.
+     *
+     * @return Das {@link Window}-Objekt.
+     */
     @Override
     public Window getWindow() {
         return window;
     }
 
+    /**
+     * Gibt die zugehörige LaternaView zurück.
+     *
+     * @return Die aktuelle {@link LaternaView}.
+     */
     @Override
     public LaternaView getLaternaView() {
         return view;
     }
 
+    /**
+     * Gibt den Namen dieser Seite zurück.
+     *
+     * @return Der Name als String.
+     */
     @Override
     public String getName() {
         return "Spieler erstellen";
     }
 
+    /**
+     * Gibt alle registrierten EventListener für diese Seite zurück.
+     *
+     * @return Eine Liste von {@link EventListener}-Objekten.
+     */
     @Override
     public ArrayList<EventListener<? extends Event>> getListeners() {
         return listeners;
