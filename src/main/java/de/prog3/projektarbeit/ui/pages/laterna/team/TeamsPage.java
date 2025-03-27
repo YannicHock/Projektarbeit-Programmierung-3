@@ -71,12 +71,16 @@ public class TeamsPage extends LaternaPage {
                     teams.values().forEach(team -> {
                         if (team.getId() == player.getTeamId()) {
                             team.addPlayer(player);
-                            table.getTableModel().setCell(Integer.parseInt(table.getTableModel().getRow(player.getId()).get(0)), 2, team.getPlayerCount() + "");
                         }
                         if(team.getPlayers().containsKey(player.getId())){
                             team.removePlayer(player);
-                            table.getTableModel().setCell(Integer.parseInt(table.getTableModel().getRow(player.getId()).get(0)), 2, team.getPlayerCount() + "");
                         }
+                    });
+                    //TODO Fix count error
+                    teams.values().forEach(team -> {
+                        System.out.println(team);
+                        int id = getRowByFirstCellContent(table, team.getId() + "");
+                        table.getTableModel().setCell(2, id, team.getPlayerCount_Int() + "");
                     });
                 });
             }
@@ -92,7 +96,7 @@ public class TeamsPage extends LaternaPage {
         logger.info("Füge Klickaktion zur Tabelle hinzu.");
         table.setSelectAction(() -> {
             List<String> data = table.getTableModel().getRow(table.getSelectedRow());
-            int id = Integer.parseInt(data.get(0));
+            int id = Integer.parseInt(data.getFirst());
             logger.info("Ausgewählte Zeile in der Tabelle: ID = {}", id);
             try {
                 Team team = TeamQuery.getTeamById(id);
@@ -147,5 +151,15 @@ public class TeamsPage extends LaternaPage {
     @Override
     public ArrayList<EventListener<? extends Event>> getListeners() {
         return listeners;
+    }
+
+
+    public static int getRowByFirstCellContent(Table<String> table, String content) {
+        for (int row = 0; row < table.getTableModel().getRowCount(); row++) {
+            if (table.getTableModel().getCell(0, row).equals(content)) {
+                return row;
+            }
+        }
+        return -1; // Content not found
     }
 }
