@@ -28,6 +28,7 @@ import java.util.ArrayList;
  */
 public class PlayerTransferHistoryPage extends LaternaPage {
 
+    private static final Logger logger = LoggerFactory.getLogger(PlayerTransferHistoryPage.class);
     /**
      * Das Fenster, in dem die Transferhistorie angezeigt wird.
      */
@@ -89,8 +90,6 @@ public class PlayerTransferHistoryPage extends LaternaPage {
      * Registriert EventListener für diese Seite.
      * (Aktuell ist diese Methode leer, kann jedoch in Zukunft erweitert werden, um auf relevante Ereignisse zu reagieren.)
      */
-    private void registerListener() {
-        // Platzhalter für die Registrierung von EventListenern
     private void registerListener(){
 
         EventListener <PlayerTransferFinishedEvent> playerTransferFinishedEventEventListener = new PlayerTransferFinishedListener() {
