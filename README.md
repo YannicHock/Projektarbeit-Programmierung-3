@@ -10,6 +10,7 @@ Das Programm bildet eine vereinfachte Kopie bekannter Fußball Datenbanken wir T
 * Transferhistorie eines Spielers anzeigen
 * Mannschafts Erstellung
 * Mannschafts Anzeige
+* **Massen Mannschafts import von kicker.de**
 * Turnier Erstellung
 * Turnier Anzeige
 
@@ -40,6 +41,7 @@ Die Anwendung startet mit einem Hauptfenster, in dem die verschiedenen Funktione
 * Mannschaft
   * Mannschaft erstellen
   * Mannschaft anzeigen
+  * Mannschaften importieren wichtig url muss das Format `https://www.kicker.de/[team]/kader/[liga]/2024-25 haben`
 * Turnier
   * Turnier erstellen
   * Turnier anzeigen

@@ -6,7 +6,7 @@ import java.util.List;
 public class League {
     private final int id;
     private final String name;
-    private final List<Team> participants;
+    private final ArrayList<Team> participants;
 
     public League(int id, String name){
         this.id = id;
@@ -14,7 +14,7 @@ public class League {
         this.participants = new ArrayList<>();
     }
 
-    public League(int id, String name, List<Team> participants) {
+    public League(int id, String name, ArrayList<Team> participants) {
         this.id = id;
         this.name = name;
         this.participants = participants;
@@ -28,7 +28,7 @@ public class League {
         return name;
     }
 
-    public List<Team> getParticipants() {
+    public ArrayList<Team> getParticipants() {
         return participants;
     }
 }

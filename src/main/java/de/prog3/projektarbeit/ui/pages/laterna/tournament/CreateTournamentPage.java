@@ -9,7 +9,10 @@ import de.prog3.projektarbeit.data.database.query.TournamentQuery;
 import de.prog3.projektarbeit.data.objects.League;
 import de.prog3.projektarbeit.data.objects.Tournament;
 import de.prog3.projektarbeit.eventHandling.events.Event;
+import de.prog3.projektarbeit.eventHandling.events.data.tournament.AttemptTournamentCreationEvent;
+import de.prog3.projektarbeit.eventHandling.events.data.tournament.TournamentFinishedEvent;
 import de.prog3.projektarbeit.eventHandling.listeners.EventListener;
+import de.prog3.projektarbeit.eventHandling.listeners.data.tournament.TournamentCreationFinishedListener;
 import de.prog3.projektarbeit.ui.pages.laterna.LaternaPage;
 import de.prog3.projektarbeit.ui.views.laterna.LaternaView;
 
@@ -32,6 +35,20 @@ public class CreateTournamentPage extends LaternaPage {
     }
 
     private void registerListener(){
+        listeners.add(new TournamentCreationFinishedListener() {
+            @Override
+            public void onEvent(TournamentFinishedEvent event) {
+                event.getExceptions().ifPresentOrElse(exceptions -> {
+                    StringBuilder message = new StringBuilder();
+                    for (Exception e : exceptions) {
+                        message.append(e.getMessage()).append("\n");
+                    }
+                    try {
+                        MessageDialog.showMessageDialog(window.getTextGUI(), "Fehler", message.toString());
+                    } catch (Exception ignore){}
+                },() -> close());
+            }
+        });
     }
 
 
@@ -52,10 +69,7 @@ public class CreateTournamentPage extends LaternaPage {
                         .build();
                 MessageDialogButton res = dialog.showDialog(view.getGui());
                 if(res.equals(MessageDialogButton.OK)){
-                    Tournament tournament = new Tournament(0, league.getName(), league.getParticipants());
-                    //TODO sauber über events lösen
-                    TournamentQuery.save(tournament);
-                    window.close();
+                    new AttemptTournamentCreationEvent(league.getName(), league.getParticipants()).call();
                 }
             });
             contentPanel.addComponent(button);
@@ -80,6 +94,7 @@ public class CreateTournamentPage extends LaternaPage {
     public String getName() {
         return "Spieler erstellen";
     }
+
 
     @Override
     public ArrayList<EventListener<? extends Event>> getListeners() {

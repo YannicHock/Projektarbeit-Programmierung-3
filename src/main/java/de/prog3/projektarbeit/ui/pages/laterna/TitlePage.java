@@ -53,6 +53,7 @@ import java.util.ArrayList;
         Panel teamManagement = new Panel();
         teamManagement.addComponent(new Button("Teamübersicht", () -> new OpenPageEvent(view, PageType.TEAMS).call()));
         teamManagement.addComponent(new Button("Team erstellen", () -> new OpenPageEvent(view, PageType.CREATE_TEAM).call()));
+                teamManagement.addComponent(new Button("Team importieren", () -> new OpenPageEvent(view, PageType.IMPORT_TEAM).call()));
         mainPanel.addComponent(teamManagement.withBorder(Borders.singleLine("Teamverwaltung")));
 
 

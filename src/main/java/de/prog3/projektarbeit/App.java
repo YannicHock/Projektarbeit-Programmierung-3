@@ -2,6 +2,7 @@ package de.prog3.projektarbeit;
 
 import de.prog3.projektarbeit.data.BlockHandler;
 import de.prog3.projektarbeit.data.DataListener;
+import de.prog3.projektarbeit.data.Scraper;
 import de.prog3.projektarbeit.data.database.JooqContextProvider;
 import de.prog3.projektarbeit.eventHandling.events.ui.RequestNewViewEvent;
 import de.prog3.projektarbeit.ui.UIHandler;
@@ -28,6 +29,8 @@ public class App {
         UIHandler.getInstance().registerListeners();
         logger.info("Initialisiere BlockHandler");
         BlockHandler.getInstance();
+        logger.info("Initialisiere Scraper");
+        Scraper.registerListener();
     }
 
     public void start() {

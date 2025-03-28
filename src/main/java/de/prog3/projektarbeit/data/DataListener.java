@@ -2,22 +2,27 @@ package de.prog3.projektarbeit.data;
 
 import de.prog3.projektarbeit.data.database.query.PlayerQuery;
 import de.prog3.projektarbeit.data.database.query.TeamQuery;
+import de.prog3.projektarbeit.data.database.query.TournamentQuery;
 import de.prog3.projektarbeit.data.database.query.TransferQuery;
 import de.prog3.projektarbeit.data.factories.PlayerFactory;
 import de.prog3.projektarbeit.data.factories.TeamFactory;
 import de.prog3.projektarbeit.data.factories.TransferFactory;
 import de.prog3.projektarbeit.data.objects.Player;
 import de.prog3.projektarbeit.data.objects.Team;
+import de.prog3.projektarbeit.data.objects.Tournament;
 import de.prog3.projektarbeit.data.objects.Transfer;
 import de.prog3.projektarbeit.eventHandling.events.data.player.*;
 import de.prog3.projektarbeit.eventHandling.events.data.team.AttemptTeamCreationEvent;
 import de.prog3.projektarbeit.eventHandling.events.data.team.TeamCreationFinishedEvent;
+import de.prog3.projektarbeit.eventHandling.events.data.tournament.AttemptTournamentCreationEvent;
+import de.prog3.projektarbeit.eventHandling.events.data.tournament.TournamentFinishedEvent;
 import de.prog3.projektarbeit.eventHandling.listeners.Priority;
 import de.prog3.projektarbeit.eventHandling.listeners.data.player.AttemptPlayerCreationListener;
 import de.prog3.projektarbeit.eventHandling.listeners.data.player.AttemptPlayerTransferListener;
 import de.prog3.projektarbeit.eventHandling.listeners.data.player.AttemptPlayerUpdateListener;
 import de.prog3.projektarbeit.eventHandling.listeners.data.player.PlayerUpdateFinishedListener;
 import de.prog3.projektarbeit.eventHandling.listeners.data.team.AttemptTeamCreationListener;
+import de.prog3.projektarbeit.eventHandling.listeners.data.tournament.AttemptTournamentCreationListener;
 import de.prog3.projektarbeit.exceptions.ValidationException;
 import de.prog3.projektarbeit.utils.Formatter;
 import org.jooq.exception.IntegrityConstraintViolationException;
@@ -26,12 +31,13 @@ import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class DataListener {
     private static final Logger logger = LoggerFactory.getLogger(DataListener.class);
 
-    public static void register(){
+    public static void register() {
         new AttemptPlayerCreationListener() {
             @Override
             public void onEvent(AttemptPlayerCreationEvent event) {
@@ -42,14 +48,14 @@ public class DataListener {
                 try {
                     factory = factory.setDateOfBirth(Formatter.parseStringToDate(event.getDateOfBirth()));
                     logger.debug("Geburtsdatum erfolgreich gesetzt.");
-                } catch (ParseException e){
+                } catch (ParseException e) {
                     exceptions.add(new ParseException("Das Geburtsdatum muss das Format dd-mm-yyyy oder dd.mm.yyyy haben aber sah so aus: " + event.getDateOfBirth(), e.getErrorOffset()));
                     logger.warn("Fehler beim Setzen des Geburtsdatums: {}", e.getMessage());
                 }
                 try {
                     factory = factory.setNumber(Integer.parseInt(event.getNumber()));
                     logger.debug("Spielernummer erfolgreich gesetzt.");
-                } catch (NumberFormatException e){
+                } catch (NumberFormatException e) {
                     exceptions.add(new NumberFormatException("Die Rückennummer muss eine ganze Zahl > 0 und < 100 sein aber war: " + event.getNumber()));
                     logger.warn("Fehler beim Setzen der Spielernummer: {}", e.getMessage());
                 }
@@ -65,7 +71,7 @@ public class DataListener {
                     logger.warn("Validierungsfehler beim Erstellen des Spielers: {}", e.getExceptions());
                 }
 
-                if(player != null){
+                if (player != null) {
                     PlayerQuery.save(player);
                     logger.info("Spieler erfolgreich gespeichert: {}", player);
                     new PlayerCreationFinishedEvent(player).call();
@@ -94,7 +100,7 @@ public class DataListener {
                     logger.warn("Fehler beim Erstellen des Teams: {}", e.getMessage());
                 }
 
-                if(team != null){
+                if (team != null) {
                     //System.out.println(team.getLeagueId());
                     TeamQuery.save(team);
                     logger.info("Team erfolgreich gespeichert: {}", team);
@@ -106,7 +112,7 @@ public class DataListener {
             }
         };
 
-        new AttemptPlayerUpdateListener(){
+        new AttemptPlayerUpdateListener() {
             @Override
             public void onEvent(AttemptPlayerUpdateEvent event) {
                 logger.info("AttemptPlayerUpdateEvent empfangen: {}", event);
@@ -116,14 +122,14 @@ public class DataListener {
                 try {
                     factory = factory.setDateOfBirth(Formatter.parseStringToDate(event.getDateOfBirth()));
                     logger.debug("Geburtsdatum erfolgreich gesetzt.");
-                } catch (ParseException e){
+                } catch (ParseException e) {
                     exceptions.add(new ParseException("Das Geburtsdatum muss das Format dd-mm-yyyy oder dd.mm.yyyy haben aber sah so aus: " + event.getDateOfBirth(), e.getErrorOffset()));
                     logger.warn("Fehler beim Setzen des Geburtsdatums: {}", e.getMessage());
                 }
                 try {
                     factory = factory.setNumber(Integer.parseInt(event.getNumber()));
                     logger.debug("Spielernummer erfolgreich gesetzt.");
-                } catch (NumberFormatException e){
+                } catch (NumberFormatException e) {
                     exceptions.add(new NumberFormatException("Die Rückennummer muss eine ganze Zahl > 0 und < 100 sein aber war: " + event.getNumber()));
                     logger.warn("Fehler beim Setzen der Spielernummer: {}", e.getMessage());
                 }
@@ -141,7 +147,7 @@ public class DataListener {
                     logger.warn("Validierungsfehler beim Aktualisieren des Spielers: {}", e.getExceptions());
                 }
 
-                if(player != null){
+                if (player != null) {
                     try {
                         PlayerQuery.save(player);
                         logger.info("Spieleraktualisierung erfolgreich gespeichert.");
@@ -157,7 +163,7 @@ public class DataListener {
             }
         };
 
-        new AttemptPlayerTransferListener(){
+        new AttemptPlayerTransferListener() {
             @Override
             public void onEvent(AttemptPlayerTransferEvent transferEvent) {
                 logger.info("AttemptPlayerTransferEvent empfangen: {}", transferEvent);
@@ -184,10 +190,10 @@ public class DataListener {
                                     TransferQuery.addTransfer(transfer);
                                     logger.info("Transfer erfolgreich in der Datenbank eingetragen.");
                                     new PlayerTransferFinishedEvent(newPlayer, player.getTeamId(), transferEvent.getNewTeamId()).call();
-                                } catch (NumberFormatException e){
+                                } catch (NumberFormatException e) {
                                     exceptions.add(new IllegalArgumentException("Die Transfersumme muss eine ganze Zahl > 0 sein aber war: " + transferEvent.getAmount()));
                                     logger.error("Fehler bei der Transfersumme: {}", e.getMessage());
-                                } catch (IntegrityConstraintViolationException e){
+                                } catch (IntegrityConstraintViolationException e) {
                                     exceptions.add(e);
                                     logger.error("Integritätsverletzung beim Hinzufügen des Transfers: {}", e.getMessage());
                                 }
@@ -197,16 +203,28 @@ public class DataListener {
                             this.unregister();
                         }
                     };
-                } catch (IllegalArgumentException e){
+                } catch (IllegalArgumentException e) {
                     exceptions.add(e);
                     logger.warn("Fehler beim Erstellen des Transfers: {}", e.getMessage());
                 }
-                if(exceptions.isEmpty()){
+                if (exceptions.isEmpty()) {
                     logger.info("Keine Fehler beim Transfer. Starte Aktualisierung...");
                     new AttemptPlayerUpdateEvent(player, transferEvent.getNumberString(), transferEvent.getNewTeamId()).call();
                 } else {
                     logger.info("PlayerTransferFinishedEvent wird mit {} Fehler(n) ausgelöst.", exceptions.size());
                     new PlayerTransferFinishedEvent(exceptions).call();
+                }
+            }
+        };
+
+        new AttemptTournamentCreationListener() {
+            @Override
+            public void onEvent(AttemptTournamentCreationEvent event) {
+                try {
+                    TournamentQuery.save(new Tournament(0, event.getTournamentName(), event.getParticipants()));
+                    new TournamentFinishedEvent(null).call();
+                } catch (Exception e){
+                    new TournamentFinishedEvent(new ArrayList<>(List.of(e))).call();
                 }
             }
         };

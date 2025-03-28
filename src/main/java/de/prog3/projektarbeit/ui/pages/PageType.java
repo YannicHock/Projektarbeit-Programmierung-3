@@ -2,6 +2,7 @@ package de.prog3.projektarbeit.ui.pages;
 
 import de.prog3.projektarbeit.ui.pages.laterna.player.*;
 import de.prog3.projektarbeit.ui.pages.laterna.team.CreateTeamPage;
+import de.prog3.projektarbeit.ui.pages.laterna.team.ImportTeamPage;
 import de.prog3.projektarbeit.ui.pages.laterna.team.TeamPage;
 import de.prog3.projektarbeit.ui.pages.laterna.team.TeamsPage;
 import de.prog3.projektarbeit.ui.pages.laterna.TitlePage;
@@ -42,6 +43,9 @@ public enum PageType {
     }}),
     CREATE_TEAM(new HashMap<>() {{
         put(ViewType.LATERNA, CreateTeamPage.class);
+    }}),
+    IMPORT_TEAM(new HashMap<>() {{
+        put(ViewType.LATERNA, ImportTeamPage.class);
     }}),
     TEAMS(new HashMap<>() {{
         put(ViewType.LATERNA, TeamsPage.class);

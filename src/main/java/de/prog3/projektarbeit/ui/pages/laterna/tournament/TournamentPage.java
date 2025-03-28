@@ -1,5 +1,6 @@
 package de.prog3.projektarbeit.ui.pages.laterna.tournament;
 
+import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.table.Table;
 import de.prog3.projektarbeit.data.objects.Match;
@@ -81,6 +82,9 @@ public class TournamentPage extends LaternaPage {
             );
         }
 
+        firstLegtable.setPreferredSize(new TerminalSize(firstLegtable.getPreferredSize().getColumns(), calculateHeight(firstLegtable)));
+        secondLegtable.setPreferredSize(new TerminalSize(secondLegtable.getPreferredSize().getColumns(), calculateHeight(secondLegtable)));
+
         Panel rightPanel = new Panel();
         rightPanel.addComponent(secondLegtable);
         panel.addComponent(rightPanel.withBorder(Borders.singleLine("Rückrunde")));
@@ -94,6 +98,12 @@ public class TournamentPage extends LaternaPage {
 
         return contentPanel;
     }
+
+
+    private int calculateHeight(Table<String> table){
+        return Math.min(5, table.getPreferredSize().getRows());
+    }
+
 
     /**
      * Gibt das Fenster der Seite zurück.
